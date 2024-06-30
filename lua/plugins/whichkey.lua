@@ -49,22 +49,6 @@ return {
           end,
           "LSP Show Diagnostics",
         },
-        D = {
-          function()
-            require("telescope.builtin").diagnostics()
-          end,
-          "Search diagnostics",
-        },
-        s = {
-          function()
-            if is_available("aerial.nvim") then
-              require("telescope").extensions.aerial.aerial()
-            else
-              require("telescope.builtin").lsp_document_symbols()
-            end
-          end,
-          "Search symbols",
-        },
       },
       b = {
         name = getIcon("ui", "NewFile") .. "Buffers",
@@ -73,127 +57,11 @@ return {
       },
       f = {
         name = " find",
-        ["<CR>"] = {
-          function()
-            require("telescope.builtin").resume()
-          end,
-          "Resume previous search",
-        },
-        ["/"] = {
-          function()
-            require("telescope.builtin").current_buffer_fuzzy_find()
-          end,
-          "Find words in current buffer",
-        },
-        a = {
-          function()
-            require("telescope.builtin").find_files({
-              prompt_title = "Config Files",
-              cwd = vim.fn.stdpath("config"),
-              follow = true,
-            })
-          end,
-          "Find AstroNvim config files",
-        },
-        b = {
-          function()
-            require("telescope.builtin").buffers()
-          end,
-          "Find buffer",
-        },
-        c = {
-          function()
-            require("telescope.builtin").grep_string()
-          end,
-          "Find word under cursor",
-        },
-        C = {
-          function()
-            require("telescope.builtin").commands()
-          end,
-          "Find commands",
-        },
-        f = {
-          function()
-            require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
-          end,
-          "Find Files",
-        },
-        F = {
-          function()
-            require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
-          end,
-          "Find all files",
-        },
-        r = {
-          function()
-            require("telescope.builtin").registers()
-          end,
-          "Find registers",
-        },
-        k = {
-          function()
-            require("telescope.builtin").keymaps()
-          end,
-          "Find keymaps",
-        },
-        m = {
-          function()
-            require("telescope.builtin").man_pages()
-          end,
-          "Find man",
-        },
-        n = {
-          function()
-            require("telescope").extensions.notify.notify()
-          end,
-          "Find notifications",
-        },
-        o = {
-          function()
-            require("telescope.builtin").oldfiles()
-          end,
-          "Old files",
-        },
-        g = {
-          function()
-            require("telescope.builtin").git_bcommits({ use_file_path = true })
-          end,
-          "Git commits (current file)",
-        },
-        h = {
-          function()
-            require("telescope.builtin").help_tags()
-          end,
-          "Find help",
-        },
         z = { "<Cmd>Telescope zoxide list<CR>", "Find directories" },
-        w = {
-          function()
-            require("telescope.builtin").live_grep()
-          end,
-          "Find words",
-        },
-        W = {
-          function()
-            require("telescope.builtin").live_grep({
-              additional_args = function(args)
-                return vim.list_extend(args, { "--hidden", "--no-ignore" })
-              end,
-            })
-          end,
-          "Find words in all files",
-        },
       },
       u = {
         name = " UI",
         s = { ":set spell!<cr>", "toggle spell checker" },
-        t = {
-          function()
-            require("telescope.builtin").colorscheme({ enable_preview = true })
-          end,
-          "Find themes",
-        },
         ["|"] = { "<cmd>IBLToggle<cr>", "Toggle intend scope" },
         f = { "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", "Toggle formating" },
       },
@@ -213,12 +81,6 @@ return {
       },
       g = {
         name = getIcon("ui", "Git", 2) .. "git",
-        c = {
-          function()
-            require("telescope.builtin").git_bcommits({ use_file_path = true })
-          end,
-          "Git commits (current file)",
-        },
         g = { "<cmd>lua _lazygit_toggle()<cr>", "LazyGit" },
       },
     }, { prefix = "<leader>" })
