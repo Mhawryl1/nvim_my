@@ -7,6 +7,7 @@ return {
     vim.o.timeoutlen = 300
   end,
   config = function()
+    local is_available = require("core.utils").is_available
     local wk = require("which-key")
     wk.setup({
       icons = {
@@ -23,7 +24,7 @@ return {
     wk.register({
       c = {
         function()
-          require("core.polish").close_buffer()
+          require("core.utils").close_buffer()
         end,
         "Close buffer",
       },
@@ -48,6 +49,22 @@ return {
           end,
           "LSP Show Diagnostics",
         },
+        D = {
+          function()
+            require("telescope.builtin").diagnostics()
+          end,
+          "Search diagnostics",
+        },
+        s = {
+          function()
+            if is_available("aerial.nvim") then
+              require("telescope").extensions.aerial.aerial()
+            else
+              require("telescope.builtin").lsp_document_symbols()
+            end
+          end,
+          "Search symbols",
+        },
       },
       b = {
         name = getIcon("ui", "NewFile") .. "Buffers",
@@ -56,11 +73,45 @@ return {
       },
       f = {
         name = " find",
+        ["<CR>"] = {
+          function()
+            require("telescope.builtin").resume()
+          end,
+          "Resume previous search",
+        },
+        ["/"] = {
+          function()
+            require("telescope.builtin").current_buffer_fuzzy_find()
+          end,
+          "Find words in current buffer",
+        },
+        a = {
+          function()
+            require("telescope.builtin").find_files({
+              prompt_title = "Config Files",
+              cwd = vim.fn.stdpath("config"),
+              follow = true,
+            })
+          end,
+          "Find AstroNvim config files",
+        },
         b = {
           function()
             require("telescope.builtin").buffers()
           end,
           "Find buffer",
+        },
+        c = {
+          function()
+            require("telescope.builtin").grep_string()
+          end,
+          "Find word under cursor",
+        },
+        C = {
+          function()
+            require("telescope.builtin").commands()
+          end,
+          "Find commands",
         },
         f = {
           function()
@@ -68,13 +119,17 @@ return {
           end,
           "Find Files",
         },
-        r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-        n = { "<cmd>enew<cr>", "New File" },
-        o = {
+        F = {
           function()
-            require("telescope.builtin").oldfiles()
+            require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
           end,
-          "Old files",
+          "Find all files",
+        },
+        r = {
+          function()
+            require("telescope.builtin").registers()
+          end,
+          "Find registers",
         },
         k = {
           function()
@@ -88,17 +143,29 @@ return {
           end,
           "Find man",
         },
-        c = {
+        n = {
           function()
-            require("telescope.builtin").git_bcommits({ use_file_path = true })
+            require("telescope").extensions.notify.notify()
           end,
-          "Git commits (current file)",
+          "Find notifications",
+        },
+        o = {
+          function()
+            require("telescope.builtin").oldfiles()
+          end,
+          "Old files",
         },
         g = {
           function()
             require("telescope.builtin").git_bcommits({ use_file_path = true })
           end,
           "Git commits (current file)",
+        },
+        h = {
+          function()
+            require("telescope.builtin").help_tags()
+          end,
+          "Find help",
         },
         z = { "<Cmd>Telescope zoxide list<CR>", "Find directories" },
         w = {
@@ -146,6 +213,12 @@ return {
       },
       g = {
         name = getIcon("ui", "Git", 2) .. "git",
+        c = {
+          function()
+            require("telescope.builtin").git_bcommits({ use_file_path = true })
+          end,
+          "Git commits (current file)",
+        },
         g = { "<cmd>lua _lazygit_toggle()<cr>", "LazyGit" },
       },
     }, { prefix = "<leader>" })

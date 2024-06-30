@@ -167,6 +167,14 @@ function M.close_buffer()
 	end
 end
 
+
+function M.get_plugin(plugin)
+  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+  return lazy_config_avail and lazy_config.spec.plugins[plugin] or nil
+end
+
+function M.is_available(plugin) return M.get_plugin(plugin) ~= nil end
+
 M.maps = { n = {}, v = {} }
 local metatable = {
 	__newindex = function(table, key, value)
