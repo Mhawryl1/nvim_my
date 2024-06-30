@@ -87,7 +87,6 @@ return {
     end
 
     -----------=== Python ===---------
-
     local python = Terminal:new({
       cmd = "python3",
       hidden = true,
@@ -100,6 +99,66 @@ return {
     })
     function _G._python_toggle()
       python:toggle()
+    end
+
+    -----------=== gdu ===---------
+    local gdu = Terminal:new({
+      cmd = "gdu",
+      hidden = true,
+      direction = "float",
+      close_on_exit = true,
+      display_name = "gdu",
+      float_opts = {
+        border = "curved",
+      },
+      on_open = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
+        vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "<esc>")
+      end,
+      on_close = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_del_keymap("t", "j")
+        vim.api.nvim_del_keymap("t", "k")
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
+      end,
+    })
+    function _G._gdu_toggle()
+      gdu:toggle()
+    end
+
+    -----------=== btm ===---------
+    local btm = Terminal:new({
+      cmd = "btm",
+      hidden = true,
+      direction = "float",
+      close_on_exit = true,
+      display_name = "btm",
+      float_opts = {
+        border = "curved",
+      },
+      on_open = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
+        vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "<esc>")
+      end,
+      on_close = function(term)
+        vim.cmd("startinsert!")
+        vim.api.nvim_del_keymap("t", "j")
+        vim.api.nvim_del_keymap("t", "k")
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
+      end,
+    })
+    function _G._btm_toggle()
+      btm:toggle()
     end
   end,
 }

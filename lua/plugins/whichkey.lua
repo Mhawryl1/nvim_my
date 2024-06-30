@@ -1,6 +1,6 @@
 return {
 
-  "folke/which-key.nvim",
+  "folkcopeFuzzyCommandSearch)j/which-key.nvim",
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
@@ -18,6 +18,7 @@ return {
       mode = "n",
       prefix = "<leader>",
     })
+    local getIcon = require("core.config").getIcon
     -----==== Key mapping ====--------
     wk.register({
       c = {
@@ -40,10 +41,27 @@ return {
       },
       Q = { "<Cmd>confirm qall<CR>", "Quit Nvim" },
       l = {
-        name = " Lsp Tools",
+        name = getIcon("ui", "Lsptools", 2) .. "Lsp Tools",
+        d = {
+          function()
+            vim.diagnostic.setloclist()
+          end,
+          "LSP Show Diagnostics",
+        },
+      },
+      b = {
+        name = getIcon("ui", "NewFile") .. "Buffers",
+        l = { "<cmd>BufferLinePick<cr>", "Pick buffer" },
+        c = { "<cmd>BufferLineCloseOthers<cr>", "Close all other buffers" },
       },
       f = {
         name = " find",
+        b = {
+          function()
+            require("telescope.builtin").buffers()
+          end,
+          "Find buffer",
+        },
         f = {
           function()
             require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
@@ -110,18 +128,24 @@ return {
           "Find themes",
         },
         ["|"] = { "<cmd>IBLToggle<cr>", "Toggle intend scope" },
-        f = { "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", "Toggle fomrating" },
+        f = { "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", "Toggle formating" },
       },
       t = {
-        name = " terminal",
-        h = { ":ToggleTerm size=10 direction=horizontal name=dock<cr>", "toggle horizontal terminal" },
-        f = { ":ToggleTerm size=10 direction=float name=float<cr>", "toggle float terminal" },
-        t = { "<cmd>lua _htop_toggle()<cr>", "  htop terminal" },
-        n = { "<cmd>lua _node_toggle()<cr>", "  node terminal" },
-        p = { "<cmd>lua _python_toggle()<cr>", "  python terminal" },
+        name = getIcon("ui", "Terminal") .. "terminal",
+        h = {
+          ":ToggleTerm size=10 direction=horizontal name=dock<cr>",
+          getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
+        },
+        f = {
+          ":ToggleTerm size=10 direction=float name=float<cr>",
+          getIcon("ui", "Term", 2) .. "toggle float terminal",
+        },
+        t = { "<cmd>lua _htop_toggle()<cr>", getIcon("ui", "Htop", 2) .. "htop terminal" },
+        n = { "<cmd>lua _node_toggle()<cr>", getIcon("ui", "Node", 2) .. "node terminal" },
+        p = { "<cmd>lua _python_toggle()<cr>", getIcon("ui", "Python", 2) .. "python terminal" },
       },
       g = {
-        name = " git",
+        name = getIcon("ui", "Git", 2) .. "git",
         g = { "<cmd>lua _lazygit_toggle()<cr>", "LazyGit" },
       },
     }, { prefix = "<leader>" })

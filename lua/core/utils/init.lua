@@ -128,7 +128,7 @@ function M.spellcheck()
 	return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
 end
 
-function M.map(mode, lhs, rhs, opts)
+local function map(mode, lhs, rhs, opts)
 	local options = { silent = true }
 	if opts then
 		options = vim.tbl_extend("force", options, opts)
@@ -136,4 +136,51 @@ function M.map(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, options)
 end
 
+local function closeCurr(bufnr)
+	vim.cmd("bprev")
+	vim.cmd("bdelete!" .. bufnr)
+end
+function M.close_buffer()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local buf_windows = vim.call("win_findbuf", bufnr)
+	local modified = vim.api.nvim_get_option_value("modified", { buf = bufnr })
+	local bufname = vim.fn.expand("%")
+	if buf_windows.empyt then
+		bufname = "Untitled"
+	end
+
+	if modified and #buf_windows == 1 then
+		local confirm = vim.fn.confirm(('Save changes to "%s"?'):format(bufname), "&Yes\n&No\n&Cancel", 1, "Question")
+		if confirm == 1 then
+			if buf_windows.empty then
+				return
+			end
+			vim.cmd.write()
+			closeCurr(bufnr)
+		elseif confirm == 2 then
+			closeCurr(bufnr)
+		else
+			return
+		end
+	else
+		closeCurr(bufnr)
+	end
+end
+
+M.maps = { n = {}, v = {} }
+local metatable = {
+	__newindex = function(table, key, value)
+		if table == M.maps.n then
+			map("n", key, value[1], value[2])
+		elseif table == M.maps.v then
+			map("v", key, value[1], value[2])
+		else
+			vim.notify("Key mode don't exist", vim.log.levels.ERROR)
+		end
+		rawset(table, key, value)
+	end,
+}
+
+setmetatable(M.maps.n, metatable)
+setmetatable(M.maps.v, metatable)
 return M
