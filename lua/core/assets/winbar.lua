@@ -1,9 +1,9 @@
 local M = {}
 
-local colors = require "core.config.colors"
-local navic = require "nvim-navic"
-local utils = require "core.utils"
-local icons = require "core.config.icons"
+local colors = require("core.assets.colors")
+local navic = require("nvim-navic")
+local utils = require("core.utils")
+local icons = require("core.assets.icons")
 
 vim.api.nvim_set_hl(0, "WinBarSeparator", { fg = colors.grey })
 vim.api.nvim_set_hl(0, "WinBarFilename", { fg = colors.green, bg = colors.grey })
@@ -33,7 +33,7 @@ local excludes = function()
 end
 
 local function get_modified()
-  if utils.get_buf_option "modified" then
+  if utils.get_buf_option("modified") then
     local mod = icons.git.Mod
     return "%#WinBarFilename#" .. mod .. " " .. "%t" .. "%*"
   end
@@ -56,14 +56,14 @@ function M.get_winbar()
 
   if navic.is_available() then
     return "%#WinBarSeparator#"
-      .. "%="
-      .. ""
-      .. "%*"
-      .. get_modified()
-      .. get_location()
-      .. "%#WinBarSeparator#"
-      .. ""
-      .. "%*"
+        .. "%="
+        .. ""
+        .. "%*"
+        .. get_modified()
+        .. get_location()
+        .. "%#WinBarSeparator#"
+        .. ""
+        .. "%*"
   else
     return "%#WinBarSeparator#" .. "%=" .. "" .. "%*" .. get_modified() .. "%#WinBarSeparator#" .. "" .. "%*"
   end

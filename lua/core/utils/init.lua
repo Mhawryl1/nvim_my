@@ -1,194 +1,305 @@
 local M = {}
 function M.get_buf_option(opt)
-	local bufnr = vim.api.nvim_get_current_buf()
-	local buf_option = vim.api.nwim_get_option_value(opt, { buf = bufnr })
-	if not buf_option then
-		return nil
-	else
-		return buf_option
-	end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buf_option = vim.api.nwim_get_option_value(opt, { buf = bufnr })
+  if not buf_option then
+    return nil
+  else
+    return buf_option
+  end
 end
 
 function M.is_empty(s)
-	return s == nil or s == ""
+  return s == nil or s == ""
 end
 
 local function getIcons()
-	local __devicons
-	if not __devicons then
-		local ok, devicons = pcall(require, "nvim-web-devicons")
-		__devicons = ok and devicons.get_icons() or {}
-	end
-	return __devicons
+  local __devicons
+  if not __devicons then
+    local ok, devicons = pcall(require, "nvim-web-devicons")
+    __devicons = ok and devicons.get_icons() or {}
+  end
+  return __devicons
 end
 
 function M.activeLsp()
-	local devicon
-	local clients = vim.lsp.get_clients({ bufnr = 0 })
-	if next(clients) ~= nil then
-		for _, client in pairs(clients) do
-			if client.name ~= "null-ls" then
-				local fts = client.config.filetypes or { vim.bo.filetype }
-				local icons = getIcons()
-				table.insert(fts, vim.fn.expand("%:e"))
-				for _, ft in pairs(fts) do
-					if icons[ft] then
-						devicon = icons[ft]
-						local icon = { devicon.icon }
-						icon.color = { fg = devicon.color }
-						return { name = client.name, icon = icon }
-					end
-				end
-				return { name = client.name, icon = nil }
-			end
-		end
-	end
+  local devicon = nil
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  if next(clients) ~= nil then
+    for _, client in pairs(clients) do
+      if client.name ~= "null-ls" then
+        local fts = client.config.filetypes or { vim.bo.filetype }
+        local icons = getIcons()
+        table.insert(fts, vim.fn.expand("%:e"))
+        for _, ft in pairs(fts) do
+          if icons[ft] then
+            devicon = icons[ft]
+            local icon = { devicon.icon }
+            icon.color = { fg = devicon.color }
+            return { name = client.name, icon = icon }
+          end
+        end
+        return { name = client.name, icon = nil }
+      end
+    end
+  end
 end
 
 local function activeNullLsConf()
-	local buf_ft = vim.bo.filetype
-	local null_ls_s, null_ls = pcall(require, "null-ls")
-	local ret_str = ""
-	if null_ls_s then
-		local sources = null_ls.get_sources()
-		for _, source in ipairs(sources) do
-			if source._validated then
-				for ft_name, ft_active in pairs(source.filetypes) do
-					if ft_name == buf_ft and ft_active then
-						ret_str = ret_str .. source.name
-					end
-				end
-			end
-		end
-	end
-	return ret_str
+  local buf_ft = vim.bo.filetype
+  local null_ls_s, null_ls = pcall(require, "null-ls")
+  local ret_str = ""
+  if null_ls_s then
+    local sources = null_ls.get_sources()
+    for _, source in ipairs(sources) do
+      if source._validated then
+        for ft_name, ft_active in pairs(source.filetypes) do
+          if ft_name == buf_ft and ft_active then
+            ret_str = ret_str .. source.name
+          end
+        end
+      end
+    end
+  end
+  return ret_str
 end
 
 local function getLinter()
-	local buf_ft = vim.bo.filetype
-	local ok, lint = pcall(require, "lint")
-	local ret_str = ""
-	if ok then
-		for ft_k, ft_v in pairs(lint.linters_by_ft) do
-			if type(ft_v) == "table" then
-				for _, linter in pairs(ft_v) do
-					if buf_ft == ft_k then
-						ret_str = ret_str .. linter
-					end
-				end
-			elseif type(ft_v) == "string" then
-				if buf_ft == ft_k then
-					ret_str = ret_str .. ft_v
-				end
-			end
-		end
-	end
-	return ret_str
+  local buf_ft = vim.bo.filetype
+  local ok, lint = pcall(require, "lint")
+  local ret_str = ""
+  if ok then
+    for ft_k, ft_v in pairs(lint.linters_by_ft) do
+      if type(ft_v) == "table" then
+        for _, linter in pairs(ft_v) do
+          if buf_ft == ft_k then
+            ret_str = ret_str .. linter
+          end
+        end
+      elseif type(ft_v) == "string" then
+        if buf_ft == ft_k then
+          ret_str = ret_str .. ft_v
+        end
+      end
+    end
+  end
+  return ret_str
 end
-
+require("core.assets.colors")
 function M.getLsp()
-	local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
-	local client = require("core.utils").activeLsp()
-	vim.api.nvim_set_hl(0, "LspIcon", { fg = client.icon.color.fg })
-	if vim.g.toggleFormating then
-		vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a" })
-	else
-		vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000" })
-	end
-	return string.format(
-		"%%#LspIcon#%s %%#MyStatusName#%s | %%#FormatStatus#%s  %%#MyStatusName#%s",
-		client.icon[1],
-		client.name,
-		activeNullLsConf(),
-		getLinter()
-	)
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
+  local client = M.activeLsp()
+  vim.api.nvim_set_hl(0, "LspIcon", { fg = client.icon.color.fg })
+  if vim.g.toggleFormating then
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a" })
+  else
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000" })
+  end
+  return string.format(
+    "%%#LspIcon#%s %%#MyStatusName#%s | %%#FormatStatus#%s  %%#MyStatusName#%s",
+    client.icon[1],
+    client.name,
+    activeNullLsConf(),
+    getLinter()
+  )
 end
 
 function M.currentDir()
-	local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
-	local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
-	local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
-	cwd = vim.fn.fnamemodify(cwd, ":~")
-	if #cwd > 40 then
-		cwd = vim.fn.pathshorten(cwd)
-	end
-	local trail = cwd:sub(-1) == "/" and "" or "/"
-	vim.api.nvim_set_hl(0, "StatusIcon", { fg = hl.bg })
-	return string.format("%%#StatusIcon#%s %%#MyStatusName#%s%%#MyStatusName#%s", icon, cwd, trail)
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
+  local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
+  local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
+  cwd = vim.fn.fnamemodify(cwd, ":~")
+  if #cwd > 40 then
+    cwd = vim.fn.pathshorten(cwd)
+  end
+  local trail = cwd:sub(-1) == "/" and "" or "/"
+  vim.api.nvim_set_hl(0, "StatusIcon", { fg = hl.bg })
+  return string.format("%%#StatusIcon#%s %%#MyStatusName#%s%%#MyStatusName#%s", icon, cwd, trail)
 end
 
 function M.spellcheck()
-	local icon = " "
-	if vim.wo.spell then
-		local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
-		vim.api.nvim_set_hl(0, "SpellIcon", { fg = hl.bg })
-		return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
-	end
-	vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#ff0000" })
-	return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
+  local icon = " "
+  if vim.wo.spell then
+    local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
+    vim.api.nvim_set_hl(0, "SpellIcon", { fg = hl.bg })
+    return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
+  end
+  vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#ff0000" })
+  return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
 end
 
 local function map(mode, lhs, rhs, opts)
-	local options = { silent = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.keymap.set(mode, lhs, rhs, options)
+  local options = { silent = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 local function closeCurr(bufnr)
-	vim.cmd("bprev")
-	vim.cmd("bdelete!" .. bufnr)
+  vim.cmd("bprev")
+  vim.cmd("bdelete!" .. bufnr)
 end
 function M.close_buffer()
-	local bufnr = vim.api.nvim_get_current_buf()
-	local buf_windows = vim.call("win_findbuf", bufnr)
-	local modified = vim.api.nvim_get_option_value("modified", { buf = bufnr })
-	local bufname = vim.fn.expand("%")
-	if buf_windows.empyt then
-		bufname = "Untitled"
-	end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buf_windows = vim.call("win_findbuf", bufnr)
+  local modified = vim.api.nvim_get_option_value("modified", { buf = bufnr })
+  local bufname = vim.fn.expand("%")
+  if buf_windows.empyt then
+    bufname = "Untitled"
+  end
 
-	if modified and #buf_windows == 1 then
-		local confirm = vim.fn.confirm(('Save changes to "%s"?'):format(bufname), "&Yes\n&No\n&Cancel", 1, "Question")
-		if confirm == 1 then
-			if buf_windows.empty then
-				return
-			end
-			vim.cmd.write()
-			closeCurr(bufnr)
-		elseif confirm == 2 then
-			closeCurr(bufnr)
-		else
-			return
-		end
-	else
-		closeCurr(bufnr)
-	end
+  if modified and #buf_windows == 1 then
+    local confirm = vim.fn.confirm(('Save changes to "%s"?'):format(bufname), "&Yes\n&No\n&Cancel", 1, "Question")
+    if confirm == 1 then
+      if buf_windows.empty then
+        return
+      end
+      vim.cmd.write()
+      closeCurr(bufnr)
+    elseif confirm == 2 then
+      closeCurr(bufnr)
+    else
+      return
+    end
+  else
+    closeCurr(bufnr)
+  end
 end
 
-
 function M.get_plugin(plugin)
-  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+  local lazy_config_avail, lazy_config = pcall(require, "lazy.core.assets")
   return lazy_config_avail and lazy_config.spec.plugins[plugin] or nil
 end
 
-function M.is_available(plugin) return M.get_plugin(plugin) ~= nil end
+function M.is_available(plugin)
+  return M.get_plugin(plugin) ~= nil
+end
 
 M.maps = { n = {}, v = {} }
 local metatable = {
-	__newindex = function(table, key, value)
-		if table == M.maps.n then
-			map("n", key, value[1], value[2])
-		elseif table == M.maps.v then
-			map("v", key, value[1], value[2])
-		else
-			vim.notify("Key mode don't exist", vim.log.levels.ERROR)
-		end
-		rawset(table, key, value)
-	end,
+  __newindex = function(table, key, value)
+    if table == M.maps.n then
+      map("n", key, value[1], value[2])
+    elseif table == M.maps.v then
+      map("v", key, value[1], value[2])
+    else
+      vim.notify("Key mode don't exist", vim.log.levels.ERROR)
+    end
+    rawset(table, key, value)
+  end,
 }
 
 setmetatable(M.maps.n, metatable)
 setmetatable(M.maps.v, metatable)
+
+--------------==============---------------------
+
+local null_ls = require("null-ls")
+function PrintNullLsSources(active_sources)
+  local sources = null_ls.get_sources()
+  for _, source in ipairs(sources) do
+    if source.methods["NULL_LS_RANGE_FORMATTING"] == true then
+      table.insert(active_sources.formatters, source.name)
+    elseif source.methods["NULL_LS_DIAGNOSTICS"] == true then
+      table.insert(active_sources.linters, source.name)
+    else
+      table.insert(active_sources.others, source.name)
+    end
+  end
+end
+
+-- Function to determine if a client is an LSP server
+local function is_lsp_server(client)
+  -- Explicitly exclude GitHub Copilot
+  if client.name == "copilot" then
+    return false
+  end
+
+  local lsp_capabilities = {
+    "hoverProvider",
+    "referencesProvider",
+  }
+
+  for _, capability in ipairs(lsp_capabilities) do
+    if client.server_capabilities[capability] then
+      return true
+    end
+  end
+
+  return false
+end
+
+-- Function to get clients and categorize them
+local function get_clients()
+  local devicon = nil
+  local categorized_clients = {
+    lsp_servers = {},
+    formatters = {},
+    linters = {},
+    others = {},
+  }
+
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  if not vim.tbl_isempty(clients) then
+    for client_id, client in pairs(clients) do
+      if client.name == "null-ls" then
+        PrintNullLsSources(categorized_clients)
+      elseif is_lsp_server(client) then
+        local fts = client.config.filetypes or { vim.bo.filetype }
+        local icons = getIcons()
+        table.insert(fts, vim.fn.expand("%:e"))
+        for _, ft in pairs(fts) do
+          if icons[ft] then
+            devicon = icons[ft]
+            local icon = { icon = devicon.icon }
+            icon.color = { fg = devicon.color }
+            table.insert(categorized_clients.lsp_servers, { client.name, icon })
+          else
+            table.insert(categorized_clients.lsp_servers, { client.name })
+          end
+        end
+      else
+        table.insert(categorized_clients.others, client.name)
+      end
+    end
+  end
+  return categorized_clients
+end
+
+require("core.assets.colors")
+require("core.assets.colors")
+
+function M.lspSection()
+  local retTable = {}
+  local separator = ", "
+  local clients = get_clients()
+  if vim.g.toggleFormating then
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a" })
+  else
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000" })
+  end
+  for key, client in pairs(clients) do
+    if key == "lsp_servers" then
+      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[1][2].color.fg })
+      table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[1][2].icon, client[1][1]))
+    elseif key == "formatters" and client[1] ~= nil then
+      table.insert(retTable, 2, string.format("%%#FormatStatus#%s", client[1]))
+    elseif key == "linters" and client[1] ~= nil then
+      table.insert(retTable, 3, string.format("%%#MyStatusName#%s", client[1]))
+    elseif key == "others" and client[1] ~= nil then
+      table.insert(retTable, 4, string.format("%%#MyStatusName#%s", client[1]))
+    end
+  end
+  local str = ""
+  for i = 1, #retTable do
+    if retTable[i] ~= nil and i ~= #retTable then
+      str = str .. retTable[i] .. separator
+    elseif retTable[i] ~= nil then
+      str = str .. retTable[i]
+    end
+  end
+  return str
+end
+
 return M

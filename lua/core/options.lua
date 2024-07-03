@@ -1,12 +1,16 @@
--- gloabl variable
+-- global variable
 vim.g.toggleFormating = true
 -- Set highlight on search
 vim.o.hlsearch = true
 
+-- keep cursor n line above/below view
+vim.o.scrolloff = 5
 -- Make line numbers default
 vim.wo.number = true
 vim.o.relativenumber = true
 
+----
+vim.o.wrap = false
 -- Disable mouse mode
 vim.o.mouse = ""
 
@@ -37,7 +41,7 @@ vim.o.grepformat = "%f:%l:%c:%m"
 vim.opt.clipboard = "unnamedplus"
 
 --spell checker
-vim.o.spelllang = en_us
+vim.o.spelllang = "en_us"
 --tab spaces setting
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2

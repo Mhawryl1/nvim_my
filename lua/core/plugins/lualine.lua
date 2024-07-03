@@ -10,6 +10,7 @@ return {
   config = function()
     local lualine = require("lualine")
     local utils = require("core.utils")
+    local navic = require("nvim-navic")
 
     lualine.setup({
       options = {
@@ -41,8 +42,7 @@ return {
           { utils.currentDir },
         },
         lualine_x = {
-          { utils.getLsp },
-          { utils.spellcheck },
+          { utils.lspSection },
           "encoding",
           "fileformat",
           "filetype",
@@ -59,7 +59,18 @@ return {
         lualine_z = {},
       },
       tabline = {},
-      winbar = {},
+      winbar = {
+        lualine_c = {
+          {
+            function()
+              return navic.get_location()
+            end,
+            cond = function()
+              return navic.is_available()
+            end,
+          },
+        },
+      },
       inactive_winbar = {},
       extensions = {},
     })

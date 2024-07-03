@@ -40,6 +40,7 @@ return {
     local is_available = require("core.utils").is_available
     local maps = require("core.utils").maps
     local builtin = require("telescope.builtin")
+    local get_icon = require("core.assets").getIcon
     maps.n["<leader>ut"] = {
       function()
         builtin.colorscheme({ enable_preview = true })
@@ -136,7 +137,7 @@ return {
       function()
         builtin.man_pages()
       end,
-      { desc = "Find man" },
+      { desc = get_icon("ui", "Note", 1) .. "Find man" },
     }
     maps.n["<leader>fn"] = {
       function()

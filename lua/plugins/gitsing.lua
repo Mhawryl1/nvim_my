@@ -2,7 +2,7 @@ return {
   "lewis6991/gitsigns.nvim",
   event = "VimEnter",
   config = function()
-    local getIcon = require("core.config").getIcon
+    local getIcon = require("core.assets").getIcon
     require("gitsigns").setup({
       signs = {
         add = { text = getIcon("git", "GitSign") },
