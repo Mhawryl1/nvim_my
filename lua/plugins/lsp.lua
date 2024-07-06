@@ -12,9 +12,9 @@ return {
     },
     { "williamboman/mason-lspconfig.nvim" }, -- Optional
     -- Autocompletion
-    { "hrsh7th/nvim-cmp" },                -- Required
-    { "hrsh7th/cmp-nvim-lsp" },            -- Required
-    { "L3MON4D3/LuaSnip" },                -- Required
+    { "hrsh7th/nvim-cmp" },                  -- Required
+    { "hrsh7th/cmp-nvim-lsp" },              -- Required
+    { "L3MON4D3/LuaSnip" },                  -- Required
     { "rafamadriz/friendly-snippets" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
@@ -26,63 +26,78 @@ return {
   config = function()
     local lsp = require("lsp-zero")
     local navic = require("nvim-navic")
+
     lsp.on_attach(function(client, bufnr)
-      local maps = require("core.utils").maps
       local opts = { buffer = bufnr }
       if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
       end
-      maps.n["gr"] = {
-        function()
-          vim.lsp.buf.references()
-        end,
-        vim.tbl_extend("force", opts, { desc = "LSP Goto Reference" }),
-      }
-      maps.n["gd"] = {
-        function()
-          vim.lsp.buf.definition()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP Goto Definition" }),
-      }
-      maps.n["<S-k>"] = {
-        function()
-          vim.lsp.buf.hover()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP Hover" }),
-      }
-      maps.n["<leader>ls"] = {
-        function()
-          vim.lsp.buf.workspace_symbol()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP Workspace Symbol" }),
-      }
+
+      vim.keymap.set({ "n", "s" }, "gr", function()
+        vim.lsp.buf.references()
+      end, { buffer = bufnr })
+
+      vim.keymap.set({ "n", "s" }, "gr", function()
+        vim.lsp.buf.references()
+      end, { buffer = bufnr, desc = "LSP Goto Reference" })
+
+      vim.keymap.set({ "n", "s" }, "gd", function()
+        vim.lsp.buf.definition()
+      end, { buffer = bufnr, desc = "LSP Goto Definition" })
+
+      vim.keymap.set({ "n", "s" }, "g<S-d>", function()
+        vim.lsp.buf.declaration()
+      end, { buffer = bufnr, desc = "LSP Goto Declaration" })
+
+      vim.keymap.set({ "n", "s" }, "<S-k>", function()
+        vim.lsp.buf.hover()
+      end, { buffer = bufnr, desc = "LSP Hover" })
+
+      vim.keymap.set({ "n", "s" }, "<leader>ls", function()
+        vim.lsp.buf.workspace_symbol()
+      end, { buffer = bufnr, desc = "LSP Workspace Symbol" })
+
       vim.keymap.set("n", "[d", function()
         vim.diagnostic.goto_next()
       end, vim.tbl_deep_extend("force", opts, { desc = "Next Diagnostic" }))
+
       vim.keymap.set("n", "]d", function()
         vim.diagnostic.goto_prev()
       end, vim.tbl_deep_extend("force", opts, { desc = "Previous Diagnostic" }))
-      maps.n["<leader>la"] = {
-        function()
-          vim.lsp.buf.code_action()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP Code Action" }),
-      }
-      maps.n["<leader>lg"] = {
-        function()
-          vim.lsp.buf.references()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP References" }),
-      }
-      maps.n["<leader>lr"] = {
-        function()
-          vim.lsp.buf.rename()
-        end,
-        vim.tbl_deep_extend("force", opts, { desc = "LSP Rename" }),
-      }
+
+      vim.keymap.set({ "n", "s" }, "<leader>la", function()
+        vim.lsp.buf.code_action()
+      end, { buffer = bufnr, desc = "LSP Code Action" })
+
+      vim.keymap.set({ "n", "s" }, "<leader>lg", function()
+        vim.lsp.buf.references()
+      end, { buffer = bufnr, desc = "LSP References" })
+
+      vim.keymap.set({ "n", "s" }, "<leader>lr", function()
+        vim.lsp.buf.rename()
+      end, { buffer = bufnr, desc = "LSP Rename" })
+
       vim.keymap.set("i", "<C-h>", function()
         vim.lsp.buf.signature_help()
-      end, vim.tbl_deep_extend("force", opts, { desc = "LSP Signature Help" }))
+      end, { buffer = bufnr, desc = "LSP Signature Help" })
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>lR",
+        "<cmd>LSP Telescope lsp_references<cr>",
+        { desc = "Telscope search reference" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>lD",
+        "<cmd>Telescope lsp_definitions<cr>",
+        { desc = "LSP Telscope search definition" }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>li",
+        "<cmd>Telescope lsp_definitions<cr>",
+        { desc = "LSP Telscope search implementations<cr>" }
+      )
     end)
     require("mason").setup({})
     require("mason-lspconfig").setup({
@@ -103,15 +118,8 @@ return {
         "marksman",
         "clangd",
       },
-      handlers = {
-        lsp.default_setup,
-        lua_ls = function()
-          local lua_opts = lsp.nvim_lua_ls()
-          require("lspconfig").lua_ls.setup(lua_opts)
-        end,
-      },
     })
-
+    require("mason-lspconfig").setup_handlers(require("plugins.after.config").lsp)
     local cmp_action = require("lsp-zero").cmp_action()
     local cmp = require("cmp")
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -151,6 +159,7 @@ return {
       },
       sources = {
         { name = "nvim_lsp" },
+        { name = "copilot" },
         { name = "luasnip", keyword_length = 2 },
         { name = "buffer",  keyword_length = 3 },
         { name = "path" },

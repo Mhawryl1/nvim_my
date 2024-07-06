@@ -1,6 +1,3 @@
-if true then
-  return {}
-end
 return {
   {
     "hrsh7th/nvim-cmp",
@@ -33,11 +30,11 @@ return {
         -- ordered by priority
         sources = cmp.config.sources({
           { name = "nvim_lsp",               keyword_length = 1 },
+          { name = "copilot" },
           { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
           { name = "path" },
           { name = "nvim_lua" },
-        }, {
           { name = "buffer" },
         }),
       })

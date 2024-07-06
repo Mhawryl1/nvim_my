@@ -19,9 +19,12 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     vim.api.nvim_command("copen")
   end,
 })
-
 vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
   callback = function()
-    require("lualine").refresh()
+    local config = require("lualine").get_config()
+    config.sections.lualine_x[1] = function()
+      return require("core.utils").lspSection()
+    end
+    require("lualine").setup(config)
   end,
 })

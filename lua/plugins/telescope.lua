@@ -11,11 +11,10 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
-    local transform_mod = require("telescope.actions.mt").transform_mod
+    --local transform_mod = require("telescope.actions.mt").transform_mod
 
     -- local trouble = require("trouble")
-    -- local trouble_telescope = require("trouble.providers.telescope")
-
+    local open_with_trouble = require("trouble.sources.telescope").open
     -- or create your custom action
     -- local custom_actions = transform_mod({
     --   open_trouble_qflist = function(prompt_bufnr)
@@ -30,9 +29,10 @@ return {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
             ["<C-j>"] = actions.move_selection_next, -- move to next result
+            ["<c-t>"] = open_with_trouble,
             --["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
-            --["<C-t>"] = trouble_telescope.smart_open_with_trouble,
           },
+          --n = { ["<C-t>"] = open_with_trouble },
         },
       },
     })
@@ -48,7 +48,7 @@ return {
       { desc = "Find themse" },
     }
 
-    maps.n["<leader>lD"] = {
+    maps.n["<leader>xd"] = {
       function()
         builtin.diagnostics()
       end,

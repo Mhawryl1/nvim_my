@@ -13,7 +13,6 @@ map.nvim_set_keymap("n", "<Esc>", "<cmd>nohls<cr>", opts)
 map.nvim_set_keymap("n", "<C-d>", "<C-d>zz", opts)
 map.nvim_set_keymap("n", "<C-u>", "<C-u>zz", opts)
 
-map.nvim_set_keymap("i", "<Tab>", "  ", opts)
 map.nvim_set_keymap("n", "tt", ":tabnew %<cr>", opts)
 map.nvim_set_keymap("n", "<C-k>", "<C-w>k", opts)
 
@@ -26,6 +25,9 @@ map.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
+
+map.nvim_set_keymap("n", "<M-P>", "<cmd>put!<cr>", opts)
+map.nvim_set_keymap("n", "<S-M-P>", "<cmd>put<cr>", opts)
 
 map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)

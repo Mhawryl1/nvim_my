@@ -176,13 +176,15 @@ function M.is_available(plugin)
   return M.get_plugin(plugin) ~= nil
 end
 
-M.maps = { n = {}, v = {} }
+M.maps = { n = {}, v = {}, i = {} }
 local metatable = {
   __newindex = function(table, key, value)
     if table == M.maps.n then
       map("n", key, value[1], value[2])
     elseif table == M.maps.v then
       map("v", key, value[1], value[2])
+    elseif table == M.maps.i then
+      map({ "i", "s" }, key, value[1], value[2])
     else
       vim.notify("Key mode don't exist", vim.log.levels.ERROR)
     end
@@ -195,16 +197,27 @@ setmetatable(M.maps.v, metatable)
 
 --------------==============---------------------
 
+local function containsFt(ft, ft_list)
+  ft = ft or vim.bo.filetype
+  if ft_list[ft] == true then
+    return true
+  end
+  return false
+end
+
 local null_ls = require("null-ls")
 function PrintNullLsSources(active_sources)
   local sources = null_ls.get_sources()
+  local ft = vim.bo.filetype
   for _, source in ipairs(sources) do
-    if source.methods["NULL_LS_RANGE_FORMATTING"] == true then
-      table.insert(active_sources.formatters, source.name)
-    elseif source.methods["NULL_LS_DIAGNOSTICS"] == true then
-      table.insert(active_sources.linters, source.name)
-    else
-      table.insert(active_sources.others, source.name)
+    if containsFt(ft, source.filetypes) then
+      if source.methods["NULL_LS_RANGE_FORMATTING"] == true then
+        table.insert(active_sources.formatters, source.name)
+      elseif source.methods["NULL_LS_DIAGNOSTICS"] == true then
+        table.insert(active_sources.linters, source.name)
+      else
+        table.insert(active_sources.others, source.name)
+      end
     end
   end
 end
@@ -280,7 +293,7 @@ function M.lspSection()
     vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000" })
   end
   for key, client in pairs(clients) do
-    if key == "lsp_servers" then
+    if key == "lsp_servers" and client[1] ~= nil then
       vim.api.nvim_set_hl(0, "LspIcon", { fg = client[1][2].color.fg })
       table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[1][2].icon, client[1][1]))
     elseif key == "formatters" and client[1] ~= nil then

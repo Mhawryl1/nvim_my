@@ -1,16 +1,15 @@
 --if true then return {} end
 return {
-	"nvimtools/none-ls.nvim",
-	config = function()
-		local null_ls = require("null-ls")
-		null_ls.setup({
-			sources = {
-				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.diagnostics.selene,
-				null_ls.builtins.diagnostics.tflint,
-				null_ls.builtins.formatting.clang_format,
-			},
-		})
-		vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { desc = "format buffer" })
-	end,
+  "nvimtools/none-ls.nvim",
+  config = function()
+    local null_ls = require("null-ls")
+    null_ls.setup({
+      sources = {
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.diagnostics.selene,
+        null_ls.builtins.formatting.clang_format,
+      },
+    })
+    vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { desc = "format buffer" })
+  end,
 }

@@ -1,13 +1,54 @@
 return {
-  "rmagatti/auto-session",
-  config = function()
-    local auto_session = require("auto-session")
-    local maps = require("core.utils").maps
-    auto_session.setup({
-      auto_restore_enabled = false,
-      auto_session_suppress_dirs = { "~/", "~/Dev/", "~/Downloads", "~/Documents", "~/Desktop/" },
-    })
-
-    maps.n["<leader>Ss"] = { "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" } } -- save workspace session for current working directory }
-  end,
+  {
+    "rmagatti/auto-session",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "rmagatti/session-lens",
+    },
+    config = function()
+      local maps = require("core.utils").maps
+      require("auto-session").setup({
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+        -- The following are already the default values, no need to provide them if these are already the settings you want.
+        auto_save_enabled = true,
+        session_lens = {
+          -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+          load_on_setup = true,
+          theme_conf = { border = true },
+          previewer = false,
+          buftypes_to_ignore = {}, -- list of buffer types that should not be deleted from current session when a new one is loaded
+        },
+      })
+      -- Set mapping for searching a session. ⚠️ This will only work if Telescope.nvim is installed
+      maps.n["<leader>Sf"] = {
+        require("auto-session.session-lens").search_session,
+        { noremap = true, desc = "Load session" },
+      }
+      maps.n["<leader>Ss"] = {
+        "<cmd>SessionSave<cr>",
+        { noremap = true, desc = "Save session" },
+      }
+      maps.n["<leader>Sd"] = {
+        "<cmd>SessionDelete<cr>",
+        { noremap = true, desc = "Delete session" },
+      }
+      maps.n["<leader>Sr"] = {
+        "<cmd>SessionRestore<cr>",
+        { noremap = true, desc = "Restore session" },
+      }
+      maps.n["<leader>SD"] = {
+        "<cmd>Autosession delete<cr>",
+        { noremap = true, desc = "Delete autosession" },
+      }
+      maps.n["<leader>SF"] = {
+        "<cmd>Autosession delete<cr>",
+        { noremap = true, desc = "Search autosession" },
+      }
+      maps.n["<leader>Sc"] = {
+        "<cmd>:lua require('session-lens').search_session()<cr>",
+        { noremap = true, desc = "Switch session" },
+      }
+    end,
+  },
 }
