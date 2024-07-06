@@ -1,17 +1,16 @@
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
   end,
   group = highlight_group,
-  pattern = '*',
+  pattern = "*",
 })
-
 
 function QfMakeConv()
   local qflist = vim.fn.getqflist()
   if (qflist == nil) or (#qflist == 0) then
-    print "Pattern not found"
+    print("Pattern not found")
     return
   end
   print("Found " .. #qflist .. " entries")
@@ -23,7 +22,9 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   callback = function()
     QfMakeConv()
     local qflist = vim.fn.getqflist()
-    if #qflist == 0 then return end
-    vim.api.nvim_command "copen"
+    if #qflist == 0 then
+      return
+    end
+    vim.api.nvim_command("copen")
   end,
 })

@@ -60,13 +60,14 @@ return {
     "L3MON4D3/LuaSnip",
     lazy = false,
     dependencies = { "saadparwaiz1/cmp_luasnip" },
-
     keys = {
       {
         "<Tab>",
         function()
           if require("luasnip").expand_or_jumpable() then
             require("luasnip").jump(1)
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, true, true), "n", true)
           end
         end,
         desc = "Jump forward a snippet placement",

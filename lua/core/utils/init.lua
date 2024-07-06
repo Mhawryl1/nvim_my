@@ -87,7 +87,6 @@ local function getLinter()
 end
 require("core.assets.colors")
 function M.getLsp()
-  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
   local client = M.activeLsp()
   vim.api.nvim_set_hl(0, "LspIcon", { fg = client.icon.color.fg })
   if vim.g.toggleFormating then
@@ -196,6 +195,15 @@ setmetatable(M.maps.n, metatable)
 setmetatable(M.maps.v, metatable)
 
 --------------==============---------------------
+function M.macro_recording()
+  local recording_register = vim.fn.reg_recording()
+  vim.api.nvim_set_hl(0, "RecordingIcon", { fg = "#FF0809" })
+  if recording_register == "" then
+    return ""
+  else
+    return string.format("%%#RecordingIcon#%s %%#Fake#%s", "󰑋j", "Recording @") .. recording_register
+  end
+end
 
 local function containsFt(ft, ft_list)
   ft = ft or vim.bo.filetype
@@ -255,7 +263,7 @@ local function get_clients()
 
   local clients = vim.lsp.get_clients({ bufnr = 0 })
   if not vim.tbl_isempty(clients) then
-    for client_id, client in pairs(clients) do
+    for _, client in pairs(clients) do
       if client.name == "null-ls" then
         PrintNullLsSources(categorized_clients)
       elseif is_lsp_server(client) then
@@ -313,6 +321,26 @@ function M.lspSection()
     end
   end
   return str
+end
+
+function M.rename_file(opts)
+  local new_name = opts.args
+  local curr_file_name = vim.fn.expand("%:t")
+  if curr_file_name == new_name then
+    return
+  end
+  local status, _ = pcall(vim.api.nvim_command, ":saveas " .. new_name)
+  if not status then
+    local confirm = vim.fn.confirm("File already exists. Overwrite?", "&Yes\n&No", 1, "Question")
+    if confirm == 1 then
+      vim.api.nvim_command(":saveas! " .. new_name)
+      vim.api.nvim_command(":bdelete " .. curr_file_name)
+      vim.fn.system("rm " .. curr_file_name)
+      return
+    end
+  end
+  vim.api.nvim_command(":bdelete " .. curr_file_name)
+  vim.fn.system("rm " .. curr_file_name)
 end
 
 return M

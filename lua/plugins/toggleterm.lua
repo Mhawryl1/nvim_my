@@ -7,7 +7,7 @@ return {
       shade_terminal = true,
       shade_terminals = true,
       shading_factor = "-10", -- the percentage by which to lighten dark terminal background, default: -30
-      shading_ratio = "-1", -- the ratio of shading factor for light/dark terminal background, default: -3
+      shading_ratio = "-1",   -- the ratio of shading factor for light/dark terminal background, default: -3
       start_in_insert = true,
       shell = vim.o.shell,
       title_pos = "center",

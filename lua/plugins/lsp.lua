@@ -7,6 +7,7 @@ return {
     {
       "williamboman/mason.nvim",
       build = function()
+        ---@diagnostic disable-next-line: param-type-mismatch
         pcall(vim.cmd, "MasonUpdate")
       end,
     },
@@ -80,24 +81,12 @@ return {
       vim.keymap.set("i", "<C-h>", function()
         vim.lsp.buf.signature_help()
       end, { buffer = bufnr, desc = "LSP Signature Help" })
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>lR",
-        "<cmd>LSP Telescope lsp_references<cr>",
-        { desc = "Telscope search reference" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>lD",
-        "<cmd>Telescope lsp_definitions<cr>",
-        { desc = "LSP Telscope search definition" }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>li",
-        "<cmd>Telescope lsp_definitions<cr>",
-        { desc = "LSP Telscope search implementations<cr>" }
-      )
+      vim.api.nvim_set_keymap("n", "<leader>lR", "<cmd>LSP Telescope lsp_references<cr>",
+        { desc = "Telscope search reference" })
+      vim.api.nvim_set_keymap("n", "<leader>lD", "<cmd>Telescope lsp_definitions<cr>",
+        { desc = "LSP Telscope search definition" })
+      vim.api.nvim_set_keymap("n", "<leader>li", "<cmd>Telescope lsp_definitions<cr>",
+        { desc = "LSP Telscope search implementations<cr>" })
     end)
     require("mason").setup({})
     require("mason-lspconfig").setup({

@@ -1,5 +1,3 @@
-vim.cmd([[hi! Folded guibg=#4e4e4e]])
-
 vim.cmd([[
 highlight! link CmpNormal NormalFloat
 highlight! link CmpBorder FloatBorder
@@ -31,7 +29,7 @@ vim.diagnostic.config({
       elseif type == vim.diagnostic.severity.INFO then
         return diagnostic_signs.Info
       end
-      return "" -- Default to no prefix if type is unrecognized
+      return ""  -- Default to no prefix if type is unrecognized
     end,
     spacing = 4, -- Add some spacing between the icon and the message
   },
@@ -42,9 +40,15 @@ vim.diagnostic.config({
   float = {
     border = "rounded",
     focusable = false,
-    source = "always", -- Show the source of the diagnostic
+    source = true, -- Show the source of the diagnostic
     header = "",
     prefix = " ",
     style = "minimal",
   },
+})
+vim.api.nvim_create_user_command("RenameFile", function(args)
+  require("core.utils").rename_file(args)
+end, {
+  nargs = 1,
+  desc = { "Rename the current file to <new-name>" },
 })

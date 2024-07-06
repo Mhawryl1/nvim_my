@@ -56,6 +56,15 @@ return {
           end,
           getIcon("ui", "Copilot", 2) .. "Toggle Copilot",
         },
+        r = {
+          function()
+            local input = vim.fn.input("New name")
+            if #input > 0 then
+              vim.api.nvim_command("RenameFile " .. input)
+            end
+          end,
+          "Rename buffer",
+        },
       },
       f = {
         name = " find",
@@ -74,9 +83,9 @@ return {
           getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
         },
         f = {
-          function ()
+          function()
             vim.api.nvim_command(":ToggleTerm size=10 direction=float name=float<cr>")
-            vim.api.nvim_command(':doautocmd User LspAttach')
+            vim.api.nvim_command(":doautocmd User LspAttach")
           end,
           getIcon("ui", "Term", 2) .. "toggle float terminal",
         },

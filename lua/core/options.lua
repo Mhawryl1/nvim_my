@@ -3,8 +3,15 @@ vim.g.toggleFormating = true
 -- Set highlight on search
 vim.o.hlsearch = true
 
+-- Tab to spaces
+vim.o.expandtab = true
+vim.o.smarttab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.smartindent = true
+
 -- keep cursor n line above/below view
-vim.o.scrolloff = 5
+vim.o.scrolloff = 999
 -- Make line numbers default
 vim.wo.number = true
 vim.o.relativenumber = true
@@ -42,11 +49,6 @@ vim.opt.clipboard = "unnamedplus"
 
 --spell checker
 vim.o.spelllang = "en_us"
---tab spaces setting
-vim.o.tabstop = 2
-vim.o.shiftwidth = 2
-vim.o.expandtab = true
-vim.o.smartindent = true
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"

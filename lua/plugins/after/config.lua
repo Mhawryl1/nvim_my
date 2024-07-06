@@ -43,5 +43,16 @@ return {
         },
       })
     end,
+    lua = function()
+      require("lspconfig").lspconfig.lua.setup({
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
+            },
+          },
+        },
+      })
+    end,
   },
 }
