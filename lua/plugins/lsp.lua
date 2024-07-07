@@ -22,17 +22,20 @@ return {
     { "hrsh7th/cmp-cmdline" },
     { "saadparwaiz1/cmp_luasnip" },
     { "SmiteshP/nvim-navic" },
+    { "onsails/lspkind.nvim" },
+    --{ "hrsh7th/cmp-nvim-lsp-signature-help" },
   },
-
   config = function()
     local lsp = require("lsp-zero")
     local navic = require("nvim-navic")
+    local lspkind = require("lspkind")
 
     lsp.on_attach(function(client, bufnr)
       local opts = { buffer = bufnr }
       if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
       end
+      require("lsp_signature").on_attach(require("plugins.ray_x").conf, bufnr)
 
       vim.keymap.set({ "n", "s" }, "gr", function()
         vim.lsp.buf.references()
@@ -141,6 +144,9 @@ return {
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
     cmp.setup({
+      -- completion = {
+      --   completeopt = "menu,menuone,preview,noselect",
+      -- },
       snippet = {
         expand = function(args)
           require("luasnip").lsp_expand(args.body)
@@ -149,6 +155,7 @@ return {
       sources = {
         { name = "nvim_lsp" },
         { name = "copilot" },
+        --{ name = "nvim_lsp_signature_help" },
         { name = "luasnip", keyword_length = 2 },
         { name = "buffer",  keyword_length = 3 },
         { name = "path" },
@@ -157,14 +164,21 @@ return {
         ["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
         ["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
         ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        -- ["<C-n>"] = cmp.mapping.scroll_docs(-4),
-        -- ["<C-p>"] = cmp.mapping.scroll_docs(4),
+        ["<C-p>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-n>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-f>"] = cmp_action.luasnip_jump_forward(),
         ["<C-b>"] = cmp_action.luasnip_jump_backward(),
         ["<Tab>"] = cmp_action.luasnip_supertab(),
         ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
       }),
+      formatting = {
+        format = lspkind.cmp_format({
+          mode = "symbol",
+          max_width = 50,
+          ellipsis_char = "...",
+        }),
+      },
       window = {
         completion = cmp.config.window.bordered({
           border = "rounded", -- Use 'rounded' for rounded corners
