@@ -7,6 +7,7 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
     "folke/todo-comments.nvim",
+    "debugloop/telescope-undo.nvim",
   },
   config = function()
     local telescope = require("telescope")
@@ -28,14 +29,44 @@ return {
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next, -- move to next result
+            ["<C-j>"] = actions.move_selection_next,     -- move to next result
             ["<c-t>"] = open_with_trouble,
             --["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
           },
           --n = { ["<C-t>"] = open_with_trouble },
         },
       },
+      extensions = {
+        mappings = {
+          i = {
+            ["<cr>"] = require("telescope-undo.actions").yank_additions,
+            ["<S-cr>"] = require("telescope-undo.actions").yank_deletions,
+            ["<C-cr>"] = require("telescope-undo.actions").restore,
+            -- alternative defaults, for users whose terminals do questionable things with modified <cr>
+            ["<C-y>"] = require("telescope-undo.actions").yank_deletions,
+            ["<C-r>"] = require("telescope-undo.actions").restore,
+          },
+          n = {
+            ["y"] = require("telescope-undo.actions").yank_additions,
+            ["Y"] = require("telescope-undo.actions").yank_deletions,
+            ["u"] = require("telescope-undo.actions").restore,
+          },
+        },
+        -- undo = {
+        --   use_delta = true,
+        --   side_by_side = true,
+        --   entry_format = "state #$ID, $STAT, $TIME",
+        --   layout_strategy = "vertical",
+        --   vim_diff_opts = { ctxlen = 999 },
+        --   layout_config = {
+        --     preview_height = 0.8,
+        --   },
+        -- },
+      },
     })
+    require("telescope").load_extension("undo")
+    vim.keymap.set("n", "<leader>bu", "<cmd>Telescope undo<cr>",
+      { noremap = true, silent = true, desc = "Browse undo history" })
 
     local is_available = require("core.utils").is_available
     local maps = require("core.utils").maps
