@@ -14,7 +14,20 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   { import = "core.plugins" },
   { import = "plugins" },
-  { "catppuccin/nvim", as = "catppuccin" },
+  { "catppuccin/nvim",      as = "catppuccin" },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    config = true,
+    opts = {
+      italic = {
+        strings = true,
+        comments = true,
+        folds = true,
+        operations = false,
+      },
+    },
+  },
   {
     "tpope/vim-surround",
     event = "VeryLazy",
@@ -39,4 +52,4 @@ require("lazy").setup({
   },
 })
 
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme("gruvbox")

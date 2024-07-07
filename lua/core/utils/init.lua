@@ -104,7 +104,8 @@ function M.getLsp()
 end
 
 function M.currentDir()
-  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+  vim.api.nvim_set_hl(0, "DirectoryPath", { fg = hl.fg, bg = hl.bg })
   local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
   local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
   cwd = vim.fn.fnamemodify(cwd, ":~")
@@ -112,19 +113,21 @@ function M.currentDir()
     cwd = vim.fn.pathshorten(cwd)
   end
   local trail = cwd:sub(-1) == "/" and "" or "/"
-  vim.api.nvim_set_hl(0, "StatusIcon", { fg = hl.bg })
-  return string.format("%%#StatusIcon#%s %%#MyStatusName#%s%%#MyStatusName#%s", icon, cwd, trail)
+  vim.api.nvim_set_hl(0, "StatusIcon", { fg = "#51a0cf", bg = hl.bg })
+  return string.format("%%#StatusIcon#%s %%#DirectoryPath#%s%%#DirectoryPath#%s", icon, cwd, trail)
+  --return (icon .. cwd .. trail):format(hl.fg, hl.bg)
 end
 
 function M.spellcheck()
   local icon = " "
+  local hl_group = vim.api.nvim_get_hl(0, { name = "lualine_c_normal", create = false })
+  vim.api.nvim_set_hl(0, "SpellIconDef", { fg = hl_group.fg, bg = hl_group.bg })
   if vim.wo.spell then
-    local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
-    vim.api.nvim_set_hl(0, "SpellIcon", { fg = hl.bg })
-    return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
+    vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#FF0000", bg = hl_group.bg })
+    return string.format("%%#SpellIcon#%s %%#SpellIconDef#%s", icon, vim.o.spelllang)
   end
-  vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#ff0000" })
-  return string.format("%%#SpellIcon#%s %%#MyStatusName#%s", icon, vim.o.spelllang)
+  vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#51a0cf", bg = hl_group.bg })
+  return string.format("%%#SpellIcon#%s %%#SpellIconDef#%s", icon, vim.o.spelllang)
 end
 
 local function map(mode, lhs, rhs, opts)
@@ -197,11 +200,13 @@ setmetatable(M.maps.v, metatable)
 --------------==============---------------------
 function M.macro_recording()
   local recording_register = vim.fn.reg_recording()
-  vim.api.nvim_set_hl(0, "RecordingIcon", { fg = "#FF0809" })
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+  vim.api.nvim_set_hl(0, "RecordingIcon", { fg = "#FF0809", bg = hl.bg })
+  vim.api.nvim_set_hl(0, "RecordingDefault", { fg = hl.fg, bg = hl.bg })
   if recording_register == "" then
     return ""
   else
-    return string.format("%%#RecordingIcon#%s %%#Fake#%s", "󰑋j", "Recording @") .. recording_register
+    return string.format("%%#RecordingIcon#%s %%#RecordingDefault#%s", "󰑋", "Recording @") .. recording_register
   end
 end
 
@@ -290,26 +295,29 @@ end
 
 require("core.assets.colors")
 require("core.assets.colors")
-
+M.lspClient = ""
 function M.lspSection()
   local retTable = {}
   local separator = ", "
   local clients = get_clients()
+  local hl_group = vim.api.nvim_get_hl(0, { name = "lualine_c_normal", create = false })
+  local bg_color = string.format("#%06x", hl_group.bg)
+  vim.api.nvim_set_hl(0, "CustomLine", { fg = hl_group.fg, bg = bg_color })
   if vim.g.toggleFormating then
-    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a" })
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a", bg = bg_color })
   else
-    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000" })
+    vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000", bg = bg_color })
   end
   for key, client in pairs(clients) do
     if key == "lsp_servers" and client[1] ~= nil then
-      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[1][2].color.fg })
+      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[1][2].color.fg, bg = bg_color })
       table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[1][2].icon, client[1][1]))
     elseif key == "formatters" and client[1] ~= nil then
       table.insert(retTable, 2, string.format("%%#FormatStatus#%s", client[1]))
     elseif key == "linters" and client[1] ~= nil then
-      table.insert(retTable, 3, string.format("%%#MyStatusName#%s", client[1]))
+      table.insert(retTable, 3, string.format("%%#CustomLine#%s", client[1]))
     elseif key == "others" and client[1] ~= nil then
-      table.insert(retTable, 4, string.format("%%#MyStatusName#%s", client[1]))
+      table.insert(retTable, 4, string.format("%%#CustomLine#%s", client[1]))
     end
   end
   local str = ""
@@ -320,6 +328,7 @@ function M.lspSection()
       str = str .. retTable[i]
     end
   end
+  M.lspClient = str
   return str
 end
 
