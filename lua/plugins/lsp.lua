@@ -92,26 +92,8 @@ return {
         { desc = "LSP Telscope search implementations<cr>" })
     end)
     require("mason").setup({})
-    require("mason-lspconfig").setup({
-      ensure_installed = {
-        "tsserver",
-        "eslint",
-        "rust_analyzer",
-        "jdtls",
-        "lua_ls",
-        "jsonls",
-        "html",
-        "elixirls",
-        "tailwindcss",
-        "tflint",
-        "pylsp",
-        "dockerls",
-        "bashls",
-        "marksman",
-        "clangd",
-      },
-    })
-    require("mason-lspconfig").setup_handlers(require("plugins.after.config").lsp)
+    require("mason-lspconfig").setup(require("plugins.after.Lspconfig").setup)
+    require("mason-lspconfig").setup_handlers(require("plugins.after.Lspconfig").config)
     local cmp_action = require("lsp-zero").cmp_action()
     local cmp = require("cmp")
     local cmp_select = { behavior = cmp.SelectBehavior.Select }

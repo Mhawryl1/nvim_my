@@ -63,12 +63,15 @@ return {
         lualine_c = {
           {
             function()
-              return navic.get_location()
+              return (navic.get_location() ~= nil and #navic.get_location() > 0) and navic.get_location() or " "
             end,
             cond = function()
               return navic.is_available()
             end,
           },
+        },
+        lualine_x = {
+          { require("auto-session.lib").current_session_name, color = { fg = "#000000", bg = "#b8bb26" } },
         },
       },
       inactive_winbar = {},

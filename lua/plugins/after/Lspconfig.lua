@@ -1,5 +1,32 @@
 return {
-  lsp = {
+  formatting = {
+    clang_format = {
+      extra_args = {
+        "--style=Microsoft",
+      },
+    },
+  },
+  setup = {
+    ensure_installed = {
+      "tsserver",
+      "eslint",
+      "rust_analyzer",
+      "jdtls",
+      "lua_ls",
+      "jsonls",
+      "html",
+      "elixirls",
+      "tailwindcss",
+      "tflint",
+      "pylsp",
+      "dockerls",
+      "bashls",
+      "marksman",
+      "clangd",
+    },
+    automatic_installation = true,
+  },
+  config = {
     lua_ls = function()
       require("lspconfig").lua_ls.setup({
         settings = {
@@ -32,7 +59,16 @@ return {
 
     clangd = function()
       require("lspconfig").clangd.setup({
-        cmd = { "clangd", "--background-index" },
+        capabilities = { offsetEncoding = "utf-8" },
+        cmd = {
+          "clangd",
+          "--background-index",
+          "--clang-tidy",
+          "--completion-style=detailed",
+          "--header-insertion=iwyu",
+          "--cross-file-rename",
+          "--function-arg-placeholders",
+        },
         filetypes = { "c", "cpp", "objc", "objcpp" },
         root_dir = require("lspconfig/util").root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
         init_options = {

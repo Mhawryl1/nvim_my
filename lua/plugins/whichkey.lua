@@ -50,6 +50,7 @@ return {
         name = getIcon("ui", "NewFile") .. "Buffers",
         l = { "<cmd>BufferLinePick<cr>", "Pick buffer" },
         c = { "<cmd>BufferLineCloseOthers<cr>", "Close all other buffers" },
+        d = { "<cmd>bdelete<cr>", "Delete buffer" },
         t = {
           function()
             require("copilot.suggestion").toggle_auto_trigger()

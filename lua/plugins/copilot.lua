@@ -6,6 +6,7 @@ return {
     vim.notify("copilot.lua loaded", vim.log.levels.INFO, { title = "Plugins" })
     local cmp, copilot = require("cmp"), require("copilot.suggestion")
     opts.suggestion = { auto_trigger = true, debounce = 150 }
+
     vim.api.nvim_set_keymap("i", "<S-Tab>", "", {
       callback = function()
         if copilot.is_visible() and not cmp.visible() then
@@ -16,12 +17,12 @@ return {
       end,
       desc = "Accept Copilot suggestion",
     })
-    vim.api.nvim_set_keymap("i", "<C-z>", "", {
+    vim.api.nvim_set_keymap("i", "<C-l>", "", {
       callback = function()
         if copilot.is_visible() and not cmp.visible() then
           copilot.accept()
         else
-          return "<S-Tab>"
+          return "<C-l>"
         end
       end,
       desc = "Accept Copilot suggestion",
