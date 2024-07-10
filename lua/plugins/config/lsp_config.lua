@@ -1,8 +1,9 @@
 return {
   formatting = {
     clang_format = {
-      extra_args = {
-        "--style=Microsoft",
+      args = {
+        "--style=file:~/VCode/C++/.clang-format",
+        "--fallback-style=Microsoft",
       },
     },
   },
@@ -23,6 +24,7 @@ return {
       "bashls",
       "marksman",
       "clangd",
+      "biome",
     },
     automatic_installation = true,
   },
@@ -59,34 +61,14 @@ return {
 
     clangd = function()
       require("lspconfig").clangd.setup({
-        capabilities = { offsetEncoding = "utf-8" },
         cmd = {
           "clangd",
           "--background-index",
+          "--function-arg-placeholders",
           "--clang-tidy",
           "--completion-style=detailed",
           "--header-insertion=iwyu",
-          "--cross-file-rename",
-          "--function-arg-placeholders",
-        },
-        filetypes = { "c", "cpp", "objc", "objcpp" },
-        root_dir = require("lspconfig/util").root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
-        init_options = {
-          clangdFileStatus = true,
-          usePlaceholders = true,
-          completeUnimported = true,
-          semanticHighlighting = true,
-        },
-      })
-    end,
-    lua = function()
-      require("lspconfig").lspconfig.lua.setup({
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
-          },
+          "--log=error",
         },
       })
     end,

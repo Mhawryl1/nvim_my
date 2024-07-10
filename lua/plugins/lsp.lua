@@ -53,9 +53,9 @@ return {
         vim.lsp.buf.declaration()
       end, { buffer = bufnr, desc = "LSP Goto Declaration" })
 
-      vim.keymap.set({ "n", "s" }, "<S-k>", function()
-        vim.lsp.buf.hover()
-      end, { buffer = bufnr, desc = "LSP Hover" })
+      -- vim.keymap.set({ "n", "s" }, "<S-k>", function()
+      --   vim.lsp.buf.hover()
+      -- end, { buffer = bufnr, desc = "LSP Hover" })
 
       vim.keymap.set({ "n", "s" }, "<leader>ls", function()
         vim.lsp.buf.workspace_symbol()
@@ -92,8 +92,8 @@ return {
         { desc = "LSP Telscope search implementations<cr>" })
     end)
     require("mason").setup({})
-    require("mason-lspconfig").setup(require("plugins.after.Lspconfig").setup)
-    require("mason-lspconfig").setup_handlers(require("plugins.after.Lspconfig").config)
+    require("mason-lspconfig").setup(require("plugins.config.lsp_config").setup)
+    require("mason-lspconfig").setup_handlers(require("plugins.config.lsp_config").config)
     local cmp_action = require("lsp-zero").cmp_action()
     local cmp = require("cmp")
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -107,7 +107,6 @@ return {
         { name = "buffer" },
       },
     })
-
     -- `:` cmdline setup.
     cmp.setup.cmdline(":", {
       mapping = cmp.mapping.preset.cmdline(),
@@ -122,13 +121,16 @@ return {
         },
       }),
     })
+
     ----====autopairs setting ====----------
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
     cmp.setup({
-      -- completion = {
-      --   completeopt = "menu,menuone,preview,noselect",
-      -- },
+      completion = {
+        completeopt = "menu,menuone,preview,noselect",
+        autocomplete = { cmp.TriggerEvent.TextChanged },
+      },
       snippet = {
         expand = function(args)
           require("luasnip").lsp_expand(args.body)
@@ -156,7 +158,7 @@ return {
       }),
       formatting = {
         format = lspkind.cmp_format({
-          mode = "symbol",
+          mode = "symbol_text",
           max_width = 50,
           ellipsis_char = "...",
         }),

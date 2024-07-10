@@ -19,7 +19,7 @@ return {
     })
     vim.api.nvim_set_keymap("i", "<C-l>", "", {
       callback = function()
-        if copilot.is_visible() and not cmp.visible() then
+        if copilot.is_visible() then
           copilot.accept()
         else
           return "<C-l>"

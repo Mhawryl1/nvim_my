@@ -48,13 +48,13 @@ vim.o.grepformat = "%f:%l:%c:%m"
 vim.opt.clipboard = "unnamedplus"
 
 --spell checker
-vim.o.spelllang = "en_us"
+vim.o.spelllang = "en"
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menu,menuone,noselect"
 
 -- Concealer for Neorg
-vim.o.conceallevel = 2
+vim.o.conceallevel = 0
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key

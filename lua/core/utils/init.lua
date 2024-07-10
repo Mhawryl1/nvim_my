@@ -122,7 +122,7 @@ function M.spellcheck()
   local icon = " "
   local hl_group = vim.api.nvim_get_hl(0, { name = "lualine_c_normal", create = false })
   vim.api.nvim_set_hl(0, "SpellIconDef", { fg = hl_group.fg, bg = hl_group.bg })
-  if vim.wo.spell then
+  if not vim.wo.spell then
     vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#FF0000", bg = hl_group.bg })
     return string.format("%%#SpellIcon#%s %%#SpellIconDef#%s", icon, vim.o.spelllang)
   end
@@ -351,5 +351,65 @@ function M.rename_file(opts)
   vim.api.nvim_command(":bdelete " .. curr_file_name)
   vim.fn.system("rm " .. curr_file_name)
 end
+
+function M.escape_pattern(text)
+  local result = text:gsub("(\\n)(.)", "\\\\\\n%2")
+  result = result:gsub("([{}\"()'.*+%[%]])", "\\%1")
+  print(result)
+  return result
+end
+
+local cmp = require("cmp")
+cmp.setup.filetype("DressingInput", {
+  sources = cmp.config.sources({
+    { name = "path" },
+  }),
+})
+local function save_as()
+  local current_file = vim.fn.expand("%:p")
+  local content = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+  -- Use dressing.nvim for a better input UI with path completion
+  local input = vim.fn.input("Save as: ", "", "file")
+
+  if not input or input == "" then
+    return
+  end
+  local new_file = vim.fs.basename(input)
+  local directory = vim.fs.dirname(input)
+  vim.notify("Direcotry: " .. directory, vim.log.levels.INFO)
+  vim.notify("File name : " .. new_file, vim.log.levels.INFO)
+  -- if vim.fn.isdirectory(directory) == 0 then
+  --     vim.fn.mkdir(directory, "p")
+  -- end
+  -- vim.ui.input({ prompt = "Save as: ", completion = "file" }, function(new_file)
+  --     if not new_file or new_file == "" then
+  --         print("Save cancelled")
+  --         return
+  --     end
+  --
+  --     local new_dir = vim.fn.fnamemodify(new_file, ":h")
+  --     if vim.fn.isdirectory(new_dir) == 0 then
+  --         vim.fn.mkdir(new_dir, "p")
+  --     end
+  --
+  --     local file = io.open(new_file, "w")
+  --     if file then
+  --         for _, line in ipairs(content) do
+  --             file:write(line .. "\n")
+  --         end
+  --         file:close()
+  --         vim.cmd("e " .. new_file)
+  --         vim.cmd("set nomodified")
+  --         print("File saved as: " .. new_file)
+  --     else
+  --         print("Failed to save file: " .. new_file)
+  --     end
+  -- end)
+end
+
+-- Add a command to call the save_as function
+vim.api.nvim_create_user_command("SaveAs", save_as, {})
+-- vim.api.nvim_create_user_command("SaveAs", save_as, {})
 
 return M

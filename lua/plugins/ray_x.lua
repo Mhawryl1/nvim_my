@@ -11,11 +11,14 @@ return {
       border = "rounded",
     },
     hint_enable = true,
-    hint_prefix = " ",
-    hint_scheme = "String",
+    toggle_key = "<C-s>",
+    hint_prefix = "🐼 ",
     hi_parameter = "LspSignatureActiveParameter",
-    select_signature_key = "<M-x>",
+    hint_scheme = "String",
+    select_signature_key = "<M-n>",
+    zindex = 200,
     scrollable = true,
+    floating_window_above_cur_line = true,
   },
   vim.keymap.set({ "n", "s" }, "<C-k>", function()
     vim.lsp.buf.select_signature_key()

@@ -26,14 +26,61 @@ map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 
-map.nvim_set_keymap("n", "<M-P>", "<cmd>put!<cr>", opts)
-map.nvim_set_keymap("n", "<S-M-P>", "<cmd>put<cr>", opts)
+map.nvim_set_keymap("n", "<M-p>", "<cmd>put!<cr>", opts)
+map.nvim_set_keymap("n", "<M-S-p>", "<cmd>put<cr>", opts)
 
 map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
 
+------------====Grepper keymapping====------------
+vim.keymap.set({ "n", "s" }, "<leader>gw", function()
+  local word = vim.fn.expand("<cword>")
+  vim.cmd("grep! " .. word)
+end, { silent = true, desc = "Grep word under cursor" })
+
+vim.keymap.set({ "v" }, "<leader>gw", function()
+  vim.cmd('noau normal! "vy"')
+  local selection = vim.fn.getreg("v")
+  selection = require("core.utils").escape_pattern(selection)
+  selection = '"' .. selection .. '"'
+  local result = vim.fn.system("rg -U --vimgrep --no-heading --smart-case " .. selection)
+  local lines = vim.split(result, "\n")
+  local qflist = {}
+  for _, line in ipairs(lines) do
+    local filename, lnum, col, text = string.match(line, "(.*):(%d+):(%d+):(.*)")
+    if filename and lnum and col and text then
+      table.insert(qflist, {
+        filename = filename,
+        lnum = tonumber(lnum),
+        col = tonumber(col),
+        text = text,
+      })
+    end
+  end
+
+  vim.fn.setqflist(qflist)
+  vim.cmd("copen")
+end, { silent = true, desc = "Grep selection cursor" })
+
+---open close hover window
+vim.keymap.set({ "n", "s" }, "<S-k>", function()
+  local base_win_id = vim.api.nvim_get_current_win()
+  local windows = vim.api.nvim_tabpage_list_wins(0)
+  for _, win_id in ipairs(windows) do
+    if win_id ~= base_win_id then
+      local win_cfg = vim.api.nvim_win_get_config(win_id)
+      if win_cfg.relative == "win" and win_cfg.win == base_win_id then
+        require("noice.lsp.docs").hide(require("noice.lsp.docs").get("hover"))
+        return
+      end
+    end
+  end
+  require("noice.lsp").hover()
+end, { remap = false, silent = true, desc = "Lsp hover" })
+
+-----====lsp keymapping====-----
 vim.keymap.set({ "i", "s" }, "<C-j>", function()
   if not require("noice.lsp").scroll(4) then
     return "<c-j>"
@@ -42,7 +89,7 @@ end, { silent = true, expr = true })
 
 vim.keymap.set({ "i", "s" }, "<C-k>", function()
   if not require("noice.lsp").scroll(-4) then
-    return "<c-k"
+    return "<c-k>"
   end
 end, { silent = true, expr = true })
 
