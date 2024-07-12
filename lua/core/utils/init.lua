@@ -359,53 +359,96 @@ function M.escape_pattern(text)
   return result
 end
 
-local cmp = require("cmp")
-cmp.setup.filetype("DressingInput", {
-  sources = cmp.config.sources({
-    { name = "path" },
-  }),
-})
+local function custom_input(opts, on_confirm)
+  local bufnr = vim.api.nvim_create_buf(false, true)
+  local width = opts.width or 30
+  local height = 1
+  local row = opts.row or math.floor((vim.o.lines - height) / 2)
+  local col = opts.col or math.floor((vim.o.columns - width) / 2)
+
+  vim.o.termguicolors = true
+  vim.api.nvim_open_win(bufnr, true, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    zindex = 100,
+    col = col,
+    style = "minimal",
+    border = {
+      { "╭", "NotifyDEBUGTitle" },
+      { "─", "NotifyDEBUGTitle" },
+      { "╮", "NotifyDEBUGTitle" },
+      { "│", "NotifyDEBUGTitle" },
+      { "╯", "NotifyDEBUGTitle" },
+      { "─", "NotifyDEBUGTitle" },
+      { "╰", "NotifyDEBUGTitle" },
+      { "│", "NotifyDEBUGTitle" },
+    },
+    title = opts.title or "Input",
+    title_pos = "center",
+    noautocmd = false,
+  })
+  vim.api.nvim_set_option_value("buftype", "prompt", { buf = bufnr })
+  vim.api.nvim_buf_add_highlight(bufnr, 0, "Inputprompt", row, col, #opts.prompt)
+  vim.fn.prompt_setprompt(bufnr, opts.prompt or " ")
+  vim.api.nvim_set_hl(0, "Inputprompt", { fg = "#51a0cf", bg = "#1e1e1e" })
+  vim.api.nvim_buf_set_keymap(
+    bufnr,
+    "i",
+    "<Esc>",
+    "<cmd>lua vim.api.nvim_win_close(0, true)<cr> <cmd>lua vim.api.nvim_buf_delete(" .. bufnr .. ", {force = true })<CR>",
+    { noremap = true, silent = true }
+  )
+
+  vim.fn.prompt_setcallback(bufnr, function(input)
+    vim.api.nvim_win_close(0, true)
+    on_confirm(input)
+    vim.api.nvim_buf_delete(bufnr, { force = true })
+  end)
+  vim.cmd("startinsert!")
+end
+
 local function save_as()
   local current_file = vim.fn.expand("%:p")
   local content = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-
-  -- Use dressing.nvim for a better input UI with path completion
-  local input = vim.fn.input("Save as: ", "", "file")
-
-  if not input or input == "" then
-    return
-  end
-  local new_file = vim.fs.basename(input)
-  local directory = vim.fs.dirname(input)
-  vim.notify("Direcotry: " .. directory, vim.log.levels.INFO)
-  vim.notify("File name : " .. new_file, vim.log.levels.INFO)
-  -- if vim.fn.isdirectory(directory) == 0 then
-  --     vim.fn.mkdir(directory, "p")
-  -- end
-  -- vim.ui.input({ prompt = "Save as: ", completion = "file" }, function(new_file)
-  --     if not new_file or new_file == "" then
-  --         print("Save cancelled")
-  --         return
-  --     end
-  --
-  --     local new_dir = vim.fn.fnamemodify(new_file, ":h")
-  --     if vim.fn.isdirectory(new_dir) == 0 then
-  --         vim.fn.mkdir(new_dir, "p")
-  --     end
-  --
-  --     local file = io.open(new_file, "w")
-  --     if file then
-  --         for _, line in ipairs(content) do
-  --             file:write(line .. "\n")
-  --         end
-  --         file:close()
-  --         vim.cmd("e " .. new_file)
-  --         vim.cmd("set nomodified")
-  --         print("File saved as: " .. new_file)
-  --     else
-  --         print("Failed to save file: " .. new_file)
-  --     end
-  -- end)
+  custom_input({
+    prompt = string.format("%s", "    "),
+    title = { { " Save as:", "FloatTitle" } },
+    width = 50,
+    completion = "file",
+  }, function(input)
+    if not input or input == "" then
+      return
+    end
+    print("Input: " .. input)
+    local new_file = vim.fs.basename(input)
+    local directory = vim.fs.dirname(input)
+    vim.notify("Direcotry: " .. directory, vim.log.levels.INFO)
+    vim.notify("File name : " .. new_file, vim.log.levels.INFO)
+    -- if vim.fn.isdirectory(directory) == 0 then
+    --     vim.fn.mkdir(directory, "p")
+    -- end
+    --
+    --     local new_dir = vim.fn.fnamemodify(new_file, ":h")
+    --     if vim.fn.isdirectory(new_dir) == 0 then
+    --         vim.fn.mkdir(new_dir, "p")
+    --     end
+    --
+    --     local file = io.open(new_file, "w")
+    --     if file then
+    --         for _, line in ipairs(content) do
+    --             file:write(line .. "\n")
+    --         end
+    --         file:close()
+    --         vim.cmd("e " .. new_file)
+    --         vim.cmd("set nomodified")
+    --         print("File saved as: " .. new_file)
+    --     else
+    --         print("Failed to save file: " .. new_file)
+    --     end
+    -- end)
+  end)
 end
 
 -- Add a command to call the save_as function

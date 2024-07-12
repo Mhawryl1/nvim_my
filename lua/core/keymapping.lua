@@ -4,8 +4,8 @@ map.nvim_set_keymap("i", "jk", "<Esc>", opts)
 
 map.nvim_set_keymap("n", "<S-l>", "<cmd>bnext<cr>", opts)
 map.nvim_set_keymap("n", "<S-h>", "<cmd>bprev<cr>", opts)
-map.nvim_set_keymap("n", "<C-w>|", "<cmd>vsplit<cr><C-W>l", opts)
-map.nvim_set_keymap("n", "<C-w>_", "<cmd>split<cr>", opts)
+-- map.nvim_set_keymap("n", "<C-w>|", "<cmd>vsplit<cr><C-W>l", opts)
+-- map.nvim_set_keymap("n", "<C-w>_", "<cmd>split<cr>", opts)
 
 map.nvim_set_keymap("c", "<C-J>", '<cmd>lua require("cmp").select_next_item()<cr>', opts)
 map.nvim_set_keymap("c", "<C-K>", '<cmd>lua require("cmp").select_prev_item()<cr>', opts)
@@ -28,7 +28,7 @@ map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 
 map.nvim_set_keymap("n", "<M-p>", "<cmd>put!<cr>", opts)
 map.nvim_set_keymap("n", "<M-S-p>", "<cmd>put<cr>", opts)
-
+--window resize
 map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)

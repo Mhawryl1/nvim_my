@@ -1,13 +1,14 @@
 return {
   {
     "rmagatti/auto-session",
+    event = "VImEnter",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "rmagatti/session-lens",
     },
     config = function()
       local maps = require("core.utils").maps
-      require("auto-session").setup({
+      require("auto-session").setup {
         log_level = "error",
         auto_session_enable_last_session = false,
         auto_session_root_dir = "/tmp/nviv_session/",
@@ -28,7 +29,7 @@ return {
           previewer = true,
           buftypes_to_ignore = {}, -- list of buffer types that should not be deleted from current session when a new one is loaded
         },
-      })
+      }
       -- Set mapping for searching a session. ⚠️ This will only work if Telescope.nvim is installed
       maps.n["<leader>Sf"] = {
         require("auto-session.session-lens").search_session,

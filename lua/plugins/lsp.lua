@@ -6,16 +6,16 @@ return {
     { "neovim/nvim-lspconfig" }, -- Required
     {
       "williamboman/mason.nvim",
-      build = function()
-        ---@diagnostic disable-next-line: param-type-mismatch
-        pcall(vim.cmd, "MasonUpdate")
-      end,
+      -- build = function()
+      --   ---@diagnostic disable-next-line: param-type-mismatch
+      --   pcall(vim.cmd, "MasonUpdate")
+      -- end,
     },
     { "williamboman/mason-lspconfig.nvim" }, -- Optional
     -- Autocompletion
-    { "hrsh7th/nvim-cmp" },                  -- Required
-    { "hrsh7th/cmp-nvim-lsp" },              -- Required
-    { "L3MON4D3/LuaSnip" },                  -- Required
+    { "hrsh7th/nvim-cmp" }, -- Required
+    { "hrsh7th/cmp-nvim-lsp" }, -- Required
+    { "L3MON4D3/LuaSnip" }, -- Required
     { "rafamadriz/friendly-snippets" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
@@ -23,6 +23,7 @@ return {
     { "saadparwaiz1/cmp_luasnip" },
     { "SmiteshP/nvim-navic" },
     { "onsails/lspkind.nvim" },
+    { "hrsh7th/cmp-omni" },
     --{ "hrsh7th/cmp-nvim-lsp-signature-help" },
   },
   config = function()
@@ -84,16 +85,16 @@ return {
       vim.keymap.set("i", "<C-h>", function()
         vim.lsp.buf.signature_help()
       end, { buffer = bufnr, desc = "LSP Signature Help" })
-      vim.api.nvim_set_keymap("n", "<leader>lR", "<cmd>LSP Telescope lsp_references<cr>",
-        { desc = "Telscope search reference" })
-      vim.api.nvim_set_keymap("n", "<leader>lD", "<cmd>Telescope lsp_definitions<cr>",
-        { desc = "LSP Telscope search definition" })
-      vim.api.nvim_set_keymap("n", "<leader>li", "<cmd>Telescope lsp_definitions<cr>",
-        { desc = "LSP Telscope search implementations<cr>" })
+      vim.api.nvim_set_keymap("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "Telscope search reference" })
+      vim.api.nvim_set_keymap("n", "<leader>lD", "<cmd>Telescope lsp_definitions<cr>", { desc = "LSP Telscope search definition" })
+      vim.api.nvim_set_keymap("n", "<leader>li", "<cmd>Telescope lsp_implementations<cr>", { desc = "LSP Telscope search implementations<cr>" })
     end)
+    vim.api.nvim_set_keymap("n", "leader>fq", '<cmd>lua require("telescope.builtin").quicklist()<cr>', { desc = "Quickfix list" })
+    ----====mason setting ====----------
     require("mason").setup({})
     require("mason-lspconfig").setup(require("plugins.config.lsp_config").setup)
     require("mason-lspconfig").setup_handlers(require("plugins.config.lsp_config").config)
+
     local cmp_action = require("lsp-zero").cmp_action()
     local cmp = require("cmp")
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -121,6 +122,12 @@ return {
         },
       }),
     })
+    ----====DressingInput setting ====----------
+    -- cmp.setup.filetype("DressingInput", {
+    --   sources = cmp.config.sources({
+    --     { name = "omni" },
+    --   }),
+    -- })
 
     ----====autopairs setting ====----------
     local cmp_autopairs = require("nvim-autopairs.completion.cmp")
@@ -141,7 +148,7 @@ return {
         { name = "copilot" },
         --{ name = "nvim_lsp_signature_help" },
         { name = "luasnip", keyword_length = 2 },
-        { name = "buffer",  keyword_length = 3 },
+        { name = "buffer", keyword_length = 3 },
         { name = "path" },
       },
       mapping = cmp.mapping.preset.insert({

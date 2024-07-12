@@ -7,7 +7,7 @@ return {
       },
     },
   },
-  setup = {
+  servers = {
     ensure_installed = {
       "tsserver",
       "eslint",
@@ -30,7 +30,7 @@ return {
   },
   config = {
     lua_ls = function()
-      require("lspconfig").lua_ls.setup({
+      require("lspconfig").lua_ls.setup {
         settings = {
           Lua = {
             runtime = {
@@ -56,11 +56,11 @@ return {
             },
           },
         },
-      })
+      }
     end,
 
     clangd = function()
-      require("lspconfig").clangd.setup({
+      require("lspconfig").clangd.setup {
         cmd = {
           "clangd",
           "--background-index",
@@ -68,9 +68,9 @@ return {
           "--clang-tidy",
           "--completion-style=detailed",
           "--header-insertion=iwyu",
-          "--log=error",
+          "--offset-encoding=utf-16",
         },
-      })
+      }
     end,
   },
 }

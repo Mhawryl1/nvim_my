@@ -1,6 +1,6 @@
 return {
   "ray-x/lsp_signature.nvim",
-  event = "VeryLazy",
+  event = "BufEnter",
   opts = {},
   config = function(_, opts)
     require("lsp_signature").setup(opts)
@@ -20,8 +20,8 @@ return {
     scrollable = true,
     floating_window_above_cur_line = true,
   },
-  vim.keymap.set({ "n", "s" }, "<C-k>", function()
-    vim.lsp.buf.select_signature_key()
-  end, { buffer = 0, desc = "LSP Select next signature" }),
+  -- vim.keymap.set("i", "<C-k>", function()
+  --   vim.lsp.buf.select_signature_key()
+  -- end, { buffer = 0, desc = "LSP Select next signature" }),
   vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { bg = "#fabd2f", fg = "#0c1030" }),
 }

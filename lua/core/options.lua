@@ -16,6 +16,7 @@ vim.o.scrolloff = 999
 vim.wo.number = true
 vim.o.relativenumber = true
 
+vim.o.numberwidth = 2
 ----
 vim.o.wrap = false
 -- Disable mouse mode
@@ -27,7 +28,7 @@ vim.o.breakindent = true
 -- Save undo history
 vim.o.undofile = true
 
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 -- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
