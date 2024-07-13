@@ -18,7 +18,6 @@ require("lazy").setup {
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
-    config = true,
     opts = {
       italic = {
         strings = true,
@@ -27,6 +26,7 @@ require("lazy").setup {
         operations = false,
       },
     },
+    config = function() vim.cmd [[colorscheme gruvbox]] end,
   },
   {
     "tpope/vim-surround",
@@ -51,5 +51,3 @@ require("lazy").setup {
     -- this is equalent to setup({}) function
   },
 }
-
-vim.cmd.colorscheme "gruvbox"

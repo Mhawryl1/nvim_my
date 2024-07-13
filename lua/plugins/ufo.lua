@@ -4,9 +4,7 @@ return {
   event = "VeryLazy",
   opts = {
     -- INFO: Uncomment to use treeitter as fold provider, otherwise nvim lsp is used
-    provider_selector = function(bufnr, filetype, buftype)
-      return { "treesitter", "indent" }
-    end,
+    provider_selector = function(bufnr, filetype, buftype) return { "treesitter", "indent" } end,
     open_fold_hl_timeout = 200,
     close_fold_kinds_for_ft = { "imports", "comment" },
     preview = {
@@ -20,38 +18,67 @@ return {
   init = function()
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = "1" -- '0' is not bad
-    vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+    vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
+    --- turn off foldcolumn for neotree to ovoid showing ugly numbers in neotree
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      pattern = "*",
+      callback = function()
+        if vim.bo.filetype == "neo-tree" then
+          vim.opt_local.foldcolumn = "0"
+          vim.opt_local.foldenable = false
+        end
+      end,
+      group = vim.api.nvim_create_augroup("NeoTreeSettings", { clear = true }),
+    })
   end,
   config = function(_, opts)
     local maps = require("core.utils").maps
-    local builtin = require("statuscol.builtin")
-    local ufo = require("ufo")
+    local builtin = require "statuscol.builtin"
+    local ufo = require "ufo"
     local get_icon = require("core.assets").getIcon
-    require("statuscol").setup({
+    require("statuscol").setup {
+      ft_ignore = { "neo-tree" },
       relculright = true,
       foldfunc = "builtin",
       setopt = true,
       segments = {
+        -- Folds
         {
-          sign = { name = { "Diagnostic" }, maxwidth = 2, auto = true },
+          text = { builtin.foldfunc },
+        },
+        -- Relative Line Numbers
+        {
+          text = { " ", builtin.lnumfunc, maxwidth = 2, " " },
+          condition = { true, builtin.not_empty },
+        },
+        -- Gitsigns
+        {
+          sign = {
+            namespace = { "gitsigns" },
+            maxwidth = 1,
+            colwidth = 1,
+            wrap = true,
+          },
+        },
+        -- Diagnostics
+        {
+          sign = { name = { "Diagnostic" }, maxwidth = 1, auto = true },
           click = "v:lua.ScSa",
         },
-        { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
-        { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
         {
-          sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = true },
-          click = "v:lua.ScSa",
+          sign = { name = { "DapBreakpoint" }, maxwidth = 1, auto = false, "  " },
+          click = "v:lua.dap.toggle_breakpoint",
         },
       },
-    })
+    }
     local handler = function(virtText, lnum, endLnum, width, truncate)
       local icon = require("core.assets").getIcon("ui", "Folded")
       local newVirtText = {}
       local totalLines = vim.api.nvim_buf_line_count(0)
       local foldedLines = endLnum - lnum
-      local suffix = ("    " .. icon .. " %d %d%%"):format(foldedLines, foldedLines / totalLines * 100)
+      local suffix = ("  ...   " .. icon .. " %d %d%%"):format(foldedLines, foldedLines / totalLines * 100)
       local sufWidth = vim.fn.strdisplaywidth(suffix)
       local targetWidth = width - sufWidth
       local curWidth = 0
@@ -81,7 +108,6 @@ return {
     opts["fold_virt_text_handler"] = handler
     require("ufo").setup(opts)
     -- Customizing fold text barline
-    vim.cmd([[hi! Folded guibg=#2f2f2f]])
     maps.n["zR"] = { ufo.openAllFolds, { desc = get_icon("ui", "FoldsOpen", 2) .. "open all folds" } }
     maps.n["zM"] = { ufo.closeAllFolds, { desc = get_icon("ui", "FoldsClose", 2) .. "close all folds" } }
     maps.n["zr"] = { ufo.openFoldsExceptKinds, { desc = "folds all exvept kinds" } }

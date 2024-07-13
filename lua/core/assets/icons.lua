@@ -82,7 +82,7 @@ return {
     GitDelete = "",
     GitIgnored = "◌",
     GitRenamed = "➜",
-    GitSign = "▎",
+    GitSign = "┃",
     GitStaged = "✓",
     GitUnstaged = "✗",
     GitUntracked = "★",

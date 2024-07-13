@@ -95,8 +95,17 @@ function M.getLsp()
   )
 end
 
+local function getHLColor()
+  local mode = vim.api.nvim_get_mode().mode
+  if mode == "n" or "t" then
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+  else
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
+  end
+end
+
 function M.currentDir()
-  local hl = vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+  local hl = getHLColor()
   vim.api.nvim_set_hl(0, "DirectoryPath", { fg = hl.fg, bg = hl.bg })
   local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
   local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
@@ -105,12 +114,11 @@ function M.currentDir()
   local trail = cwd:sub(-1) == "/" and "" or "/"
   vim.api.nvim_set_hl(0, "StatusIcon", { fg = "#51a0cf", bg = hl.bg })
   return string.format("%%#StatusIcon#%s %%#DirectoryPath#%s%%#DirectoryPath#%s", icon, cwd, trail)
-  --return (icon .. cwd .. trail):format(hl.fg, hl.bg)
 end
 
 function M.spellcheck()
   local icon = " "
-  local hl_group = vim.api.nvim_get_hl(0, { name = "lualine_c_normal", create = false })
+  local hl_group = getHLColor()
   vim.api.nvim_set_hl(0, "SpellIconDef", { fg = hl_group.fg, bg = hl_group.bg })
   if not vim.wo.spell then
     vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#FF0000", bg = hl_group.bg })
@@ -241,7 +249,6 @@ local function get_clients()
     linters = {},
     others = {},
   }
-
   local clients = vim.lsp.get_clients { bufnr = 0 }
   if not vim.tbl_isempty(clients) then
     for _, client in pairs(clients) do
@@ -276,7 +283,7 @@ function M.lspSection()
   local retTable = {}
   local separator = ", "
   local clients = get_clients()
-  local hl_group = vim.api.nvim_get_hl(0, { name = "lualine_c_normal", create = false })
+  local hl_group = getHLColor()
   local bg_color = string.format("#%06x", hl_group.bg)
   vim.api.nvim_set_hl(0, "CustomLine", { fg = hl_group.fg, bg = bg_color })
   if vim.g.toggleFormating then

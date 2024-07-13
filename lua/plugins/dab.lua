@@ -25,21 +25,27 @@ return {
     --     },
     --   },
     -- }
-    --    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000" })
+    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000", bg = "#3c3836" })
+    vim.api.nvim_set_hl(0, "DapBreakpointHit", { fg = "#00FF00", bg = "#3c3836" })
     vim.fn.sign_define(
       "DapBreakpoint",
-      { text = get_icon("lsp", "LSPLoading3", 0), texthl = "DapBreakpoint", linehl = "", numhl = "2" }
+      { text = get_icon("lsp", "LSPLoading3", 0), texthl = "DapBreakpoint", linehl = "", numhl = "1" }
     )
     vim.fn.sign_define(
-      "DapBreakpointCondition",
-      { text = "⚠️", texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
+      "DapBreakpointHit",
+      { text = get_icon("lsp", "LSPLoading3", 0), texthl = "blue", linehl = "", numhl = "1" }
     )
-    vim.fn.sign_define(
-      "DapBreakpointRejected",
-      { text = "❌", texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
-    )
-    vim.fn.sign_define("DapLogPoint", { text = "🔍", texthl = "DapLogPoint", linehl = "", numhl = "" })
-    vim.fn.sign_define("DapStopped", { text = "➡️", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
+
+    -- vim.fn.sign_define(
+    --   "DapBreakpointCondition",
+    --   { text = "⚠️", texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
+    -- )
+    -- vim.fn.sign_define(
+    --   "DapBreakpointRejected",
+    --   { text = "❌", texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
+    -- )
+    -- vim.fn.sign_define("DapLogPoint", { text = "🔍", texthl = "DapLogPoint", linehl = "", numhl = "" })
+    -- vim.fn.sign_define("DapStopped", { text = "➡️", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
     local dapui = require "dapui"
     dapui.setup()
     dap.listeners.before.attach.dapui_config = function() dapui.open() end

@@ -2,9 +2,7 @@ return {
   "ray-x/lsp_signature.nvim",
   event = "BufEnter",
   opts = {},
-  config = function(_, opts)
-    require("lsp_signature").setup(opts)
-  end,
+  config = function(_, opts) require("lsp_signature").setup(opts) end,
   conf = {
     bind = true,
     handler_opts = {

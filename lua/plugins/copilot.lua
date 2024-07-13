@@ -4,7 +4,7 @@ return {
   event = "BufEnter",
   opts = function(_, opts)
     vim.notify("copilot.lua loaded", vim.log.levels.INFO, { title = "Plugins" })
-    local cmp, copilot = require("cmp"), require("copilot.suggestion")
+    local cmp, copilot = require "cmp", require "copilot.suggestion"
     opts.suggestion = { auto_trigger = true, debounce = 150 }
 
     vim.api.nvim_set_keymap("i", "<S-Tab>", "", {
@@ -48,15 +48,11 @@ return {
       desc = "Prev Copilot suggestion",
     })
     vim.api.nvim_set_keymap("i", "<C-t>", "", {
-      callback = function()
-        copilot.toggle()
-      end,
+      callback = function() copilot.toggle() end,
       desc = "Toggle Copilot",
     })
     vim.api.nvim_set_keymap("i", "<C-d>", "", {
-      callback = function()
-        copilot.dismiss()
-      end,
+      callback = function() copilot.dismiss() end,
       desc = "Dismiss Copilot",
     })
     return opts

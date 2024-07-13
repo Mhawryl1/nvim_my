@@ -34,15 +34,18 @@ map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
 
+---ynaki without newline character
+map.nvim_set_keymap("n", "<C-y>", "^yg_", opts)
+
 ------------====Grepper keymapping====------------
 vim.keymap.set({ "n", "s" }, "<leader>gw", function()
-  local word = vim.fn.expand("<cword>")
+  local word = vim.fn.expand "<cword>"
   vim.cmd("grep! " .. word)
 end, { silent = true, desc = "Grep word under cursor" })
 
 vim.keymap.set({ "v" }, "<leader>gw", function()
-  vim.cmd('noau normal! "vy"')
-  local selection = vim.fn.getreg("v")
+  vim.cmd 'noau normal! "vy"'
+  local selection = vim.fn.getreg "v"
   selection = require("core.utils").escape_pattern(selection)
   selection = '"' .. selection .. '"'
   local result = vim.fn.system("rg -U --vimgrep --no-heading --smart-case " .. selection)
@@ -61,7 +64,7 @@ vim.keymap.set({ "v" }, "<leader>gw", function()
   end
 
   vim.fn.setqflist(qflist)
-  vim.cmd("copen")
+  vim.cmd "copen"
 end, { silent = true, desc = "Grep selection cursor" })
 
 ---open close hover window
@@ -72,7 +75,7 @@ vim.keymap.set({ "n", "s" }, "<S-k>", function()
     if win_id ~= base_win_id then
       local win_cfg = vim.api.nvim_win_get_config(win_id)
       if win_cfg.relative == "win" and win_cfg.win == base_win_id then
-        require("noice.lsp.docs").hide(require("noice.lsp.docs").get("hover"))
+        require("noice.lsp.docs").hide(require("noice.lsp.docs").get "hover")
         return
       end
     end
@@ -82,25 +85,17 @@ end, { remap = false, silent = true, desc = "Lsp hover" })
 
 -----====lsp keymapping====-----
 vim.keymap.set({ "i", "s" }, "<C-j>", function()
-  if not require("noice.lsp").scroll(4) then
-    return "<c-j>"
-  end
+  if not require("noice.lsp").scroll(4) then return "<c-j>" end
 end, { silent = true, expr = true })
 
 vim.keymap.set({ "i", "s" }, "<C-k>", function()
-  if not require("noice.lsp").scroll(-4) then
-    return "<c-k>"
-  end
+  if not require("noice.lsp").scroll(-4) then return "<c-k>" end
 end, { silent = true, expr = true })
 
 vim.keymap.set({ "n" }, "<C-j>", function()
-  if not require("noice.lsp").scroll(4) then
-    return "<cmd>TmuxNavigateDown<cr>"
-  end
+  if not require("noice.lsp").scroll(4) then return "<cmd>TmuxNavigateDown<cr>" end
 end, { silent = true, expr = true })
 
 vim.keymap.set({ "n" }, "<C-k>", function()
-  if not require("noice.lsp").scroll(-4) then
-    return "<cmd>TmuxNavigateUp<cr>"
-  end
+  if not require("noice.lsp").scroll(-4) then return "<cmd>TmuxNavigateUp<cr>" end
 end, { silent = true, expr = true })

@@ -16,7 +16,7 @@ vim.o.scrolloff = 5
 vim.wo.number = true
 vim.o.relativenumber = true
 
-vim.o.numberwidth = 2
+vim.o.numberwidth = 6
 ----
 vim.o.wrap = false
 -- Disable mouse mode

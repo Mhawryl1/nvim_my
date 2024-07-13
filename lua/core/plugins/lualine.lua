@@ -6,9 +6,9 @@ return {
     "nvim-tree/nvim-web-devicons",
   },
   config = function()
-    local lualine = require("lualine")
-    local utils = require("core.utils")
-    local navic = require("nvim-navic")
+    local lualine = require "lualine"
+    local utils = require "core.utils"
+    local navic = require "nvim-navic"
 
     local config = {
       options = {
@@ -54,7 +54,7 @@ return {
         lualine_a = {},
         lualine_b = {},
         lualine_c = { "filename" },
-        lualine_x = { "location" },
+        lualine_x = {},
         lualine_y = {},
         lualine_z = {},
       },
@@ -65,14 +65,12 @@ return {
             function()
               return (navic.get_location() ~= nil and #navic.get_location() > 0) and navic.get_location() or " "
             end,
-            cond = function()
-              return navic.is_available()
-            end,
+            cond = function() return navic.is_available() end,
           },
         },
-        lualine_x = {
-          { require("auto-session.lib").current_session_name, color = { fg = "#000000", bg = "#b8bb26" } },
-        },
+        -- lualine_x = {
+        --   { require("auto-session.lib").current_session_name, color = { fg = "#000000", bg = "#b8bb26" } },
+        -- },
       },
       inactive_winbar = {},
       extensions = { "quickfix", "neo-tree" },

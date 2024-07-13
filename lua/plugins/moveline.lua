@@ -4,7 +4,5 @@ return {
     --- Config
   },
 
-  config = function()
-    require("move").setup()
-  end,
+  config = function() require("move").setup() end,
 }

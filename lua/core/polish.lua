@@ -1,10 +1,10 @@
-vim.cmd([[
+vim.cmd [[
 highlight! link CmpNormal NormalFloat
 highlight! link CmpBorder FloatBorder
 highlight! link CmpCursorLine Visual
 highlight! link CmpDocNormal NormalFloat
 highlight! link CmpDocBorder FloatBorder
-]])
+]]
 
 -- Define custom diagnostic virtual text prefixes
 local get_icon = require("core.assets").getIcon
@@ -16,7 +16,7 @@ local diagnostic_signs = {
 }
 
 -- Apply custom virtual text settings for diagnostics
-vim.diagnostic.config({
+vim.diagnostic.config {
   virtual_text = {
     prefix = function(diagnostic)
       local type = diagnostic.severity
@@ -34,9 +34,9 @@ vim.diagnostic.config({
     spacing = 4, -- Add some spacing between the icon and the message
   },
   -- You can also customize other diagnostic settings here
-})
+}
 
-vim.diagnostic.config({
+vim.diagnostic.config {
   float = {
     border = "rounded",
     focusable = false,
@@ -45,10 +45,8 @@ vim.diagnostic.config({
     prefix = " ",
     style = "minimal",
   },
-})
-vim.api.nvim_create_user_command("RenameFile", function(args)
-  require("core.utils").rename_file(args)
-end, {
+}
+vim.api.nvim_create_user_command("RenameFile", function(args) require("core.utils").rename_file(args) end, {
   nargs = 1,
   desc = { "Rename the current file to <new-name>" },
 })

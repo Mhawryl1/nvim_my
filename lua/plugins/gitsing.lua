@@ -5,22 +5,13 @@ return {
     local getIcon = require("core.assets").getIcon
     require("gitsigns").setup {
       signs = {
-        add = { text = "┃" },
-        change = { text = "┃" },
-        delete = { text = "_" },
-        topdelete = { text = "‾" },
-        changedelete = { text = "~" },
-        untracked = { text = "┆" },
+        add = { text = getIcon("git", "GitSign") },
+        change = { text = getIcon("git", "GitSign") },
+        delete = { text = getIcon("git", "GitSign") },
+        topdelete = { text = getIcon("git", "GitSign") },
+        changedelete = { text = getIcon("git", "GitSign") },
+        untracked = { text = getIcon("git", "GitSign") },
       },
-      signs_staged = {
-        add = { text = "┃" },
-        change = { text = "┃" },
-        delete = { text = "_" },
-        topdelete = { text = "‾" },
-        changedelete = { text = "~" },
-        untracked = { text = "┆" },
-      },
-
       signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
       numhl = false,     -- Toggle with `:Gitsigns toggle_numhl`
       linehl = false,    -- Toggle with `:Gitsigns toggle_linehl`
@@ -28,6 +19,7 @@ return {
       watch_gitdir = {
         follow_files = true,
       },
+
       auto_attach = true,
       attach_to_untracked = false,
       current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
@@ -99,73 +91,6 @@ return {
           function() gitsigns.diffthis() end,
           { desc = "View Git diff" },
         }
-
-        -- maps.n["]g"] = {
-        -- 	function()
-        -- 		require("gitsigns").next_hunk()
-        -- 	end,
-        -- 	desc = "Next Git hunk",
-        -- }
-        -- maps.n["[g"] = {
-        -- 	function()
-        -- 		require("gitsigns").prev_hunk()
-        -- 	end,
-        -- 	desc = "Previous Git hunk",
-        -- }
-        -- maps.n["<Leader>gl"] = {
-        -- 	function()
-        -- 		require("gitsigns").blame_line()
-        -- 	end,
-        -- 	desc = "View Git blame",
-        -- }
-        -- maps.n["<Leader>gL"] = {
-        -- 	function()
-        -- 		require("gitsigns").blame_line({ full = true })
-        -- 	end,
-        -- 	desc = "View full Git blame",
-        -- }
-        -- maps.n["<Leader>gp"] = {
-        -- 	function()
-        -- 		require("gitsigns").preview_hunk_inline()
-        -- 	end,
-        -- 	desc = "Preview Git hunk",
-        -- }
-        -- maps.n["<Leader>gh"] = {
-        -- 	function()
-        -- 		require("gitsigns").reset_hunk()
-        -- 	end,
-        -- 	desc = "Reset Git hunk",
-        -- }
-        -- maps.n["<Leader>gr"] = {
-        -- 	function()
-        -- 		require("gitsigns").reset_buffer()
-        -- 	end,
-        -- 	desc = "Reset Git buffer",
-        -- }
-        -- maps.n["<Leader>gs"] = {
-        -- 	function()
-        -- 		require("gitsigns").stage_hunk()
-        -- 	end,
-        -- 	desc = "Stage Git hunk",
-        -- }
-        -- maps.n["<Leader>gS"] = {
-        -- 	function()
-        -- 		require("gitsigns").stage_buffer()
-        -- 	end,
-        -- 	desc = "Stage Git buffer",
-        -- }
-        -- maps.n["<Leader>gu"] = {
-        -- 	function()
-        -- 		require("gitsigns").undo_stage_hunk()
-        -- 	end,
-        -- 	desc = "Unstage Git hunk",
-        -- }
-        -- maps.n["<Leader>gd"] = {
-        -- 	function()
-        -- 		require("gitsigns").diffthis()
-        -- 	end,
-        -- 	desc = "View Git diff",
-        -- }
       end,
     }
   end,
