@@ -25,6 +25,7 @@ return {
       "marksman",
       "clangd",
       "biome",
+      "neocmake",
     },
     automatic_installation = true,
   },
@@ -34,13 +35,10 @@ return {
         settings = {
           Lua = {
             runtime = {
-              -- Tell the language server which version of Lua you're using
-              -- (most likely LuaJIT in the case of Neovim)
               version = "LuaJIT",
               path = vim.split(package.path, ";"),
             },
             diagnostics = {
-              -- Get the language server to recognize the `vim` global
               globals = {
                 "vim",
               },
@@ -58,7 +56,7 @@ return {
         },
       }
     end,
-
+    neocmake = function() require("lspconfig").neocmake.setup {} end,
     clangd = function()
       require("lspconfig").clangd.setup {
         cmd = {

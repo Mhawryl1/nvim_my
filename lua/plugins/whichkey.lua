@@ -1,5 +1,4 @@
 return {
-
   "folke/which-key.nvim",
   event = "VeryLazy",
   init = function()
@@ -7,102 +6,104 @@ return {
     vim.o.timeoutlen = 300
   end,
   config = function()
-    local wk = require("which-key")
-    wk.setup({
+    local wk = require "which-key"
+    wk.setup {
+      preset = "classic",
       icons = {
         breadcrumb = "»",
         separator = "➜",
         group = " ",
+        rules = false,
       },
       disable = { filetypes = { "TelescopePrompt" } },
       mode = "n",
       prefix = "<leader>",
-    })
+    }
     local getIcon = require("core.assets").getIcon
     -----==== Key mapping ====--------
-    wk.register({
-      d = { name = getIcon("ui", "Debugger", 1) .. "Debbug" },
-      H = { "<cmd>Dashboard<cr>", getIcon("ui", "Home", 1) .. "Home" },
-      S = { name = "Session" },
-      c = {
-        function()
-          require("core.utils").close_buffer()
-        end,
-        "Close buffer",
+    wk.add {
+      { "<leader>d", name = getIcon("ui", "Debugger", 1) .. "Debbug" },
+      { "<leader>H", "<cmd>Dashboard<cr>",                                desc = getIcon("ui", "Home", 1) .. "Home" },
+      { "<leader>h", name = "harpoon" },
+      { "<leader>S", name = "Session" },
+      { "<leader>c", function() require("core.utils").close_buffer() end, desc = "Close buffer" },
+      {
+        "<leader>q",
+        "<cmd>q<cr>",
+        desc = getIcon("ui", "CloseWin", 1) .. "Close window",
       },
-      q = { "<cmd>q<cr>", "Close window" },
-      e = { "<cmd>Neotree toggle reveal<cr>", "copen/close explorer" },
-      o = {
+      { "<leader>e",  "<cmd>Neotree toggle reveal<cr>",                  desc = "copen/close explorer" },
+      {
+        "<leader>o",
         function()
           if vim.bo.filetype == "neo-tree" then
-            vim.cmd.wincmd("p")
+            vim.cmd.wincmd "p"
           else
-            vim.cmd.Neotree("focus")
+            vim.cmd.Neotree "focus"
           end
         end,
-        "Toggle Explorer Focus",
+        desc = "Toggle Explorer Focus",
       },
-      Q = { "<Cmd>confirm qall<CR>", "Quit Nvim" },
-      l = {
-        name = getIcon("ui", "Lsptools", 1) .. "Lsp Tools",
-        d = { "<cmd>lua vim.diagnostic.open_float()<cr>", "LSP Show Diagnostics" },
+      { "<leader>Q",  "<Cmd>confirm qall<CR>",                           desc = "Quit Nvim" },
+      { "<leader>l",  name = getIcon("ui", "Lsptools", 1) .. "Lsp Tools" },
+      { "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<cr>",        desc = "LSP Show Diagnostics" },
+      { "<leader>b",  name = getIcon("ui", "NewFile") .. "Buffers" },
+      { "<leader>bl", "<cmd>BufferLinePick<cr>",                         desc = "Pick buffer" },
+      { "<leader>bc", "<cmd>BufferLineCloseOthers<cr>",                  desc = "Close all other buffers" },
+      { "<leader>bd", "<cmd>bdelete<cr>",                                desc = "Delete buffer" },
+      {
+        "<leader>bT",
+        function() require("copilot.suggestion").toggle_auto_trigger() end,
+        desc = getIcon("ui", "Copilot", 2) .. "Toggle Copilot",
       },
-      b = {
-        name = getIcon("ui", "NewFile") .. "Buffers",
-        l = { "<cmd>BufferLinePick<cr>", "Pick buffer" },
-        c = { "<cmd>BufferLineCloseOthers<cr>", "Close all other buffers" },
-        d = { "<cmd>bdelete<cr>", "Delete buffer" },
-        T = {
-          function()
-            require("copilot.suggestion").toggle_auto_trigger()
-          end,
-          getIcon("ui", "Copilot", 2) .. "Toggle Copilot",
-        },
-        r = {
-          function()
-            local input = vim.fn.input("New name")
-            if #input > 0 then
-              vim.api.nvim_command("RenameFile " .. input)
-            end
-          end,
-          "Rename buffer",
-        },
-        s = { "<cmd>SaveAs<cr>", getIcon("ui", "SaveAs", 2) .. "Save as..." },
+      {
+        "<leader>r",
+        function()
+          local input = vim.fn.input "New name"
+          if #input > 0 then vim.api.nvim_command("RenameFile " .. input) end
+        end,
+        desc = "Rename buffer",
       },
-      f = {
-        name = " find",
-        z = { "<Cmd>Telescope zoxide list<CR>", getIcon("ui", "FolderOpen", 2) .. "Find directories" },
+      { "<leader>bs", "<cmd>SaveAs<cr>", desc = getIcon("ui", "SaveAs", 2) .. "Save as..." },
+      { "<leader>f", name = " find" },
+      { "<leader>fz", "<Cmd>Telescope zoxide list<CR>", desc = getIcon("ui", "FolderOpen", 2) .. "Find directories" },
+      { "<leader>u", name = " UI" },
+      { "<leader>us", ":set spell!<cr>", desc = "toggle spell checker" },
+      { "<leader>uf", "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", desc = "Toggle formating" },
+      { "<leader>u|", "<cmd>IBLToggle<cr>", desc = "Toggle intend scope" },
+      { "<leader>t", name = getIcon("ui", "Terminal", 1) .. "terminal" },
+      {
+        "<leader>th",
+        ":ToggleTerm size=10 direction=horizontal name=dock<cr>",
+        desc = getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
       },
-      u = {
-        name = " UI",
-        s = { ":set spell!<cr>", "toggle spell checker" },
-        ["|"] = { "<cmd>IBLToggle<cr>", "Toggle intend scope" },
-        f = { "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", "Toggle formating" },
+      {
+        "<leader>tf",
+        function()
+          vim.api.nvim_command ":ToggleTerm size=10 direction=float name=float<cr>"
+          vim.api.nvim_command ":doautocmd User LspAttach"
+        end,
+        desc = getIcon("ui", "Term", 2) .. "toggle float terminal",
       },
-      t = {
-        name = getIcon("ui", "Terminal", 1) .. "terminal",
-        h = {
-          ":ToggleTerm size=10 direction=horizontal name=dock<cr>",
-          getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
-        },
-        f = {
-          function()
-            vim.api.nvim_command(":ToggleTerm size=10 direction=float name=float<cr>")
-            vim.api.nvim_command(":doautocmd User LspAttach")
-          end,
-          getIcon("ui", "Term", 2) .. "toggle float terminal",
-        },
-        t = { "<cmd>lua _htop_toggle()<cr>", getIcon("ui", "Htop", 2) .. "htop terminal" },
-        n = { "<cmd>lua _node_toggle()<cr>", getIcon("ui", "Node", 2) .. "node terminal" },
-        p = { "<cmd>lua _python_toggle()<cr>", getIcon("ui", "Python", 2) .. "python terminal" },
+      {
+        "<leader>tt",
+        "<cmd>lua _htop_toggle()<cr>",
+        desc = getIcon("ui", "Htop", 2) .. "htop terminal",
       },
-      g = {
-        name = getIcon("ui", "Git", 1) .. "git",
-        g = { "<cmd>lua _lazygit_toggle()<cr>", "LazyGit" },
+      {
+        "<leader>tn",
+        "<cmd>lua _node_toggle()<cr>",
+        desc = getIcon("ui", "Node", 2) .. "node terminal",
       },
-      x = {
-        name = getIcon("diagnostics", "Warning") .. "Truble",
+      {
+        "<leader>tp",
+        "<cmd>lua _python_toggle()<cr>",
+        desc = getIcon("ui", "Python", 2) .. "python terminal",
       },
-    }, { prefix = "<leader>" })
+
+      { "<leader>g",  name = getIcon("ui", "Git", 1) .. "git" },
+      { "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>",                    desc = "LazyGit" },
+      { "<leader>x",  name = getIcon("diagnostics", "Warning") .. "Truble" },
+    }
   end,
 }

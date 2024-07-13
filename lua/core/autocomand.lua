@@ -1,9 +1,7 @@
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = "*",
   callback = function()
-    if vim.g.toggleFormating then
-      vim.lsp.buf.format()
-    end
+    if vim.g.toggleFormating then vim.lsp.buf.format() end
   end,
 })
 
@@ -13,18 +11,14 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   callback = function()
     QfMakeConv()
     local qflist = vim.fn.getqflist()
-    if #qflist == 0 then
-      return
-    end
-    vim.api.nvim_command("copen")
+    if #qflist == 0 then return end
+    vim.api.nvim_command "copen"
   end,
 })
 vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach" }, {
   callback = function()
     local config = require("lualine").get_config()
-    config.sections.lualine_x[1] = function()
-      return require("core.utils").lspSection()
-    end
+    config.sections.lualine_x[1] = function() return require("core.utils").lspSection() end
     require("lualine").setup(config)
   end,
 })

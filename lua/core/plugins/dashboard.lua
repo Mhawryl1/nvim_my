@@ -2,7 +2,7 @@ return {
   "nvimdev/dashboard-nvim",
   event = "VimEnter",
   config = function()
-    require("dashboard").setup({
+    require("dashboard").setup {
       theme = "hyper", --  doom or hyper
       config = {
         header = {
@@ -50,7 +50,7 @@ return {
           },
         },
       },
-    })
+    }
   end,
   dependencies = { { "nvim-tree/nvim-web-devicons" } },
 }

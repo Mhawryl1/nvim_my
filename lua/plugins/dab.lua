@@ -25,7 +25,7 @@ return {
     --     },
     --   },
     -- }
-    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000" })
+    --    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000" })
     vim.fn.sign_define(
       "DapBreakpoint",
       { text = get_icon("lsp", "LSPLoading3", 0), texthl = "DapBreakpoint", linehl = "", numhl = "2" }

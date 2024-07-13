@@ -386,6 +386,7 @@ local function custom_input(opts, on_confirm)
 end
 
 local function save_as()
+  local current_file = vim.fn.expand "%:p"
   local content = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   custom_input({
     prompt = string.format("%s", "    "),
@@ -397,27 +398,24 @@ local function save_as()
     print("Input: " .. input)
     local new_file = vim.fs.basename(input)
     local directory = vim.fs.dirname(input)
+    vim.notify("Curernt file" .. current_file, vim.log.levels.INFO)
+    vim.notify("Direcotry: " .. directory, vim.log.levels.INFO)
+    vim.notify("File name : " .. new_file, vim.log.levels.INFO)
     if vim.fn.isdirectory(directory) == 0 then vim.fn.mkdir(directory, "p") end
 
-    if vim.fn.filereadable(input) == 1 then
-      local confirm = vim.fn.confirm("File already exists. Overwrite?", "&Yes\n&No", 1, "Question")
-      if confirm == 1 then
-        vim.fn.delete(input)
-      else
-        return
-      end
-    end
-
-    local err, file = pcall(io.open, input, "w")
+    local file = io.open(input, "w")
     if file then
       for _, line in ipairs(content) do
         file:write(line .. "\n")
       end
       file:close()
-      vim.notify("File saved as: " .. new_file, vim.log.levels.INFO, { title = "Save as" })
+      vim.cmd("e " .. new_file)
+      vim.cmd "set nomodified"
+      print("File saved as: " .. new_file)
     else
-      vim.notify("Failed to save file: " .. new_file .. " Error: " .. err, vim.log.levels.ERROR, { title = "Save as" })
+      print("Failed to save file: " .. new_file)
     end
+    -- end)
   end)
 end
 

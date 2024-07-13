@@ -11,7 +11,7 @@ vim.o.shiftwidth = 2
 vim.o.smartindent = true
 
 -- keep cursor n line above/below view
-vim.o.scrolloff = 999
+vim.o.scrolloff = 5
 -- Make line numbers default
 vim.wo.number = true
 vim.o.relativenumber = true

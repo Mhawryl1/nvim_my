@@ -13,6 +13,7 @@ return {
     ChevronRight = ">",
     Circle = " ",
     Close = " ",
+    CloseWin = "",
     Code = " ",
     Config = "",
     Comment = " ",

@@ -1,6 +1,3 @@
-if true then
-  return {}
-end
 return {
   {
     "folke/lazydev.nvim",
@@ -13,7 +10,7 @@ return {
       },
       defaults = {
         runtime = vim.env.VIMRUNTIME --[[@as string]],
-        library = {}, ---@type lazydev.Library.spec[]
+        library = { plugins = { "nvim-dap-ui" }, types = true },
         integrations = {
           -- Fixes lspconfig's workspace management for LuaLS
           -- Only create a new workspace if the buffer is not part
@@ -27,14 +24,12 @@ return {
           coq = false,
         },
         ---@type boolean|(fun(root:string):boolean?)
-        enabled = function(root_dir)
-          return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
-        end,
+        enabled = function(root_dir) return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled end,
       },
     },
   },
   { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
-  { -- optional completion source for require statements and module annotations
+  {                                        -- optional completion source for require statements and module annotations
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
       opts.sources = opts.sources or {}
@@ -44,5 +39,5 @@ return {
       })
     end,
   },
-  -- { "folke/neodev.nvim", enabled = false }, -- make sure to uninstall or disable neodev.nvim
+  { "folke/neodev.nvim",    enabled = false }, -- make sure to uninstall or disable neodev.nvim
 }
