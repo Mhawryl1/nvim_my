@@ -97,10 +97,16 @@ end
 
 local function getHLColor()
   local mode = vim.api.nvim_get_mode().mode
-  if mode == "n" or "t" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
-  else
+  if mode == "v" then
     return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
+  elseif mode == "c" then
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_command" })
+  elseif mode == "i" then
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_insert" })
+  elseif mode == "R" then
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_replace" })
+  else
+    return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
   end
 end
 
@@ -336,7 +342,6 @@ end
 function M.escape_pattern(text)
   local result = text:gsub("(\\n)(.)", "\\\\\\n%2")
   result = result:gsub("([{}\"()'.*+%[%]])", "\\%1")
-  print(result)
   return result
 end
 

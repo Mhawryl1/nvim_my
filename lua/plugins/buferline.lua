@@ -44,14 +44,14 @@ return {
         max_name_length = 50,
         numbers = function(opts) return string.format("%s", opts.raise(opts.ordinal)) end,
         modified_icon = "",
-        offsets = {
-          {
-            filetype = "neo-tree",
-            text = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") end,
-            text_align = "center",
-            highlights = "Directory",
-          },
-        },
+        -- offsets = {
+        --   {
+        --     filetype = "neo-tree",
+        --     text = function() return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") end,
+        --     text_align = "center",
+        --     highlights = "Directory",
+        --   },
+        -- },
       },
     }
   end,

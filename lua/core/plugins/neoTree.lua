@@ -35,9 +35,14 @@ return {
     local get_icon = require("core.assets").getIcon
     require("neo-tree").setup {
       close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+      add_blank_line_at_top = false,
       popup_border_style = "rounded",
       enable_git_status = true,
+      git_status_async = true,
       enable_diagnostics = true,
+      enable_modified_markers = true,
+      enable_opened_markers = true,
+      enable_refresh_on_write = true,
       open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
       sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
       sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree
@@ -48,6 +53,31 @@ return {
       --           return a.type > b.type
       --       end
       --   end , -- this sorts files and directories descendantly
+      source_selector = {
+        winbar = true,                         -- toggle to show selector on winbar
+        statusline = false,                    -- toggle to show selector on statusline
+        show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
+        -- of the top visible node when scrolled down.
+        sources = {
+          { source = "filesystem" },
+          { source = "buffers" },
+          { source = "git_status" },
+        },
+        content_layout = "start", -- only with `tabs_layout` = "equal", "focus"
+        tabs_layout = "equal", -- start, end, center, equal, focus
+        truncation_character = "…", -- character to use when truncating the tab label
+        tabs_min_width = nil, -- nil | int: if int padding is added based on `content_layout`
+        tabs_max_width = nil, -- this will truncate text even if `text_trunc_to_fit = false`
+        padding = 0, -- can be int or table
+        separator = { left = "▏", right = "▕" },
+        separator_active = nil, -- set separators around the active tab. nil falls back to `source_selector.separator`
+        show_separator_on_edge = false,
+        highlight_tab = "NeoTreeTabInactive",
+        highlight_tab_active = "NeoTreeTabActive",
+        highlight_background = "NeoTreeTabInactive",
+        highlight_separator = "NeoTreeTabSeparatorInactive",
+        highlight_separator_active = "NeoTreeTabSeparatorActive",
+      },
       default_component_configs = {
         container = {
           enable_character_fade = true,
@@ -69,7 +99,7 @@ return {
         icon = {
           folder_closed = "",
           folder_open = "",
-          folder_empty = "󰜌",
+          folder_empty = get_icon("ui", "FolderEmpty"),
           -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
           -- then these will never be used.
           default = "*",

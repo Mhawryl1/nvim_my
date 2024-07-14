@@ -18,7 +18,7 @@ return {
         section_separators = { left = " ", right = " " },
         disabled_filetypes = {
           statusline = {},
-          winbar = {},
+          winbar = { "neo-tree" },
         },
         ignore_focus = {},
         always_divide_middle = true,
@@ -68,9 +68,9 @@ return {
             cond = function() return navic.is_available() end,
           },
         },
-        -- lualine_x = {
-        --   { require("auto-session.lib").current_session_name, color = { fg = "#000000", bg = "#b8bb26" } },
-        -- },
+        lualine_x = {
+          { require("auto-session.lib").current_session_name, color = { fg = "#000000", bg = "#b8bb26" } },
+        },
       },
       inactive_winbar = {},
       extensions = { "quickfix", "neo-tree" },

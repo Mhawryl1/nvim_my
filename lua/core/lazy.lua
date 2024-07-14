@@ -29,6 +29,10 @@ require("lazy").setup {
     config = function() vim.cmd [[colorscheme gruvbox]] end,
   },
   {
+    "folke/zen-mode.nvim",
+    opts = {},
+  },
+  {
     "tpope/vim-surround",
     event = "VeryLazy",
   },
@@ -37,7 +41,7 @@ require("lazy").setup {
     lazy = true,
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
-      --{ "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
     },
     opts = {
       -- Your setup opts here
@@ -45,7 +49,7 @@ require("lazy").setup {
   },
   {
     "windwp/nvim-autopairs",
-    event = "InsertEnter",
+    event = "VeryLazy",
     config = true,
     -- use opts = {} for passing setup options
     -- this is equalent to setup({}) function

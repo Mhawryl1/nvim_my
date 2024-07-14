@@ -1,7 +1,7 @@
 return {
   "kevinhwang91/nvim-ufo",
   dependencies = { "kevinhwang91/promise-async", "luukvbaal/statuscol.nvim" },
-  event = "VeryLazy",
+  event = "VimEnter",
   opts = {
     -- INFO: Uncomment to use treeitter as fold provider, otherwise nvim lsp is used
     provider_selector = function(bufnr, filetype, buftype) return { "treesitter", "indent" } end,
@@ -21,7 +21,7 @@ return {
     vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
-    --- turn off foldcolumn for neotree to ovoid showing ugly numbers in neotree
+    -- turn off foldcolumn for neotree to ovoid showing ugly numbers in neotree
     vim.api.nvim_create_autocmd("BufWinEnter", {
       pattern = "*",
       callback = function()
@@ -39,7 +39,7 @@ return {
     local ufo = require "ufo"
     local get_icon = require("core.assets").getIcon
     require("statuscol").setup {
-      ft_ignore = { "neo-tree" },
+      ft_ignore = { "neo-tree", "dashboard" },
       relculright = true,
       foldfunc = "builtin",
       setopt = true,

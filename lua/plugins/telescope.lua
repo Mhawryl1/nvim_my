@@ -8,6 +8,7 @@ return {
     "folke/todo-comments.nvim",
     "debugloop/telescope-undo.nvim",
     "nvim-telescope/telescope-file-browser.nvim",
+    "AckslD/nvim-neoclip.lua",
   },
 
   config = function()
@@ -24,7 +25,43 @@ return {
     --     trouble.toggle("quickfix")
     --   end,
     -- })
-
+    --
+    require("neoclip").setup {
+      keys = {
+        telescope = {
+          i = {
+            select = "<cr>",
+            paste = "<c-p>",
+            paste_behind = "<c-b>",
+            replay = "<c-q>",                            -- replay a macro
+            delete = "<c-d>",                            -- delete an entry
+            edit = "<c-e>",                              -- edit an entry
+            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+            ["<C-j>"] = actions.move_selection_next,     -- move to next result
+            custom = {},
+          },
+          n = {
+            select = "<cr>",
+            paste = "p",
+            --- It is possible to map to more than one key.
+            -- paste = { 'p', '<c-p>' },
+            paste_behind = "P",
+            replay = "q",
+            delete = "d",
+            edit = "e",
+            ["k>"] = actions.move_selection_previous, -- move to prev result
+            ["j>"] = actions.move_selection_next,     -- move to next result
+            custom = {},
+          },
+        },
+        fzf = {
+          select = "default",
+          paste = "ctrl-p",
+          paste_behind = "ctrl-b",
+          custom = {},
+        },
+      },
+    }
     telescope.setup {
       defaults = {
         path_display = { "smart" },
@@ -35,7 +72,7 @@ return {
             ["<c-t>"] = open_with_trouble,
             --["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
           },
-          --n = { ["<C-t>"] = open_with_trouble },
+          n = { ["<C-t>"] = open_with_trouble },
         },
       },
       extensions = {
@@ -103,6 +140,10 @@ return {
     local builtin = require "telescope.builtin"
     local get_icon = require("core.assets").getIcon
 
+    maps.n["<leader>y"] = {
+      "<cmd>lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({}))<CR>",
+      { desc = "Yank history" },
+    }
     maps.n["gb"] =
     { function() require("telescope").extensions.file_browser.file_browser() end, { desc = "File Browser" } }
     maps.n["<leader>ut"] = { function() builtin.colorscheme { enable_preview = true } end, { desc = "Find themse" } }

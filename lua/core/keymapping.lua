@@ -35,8 +35,13 @@ map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
 
 ---ynaki without newline character
-map.nvim_set_keymap("n", "<C-y>", "^yg_", opts)
-
+map.nvim_set_keymap("n", "<M-c>", "^yg_", vim.tbl_extend("force", opts, { desc = "Yank without newline" }))
+map.nvim_set_keymap(
+  "n",
+  "<C-c>",
+  "yg_",
+  vim.tbl_extend("force", opts, { desc = "Yank from cur pos to end of the line without newline" })
+)
 ------------====Grepper keymapping====------------
 vim.keymap.set({ "n", "s" }, "<leader>gw", function()
   local word = vim.fn.expand "<cword>"

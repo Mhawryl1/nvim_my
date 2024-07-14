@@ -22,8 +22,17 @@ return {
     local getIcon = require("core.assets").getIcon
     -----==== Key mapping ====--------
     wk.add {
+      {
+        "<leader>z",
+        function() require("zen-mode").toggle { window = { width = 0.85 } } end,
+        desc = "Toggle Zen-mode",
+      },
       { "<leader>d", name = getIcon("ui", "Debugger", 1) .. "Debbug" },
-      { "<leader>H", "<cmd>Dashboard<cr>",                                desc = getIcon("ui", "Home", 1) .. "Home" },
+      {
+        "<leader>H",
+        "<cmd>Dashboard<cr>",
+        desc = getIcon("ui", "Home", 1) .. "Home",
+      },
       { "<leader>h", name = "harpoon" },
       { "<leader>S", name = "Session" },
       { "<leader>c", function() require("core.utils").close_buffer() end, desc = "Close buffer" },
@@ -33,24 +42,28 @@ return {
         desc = getIcon("ui", "CloseWin", 1) .. "Close window",
       },
       { "<leader>e",  "<cmd>Neotree toggle reveal<cr>",                  desc = "copen/close explorer" },
-      {
-        "<leader>o",
-        function()
-          if vim.bo.filetype == "neo-tree" then
-            vim.cmd.wincmd "p"
-          else
-            vim.cmd.Neotree "focus"
-          end
-        end,
-        desc = "Toggle Explorer Focus",
-      },
+      -- {
+      --   "<leader>o",
+      --   function()
+      --     if vim.bo.filetype == "neo-tree" then
+      --       vim.cmd.wincmd "p"
+      --     else
+      --       vim.cmd.Neotree "focus"
+      --     end
+      --   end,
+      --   desc = "Toggle Explorer Focus",
+      -- },
       { "<leader>Q",  "<Cmd>confirm qall<CR>",                           desc = "Quit Nvim" },
       { "<leader>l",  name = getIcon("ui", "Lsptools", 1) .. "Lsp Tools" },
       { "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<cr>",        desc = "LSP Show Diagnostics" },
       { "<leader>b",  name = getIcon("ui", "NewFile") .. "Buffers" },
       { "<leader>bl", "<cmd>BufferLinePick<cr>",                         desc = "Pick buffer" },
       { "<leader>bc", "<cmd>BufferLineCloseOthers<cr>",                  desc = "Close all other buffers" },
-      { "<leader>bd", "<cmd>bdelete<cr>",                                desc = "Delete buffer" },
+      {
+        "<leader>bd",
+        "<cmd>bdelete<cr>",
+        desc = getIcon("ui", "DelBuff", 1) .. "Delete buffer",
+      },
       {
         "<leader>bT",
         function() require("copilot.suggestion").toggle_auto_trigger() end,
