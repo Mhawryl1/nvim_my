@@ -16,6 +16,35 @@ require("lazy").setup {
   { import = "plugins" },
   { "catppuccin/nvim",      as = "catppuccin" },
   {
+    "mg979/vim-visual-multi",
+    branch = "master",
+    event = "BufEnter",
+    init = function()
+      vim.cmd [[
+      let g:VM_maps = {}
+      let g:VM_maps['Find Under'] = ''
+      ]]
+      vim.keymap.set(
+        "n",
+        "<m-N>",
+        "<cmd>call vm#commands#find_under(0, v:count1)<cr>",
+        { noremap = false, desc = "[Visual-multi] find under cursor" }
+      )
+      vim.keymap.set(
+        { "n" },
+        "<m-K>",
+        ":call vm#commands#add_cursor_up(0, v:count1)<cr>",
+        { noremap = true, silent = true, desc = "[Visual-multi] add cursor above" }
+      )
+      vim.keymap.set(
+        { "n" },
+        "<m-J>",
+        ":call vm#commands#add_cursor_down(0, v:count1)<cr>",
+        { noremap = true, silent = true, desc = "[Visual-multi] add cursor below" }
+      )
+    end,
+  },
+  {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     opts = {
@@ -34,7 +63,7 @@ require("lazy").setup {
   },
   {
     "tpope/vim-surround",
-    event = "VeryLazy",
+    event = "BufEnter",
   },
   {
     "hedyhli/outline.nvim",

@@ -1,3 +1,4 @@
+local log = require "vim.lsp.log"
 local M = {}
 function M.get_buf_option(opt)
   local bufnr = vim.api.nvim_get_current_buf()
@@ -97,7 +98,7 @@ end
 
 local function getHLColor()
   local mode = vim.api.nvim_get_mode().mode
-  if mode == "v" then
+  if mode == "v" or mode == "V" then
     return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
   elseif mode == "c" then
     return vim.api.nvim_get_hl(0, { name = "lualine_c_command" })

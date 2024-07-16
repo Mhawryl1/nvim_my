@@ -36,10 +36,10 @@ return {
       { text = get_icon("lsp", "LSPLoading3", 0), texthl = "blue", linehl = "", numhl = "1" }
     )
 
-    -- vim.fn.sign_define(
-    --   "DapBreakpointCondition",
-    --   { text = "⚠️", texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
-    -- )
+    vim.fn.sign_define(
+      "DapBreakpointCondition",
+      { text = "⚠️", texthl = "DapBreakpointCondition", linehl = "", numhl = "" }
+    )
     -- vim.fn.sign_define(
     --   "DapBreakpointRejected",
     --   { text = "❌", texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
