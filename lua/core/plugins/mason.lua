@@ -31,9 +31,9 @@ return {
       },
       mason_tool_installer.setup {
         ensure_installed = {
-          "prettier", -- prettier formatter
-          "stylua",   -- lua formatter
-          "isort",    -- python formatter
+          "prettierd", -- prettier formatter
+          "stylua",    -- lua formatter
+          "isort",     -- python formatter
           "pylint",
           "eslint_d",
           "cmakelang",

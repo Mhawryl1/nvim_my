@@ -82,9 +82,21 @@ return {
       { "<leader>fz", "<Cmd>Telescope zoxide list<CR>", desc = getIcon("ui", "FolderOpen", 2) .. "Find directories" },
       { "<leader>u", name = " UI" },
       { "<leader>us", ":set spell!<cr>", desc = "toggle spell checker" },
-      { "<leader>uf", "<cmd>lua vim.g.toggleFormating= not vim.g.toggleFormating<cr>", desc = "Toggle formating" },
-      { "<leader>u|", "<cmd>IBLToggle<cr>", desc = "Toggle intend scope" },
-      { "<leader>t", name = getIcon("ui", "Terminal", 1) .. "terminal" },
+      {
+        "<leader>uf",
+        function()
+          vim.g.toggleFormating = not vim.g.toggleFormating
+          local hl_group = require("core.utils").getHLColor()
+          if vim.g.toggleFormating then
+            vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#c1d00a", bg = hl_group.bg })
+          else
+            vim.api.nvim_set_hl(0, "FormatStatus", { fg = "#ff0000", bg = hl_group.bg })
+          end
+        end,
+        desc = "Toggle formating",
+      },
+      { "<leader>u|", "<cmd>IBLToggle<cr>",                             desc = "Toggle intend scope" },
+      { "<leader>t",  name = getIcon("ui", "Terminal", 1) .. "terminal" },
       {
         "<leader>th",
         ":ToggleTerm size=10 direction=horizontal name=dock<cr>",

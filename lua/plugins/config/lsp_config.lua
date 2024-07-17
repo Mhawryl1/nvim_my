@@ -30,6 +30,7 @@ return {
     automatic_installation = true,
   },
   config = {
+    tsserver = function() require("lspconfig").tsserver.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     lua_ls = function()
       require("lspconfig").lua_ls.setup {

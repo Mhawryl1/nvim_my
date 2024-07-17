@@ -1,4 +1,3 @@
-local log = require "vim.lsp.log"
 local M = {}
 function M.get_buf_option(opt)
   local bufnr = vim.api.nvim_get_current_buf()
@@ -89,14 +88,14 @@ function M.getLsp()
   end
   return string.format(
     "%%#LspIcon#%s %%#MyStatusName#%s | %%#FormatStatus#%s  %%#MyStatusName#%s",
-    client.icon[1],
-    client.name,
+    client.icon[1] or "",
+    client.name or "",
     activeNullLsConf(),
     getLinter()
   )
 end
 
-local function getHLColor()
+function M.getHLColor()
   local mode = vim.api.nvim_get_mode().mode
   if mode == "v" or mode == "V" then
     return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
@@ -112,7 +111,7 @@ local function getHLColor()
 end
 
 function M.currentDir()
-  local hl = getHLColor()
+  local hl = M.getHLColor()
   vim.api.nvim_set_hl(0, "DirectoryPath", { fg = hl.fg, bg = hl.bg })
   local icon = (vim.fn.haslocaldir(0) == 1 and "l" or "g") .. " " .. " "
   local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p:h")
@@ -125,7 +124,7 @@ end
 
 function M.spellcheck()
   local icon = " "
-  local hl_group = getHLColor()
+  local hl_group = M.getHLColor()
   vim.api.nvim_set_hl(0, "SpellIconDef", { fg = hl_group.fg, bg = hl_group.bg })
   if not vim.wo.spell then
     vim.api.nvim_set_hl(0, "SpellIcon", { fg = "#FF0000", bg = hl_group.bg })
@@ -214,17 +213,17 @@ local function containsFt(ft, ft_list)
 end
 
 local null_ls = require "null-ls"
-function PrintNullLsSources(active_sources)
+local function getNullLsClients(active_sources)
   local sources = null_ls.get_sources()
   local ft = vim.bo.filetype
   for _, source in ipairs(sources) do
     if containsFt(ft, source.filetypes) then
       if source.methods["NULL_LS_RANGE_FORMATTING"] == true then
-        table.insert(active_sources.formatters, source.name)
+        active_sources.formatters = { source.name }
       elseif source.methods["NULL_LS_DIAGNOSTICS"] == true then
-        table.insert(active_sources.linters, source.name)
+        active_sources.linters = { source.name }
       else
-        table.insert(active_sources.others, source.name)
+        active_sources.others = { source.name }
       end
     end
   end
@@ -247,20 +246,20 @@ local function is_lsp_server(client)
   return false
 end
 
--- Function to get clients and categorize them
+-- get clients and categorize them
 local function get_clients()
-  local devicon = nil
   local categorized_clients = {
     lsp_servers = {},
     formatters = {},
     linters = {},
     others = {},
   }
+  local devicon = nil
   local clients = vim.lsp.get_clients { bufnr = 0 }
   if not vim.tbl_isempty(clients) then
     for _, client in pairs(clients) do
       if client.name == "null-ls" then
-        PrintNullLsSources(categorized_clients)
+        getNullLsClients(categorized_clients)
       elseif is_lsp_server(client) then
         local fts = client.config.filetypes or { vim.bo.filetype }
         local icons = getIcons()
@@ -270,13 +269,13 @@ local function get_clients()
             devicon = icons[ft]
             local icon = { icon = devicon.icon }
             icon.color = { fg = devicon.color }
-            table.insert(categorized_clients.lsp_servers, { client.name, icon })
+            categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name, icon } })
           else
-            table.insert(categorized_clients.lsp_servers, { client.name })
+            categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name } })
           end
         end
       else
-        table.insert(categorized_clients.others, client.name)
+        categorized_clients = vim.tbl_extend("force", categorized_clients, { others = { client.name } })
       end
     end
   end
@@ -285,12 +284,12 @@ end
 
 require "core.assets.colors"
 require "core.assets.colors"
-M.lspClient = ""
+
 function M.lspSection()
   local retTable = {}
   local separator = ", "
   local clients = get_clients()
-  local hl_group = getHLColor()
+  local hl_group = M.getHLColor()
   local bg_color = string.format("#%06x", hl_group.bg)
   vim.api.nvim_set_hl(0, "CustomLine", { fg = hl_group.fg, bg = bg_color })
   if vim.g.toggleFormating then
@@ -300,8 +299,8 @@ function M.lspSection()
   end
   for key, client in pairs(clients) do
     if key == "lsp_servers" and client[1] ~= nil then
-      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[1][2].color.fg, bg = bg_color })
-      table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[1][2].icon, client[1][1]))
+      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[2].color.fg or "", bg = bg_color })
+      table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[2].icon or "", client[1]))
     elseif key == "formatters" and client[1] ~= nil then
       table.insert(retTable, 2, string.format("%%#FormatStatus#%s", client[1]))
     elseif key == "linters" and client[1] ~= nil then
@@ -310,16 +309,12 @@ function M.lspSection()
       table.insert(retTable, 4, string.format("%%#CustomLine#%s", client[1]))
     end
   end
-  local str = ""
-  for i = 1, #retTable do
-    if retTable[i] ~= nil and i ~= #retTable then
-      str = str .. retTable[i] .. separator
-    elseif retTable[i] ~= nil then
-      str = str .. retTable[i]
-    end
+  local ret_str = ""
+
+  for _, value in pairs(retTable) do
+    ret_str = ret_str .. value .. separator
   end
-  M.lspClient = str
-  return str
+  return string.sub(ret_str, 1, #ret_str - 2)
 end
 
 function M.rename_file(opts)
@@ -407,7 +402,6 @@ local function save_as()
     completion = "file",
   }, function(input)
     if not input or input == "" then return end
-    print("Input: " .. input)
     local new_file = vim.fs.basename(input)
     local directory = vim.fs.dirname(input)
     if vim.fn.isdirectory(directory) == 0 then vim.fn.mkdir(directory, "p") end
