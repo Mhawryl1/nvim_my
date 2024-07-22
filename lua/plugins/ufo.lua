@@ -15,6 +15,7 @@ return {
       },
     },
   },
+
   init = function()
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = "1" -- '0' is not bad
@@ -59,14 +60,18 @@ return {
             namespace = { "gitsigns" },
             maxwidth = 1,
             colwidth = 1,
+            auto = false,
             wrap = true,
           },
         },
-        -- Diagnostics
         {
-          sign = { name = { "Diagnostic" }, maxwidth = 1, auto = true },
-          click = "v:lua.ScSa",
+          sign = { " ", name = { ".*" }, maxwidth = 1, auto = false },
         },
+        -- Diagnostics
+        -- {
+        --   sign = { name = { "diagnostic/signs" }, maxwidth = 1, auto = true },
+        --   click = "v:lua.ScSa",
+        -- },
         {
           sign = { name = { "DapBreakpoint" }, maxwidth = 1, auto = false, "  " },
           click = "v:lua.dap.toggle_breakpoint",

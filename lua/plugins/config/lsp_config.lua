@@ -7,6 +7,7 @@ return {
       },
     },
   },
+  ---- Language servers
   servers = {
     ensure_installed = {
       "tsserver",
@@ -26,9 +27,23 @@ return {
       "clangd",
       "biome",
       "neocmake",
+      "emmet_ls",
     },
     automatic_installation = true,
   },
+  ---- Tools (formatters, linters, etc.)
+  tools = {
+    ensure_installed = {
+      "prettierd",
+      "stylua",
+      "isort",
+      "pylint",
+      "eslint_d",
+      "cmakelang",
+    },
+    automatic_installation = true,
+  },
+  ---- LSP configuration
   config = {
     tsserver = function() require("lspconfig").tsserver.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,

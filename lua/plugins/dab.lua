@@ -1,6 +1,14 @@
 return {
   "mfussenegger/nvim-dap",
-  dependencies = { "rcarriga/nvim-dap-ui", "nvim-neotest/nvim-nio", "theHamsta/nvim-dap-virtual-text" },
+  dependencies = {
+    "rcarriga/nvim-dap-ui",
+    "nvim-neotest/nvim-nio",
+    "tomblind/local-lua-debugger-vscode",
+    {
+      "theHamsta/nvim-dap-virtual-text",
+      opts = { virt_text_pos = "eol", virt_text = true },
+    },
+  },
   config = function()
     local dap = require "dap"
     local get_icon = require("core.assets").getIcon
@@ -25,6 +33,38 @@ return {
     --     },
     --   },
     -- }
+    dap.adapters["local-lua"] = {
+      type = "executable",
+      command = "node",
+      args = {
+        "/home/darol/.local/share/nvim_my/lazy/local-lua-debugger-vscode/extension/debugAdapter.js",
+      },
+      enrich_config = function(config, on_config)
+        if not config["extensionPath"] then
+          local c = vim.deepcopy(config)
+          -- 💀 If this is missing or wrong you'll see
+          -- "module 'lldebugger' not found" errors in the dap-repl when trying to launch a debug session
+          c.extensionPath = "/home/darol/.local/share/nvim_my/lazy/local-lua-debugger-vscode/extension/"
+          on_config(c)
+        else
+          on_config(config)
+        end
+      end,
+    }
+    dap.configurations.lua = {
+      {
+        name = "Current file (local-lua-dbg, nlua)",
+        type = "local-lua",
+        request = "launch",
+        cwd = "${workspaceFolder}",
+        program = {
+          lua = "nlua.lua",
+          file = "${file}",
+        },
+        verbose = true,
+        args = {},
+      },
+    }
     vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000", bg = "#3c3836" })
     vim.api.nvim_set_hl(0, "DapBreakpointHit", { fg = "#00FF00", bg = "#3c3836" })
     vim.fn.sign_define(

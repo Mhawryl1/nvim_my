@@ -16,6 +16,12 @@ map.nvim_set_keymap("n", "<C-u>", "<C-u>zz", opts)
 map.nvim_set_keymap("n", "tt", ":tabnew %<cr>", opts)
 map.nvim_set_keymap("n", "<C-k>", "<C-w>k", opts)
 
+--Stay in indent mode
+map.nvim_set_keymap("v", "<", "<gv", opts)
+map.nvim_set_keymap("v", ">", ">gv", opts)
+--Don't replace text when pasting in visual mode
+map.nvim_set_keymap("v", "p", '"_dP', opts)
+
 vim.keymap.set("n", "<M-j>", ":MoveLine(1)<CR>", opts)
 vim.keymap.set("n", "<M-k>", ":MoveLine(-1)<CR>", opts)
 vim.keymap.set("v", "<M-j>", ":MoveBlock(1)<CR>", opts)
@@ -33,6 +39,8 @@ map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
+map.nvim_set_keymap("n", "<C-w>f", "<C-w>|", opts)
+map.nvim_set_keymap("n", "<C-w>t", "<C-w>_", opts)
 
 ---ynaki without newline character
 map.nvim_set_keymap("n", "<M-c>", "^yg_", vim.tbl_extend("force", opts, { desc = "Yank without newline" }))
@@ -43,17 +51,7 @@ map.nvim_set_keymap(
   vim.tbl_extend("force", opts, { desc = "Yank from cur pos to end of the line without newline" })
 )
 ------------====Grepper keymapping====------------
-vim.keymap.set({ "n", "s" }, "<leader>gw", function()
-  local word = vim.fn.expand "<cword>"
-  vim.cmd("grep! " .. word)
-end, { silent = true, desc = "Grep word under cursor" })
-
-vim.keymap.set({ "v" }, "<leader>gw", function()
-  vim.cmd 'noau normal! "vy"'
-  local selection = vim.fn.getreg "v"
-  selection = require("core.utils").escape_pattern(selection)
-  selection = '"' .. selection .. '"'
-  local result = vim.fn.system("rg -U --vimgrep --no-heading --smart-case " .. selection)
+local function sendToQuickFix(result)
   local lines = vim.split(result, "\n")
   local qflist = {}
   for _, line in ipairs(lines) do
@@ -67,9 +65,23 @@ vim.keymap.set({ "v" }, "<leader>gw", function()
       })
     end
   end
-
   vim.fn.setqflist(qflist)
   vim.cmd "copen"
+end
+
+vim.keymap.set({ "n", "s" }, "<leader>gw", function()
+  local word = vim.fn.expand "<cword>"
+  local result = vim.fn.system("rg --vimgrep --no-heading -s " .. '"' .. "\\b" .. word .. "\\b" .. '"')
+  sendToQuickFix(result)
+end, { silent = true, desc = "Grep word under cursor" })
+
+vim.keymap.set({ "v" }, "<leader>gw", function()
+  vim.cmd 'noau normal! "vy"'
+  local selection = vim.fn.getreg "v"
+  selection = selection:gsub('"', '\\"')
+  selection = '"' .. selection .. '"'
+  local result = vim.fn.system("rg -F -U --vimgrep --no-heading --smart-case " .. selection)
+  sendToQuickFix(result)
 end, { silent = true, desc = "Grep selection cursor" })
 
 ---open close hover window

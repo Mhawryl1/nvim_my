@@ -11,7 +11,7 @@ return {
 
       -- animation stuff / fine tuning
       animation = "from_cursor",  -- 'from_cursor' | 'to_cursor' | 'top_down' | 'bottom_up' | 'none'
-      debounce_time = 15,         -- how responsive to make to make the cursor movements (in ms, very low debounce time is kinda janky at the moment)
+      debounce_time = 20,         -- how responsive to make to make the cursor movements (in ms, very low debounce time is kinda janky at the moment)
       fps = 30,                   -- changes how many steps are used to transition from one color to another
       fade_duration = 300,        -- color fade speed (only used when lines_per_second is 0)
       length_acceleration = 0.02, -- increase animation speed depending on how long the context is

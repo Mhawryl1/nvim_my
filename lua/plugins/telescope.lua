@@ -127,12 +127,12 @@ return {
       },
     }
     require("telescope").load_extension "undo"
-
+    local getIcon = require("core.assets").getIcon
     vim.keymap.set(
       "n",
       "<leader>bt",
       "<cmd>Telescope undo<cr>",
-      { noremap = true, silent = true, desc = "Browse undo history" }
+      { noremap = true, silent = true, desc = getIcon("ui", "Telescope", 1) .. "Browse undo history" }
     )
 
     local is_available = require("core.utils").is_available
@@ -144,7 +144,7 @@ return {
       "<cmd>lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({}))<CR>",
       { desc = "Yank history" },
     }
-    maps.n["gb"] =
+    maps.n["<leader>gb"] =
     { function() require("telescope").extensions.file_browser.file_browser() end, { desc = "File Browser" } }
     maps.n["<leader>ut"] = { function() builtin.colorscheme { enable_preview = true } end, { desc = "Find themse" } }
 
@@ -172,7 +172,8 @@ return {
     }
 
     maps.n["<leader>fb"] = { function() builtin.buffers() end, { desc = "Find buffer" } }
-    maps.n["<leader>fc"] = { function() builtin.grep_string() end, { desc = "Find word under cursor" } }
+    maps.n["<leader>fc"] =
+    { function() builtin.grep_string() end, { desc = getIcon("ui", "Word", 1) .. "Find word under cursor" } }
     maps.n["<leader>fC"] = { function() builtin.commands() end, { desc = "Find commands" } }
     maps.n["<leader>ff"] = {
       function() builtin.find_files { hidden = true, no_ignore = true } end,
@@ -182,9 +183,9 @@ return {
     { function() builtin.find_files { hidden = true, no_ignore = true } end, { desc = "Find all files" } }
     maps.n["<leader>fr"] = { function() builtin.registers() end, { desc = "Find registers" } }
     maps.n["<leader>fk"] =
-    { function() builtin.keymaps() end, { desc = get_icon("ui", "keyboard", 1) .. "Find keymaps" } }
+    { function() builtin.keymaps() end, { desc = get_icon("ui", "Keyboard", 1) .. "Find keymaps" } }
     maps.n["<leader>fk"] =
-    { function() builtin.keymaps() end, { desc = get_icon("ui", "keyboard", 1) .. "Find keymaps" } }
+    { function() builtin.keymaps() end, { desc = get_icon("ui", "Keyboard", 1) .. "Find keymaps" } }
     maps.n["<leader>fm"] = { function() builtin.man_pages() end, { desc = get_icon("ui", "Note", 1) .. "Find man" } }
     maps.n["<leader>fn"] = {
       function() require("telescope").extensions.notify.notify() end,

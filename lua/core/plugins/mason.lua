@@ -19,27 +19,10 @@ return {
         },
       },
     }
-    mason_lspconfig.setup {
-      -- list of servers for mason to install
-      ensure_installed = {
-        "tsserver",
-        "html",
-        "cssls",
-        "lua_ls",
-        "emmet_ls",
-        "pyright",
-      },
-      mason_tool_installer.setup {
-        ensure_installed = {
-          "prettierd", -- prettier formatter
-          "stylua",    -- lua formatter
-          "isort",     -- python formatter
-          "pylint",
-          "eslint_d",
-          "cmakelang",
-        },
-      },
-    }
+    mason_lspconfig.setup(require("plugins.config.lsp_config").servers)
+    mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").config)
+    mason_tool_installer.setup(require("plugins.config.lsp_config").tools)
+
     mason_dap.setup {
       ensure_installed = {
         "node",

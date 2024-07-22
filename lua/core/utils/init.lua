@@ -282,9 +282,6 @@ local function get_clients()
   return categorized_clients
 end
 
-require "core.assets.colors"
-require "core.assets.colors"
-
 function M.lspSection()
   local retTable = {}
   local separator = ", "
@@ -333,12 +330,6 @@ function M.rename_file(opts)
   end
   vim.api.nvim_command(":bdelete " .. curr_file_name)
   vim.fn.system("rm " .. curr_file_name)
-end
-
-function M.escape_pattern(text)
-  local result = text:gsub("(\\n)(.)", "\\\\\\n%2")
-  result = result:gsub("([{}\"()'.*+%[%]])", "\\%1")
-  return result
 end
 
 local function custom_input(opts, on_confirm)

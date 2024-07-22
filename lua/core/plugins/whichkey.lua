@@ -25,7 +25,7 @@ return {
       {
         "<leader>z",
         function() require("zen-mode").toggle { window = { width = 0.85 } } end,
-        desc = "Toggle Zen-mode",
+        desc = getIcon("ui", "Zen", 1) .. "Toggle Zen-mode",
       },
       { "<leader>d", name = getIcon("ui", "Debugger", 1) .. "Debbug" },
       {
@@ -57,25 +57,34 @@ return {
       { "<leader>l",  name = getIcon("ui", "Lsptools", 1) .. "Lsp Tools" },
       { "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<cr>",        desc = "LSP Show Diagnostics" },
       { "<leader>b",  name = getIcon("ui", "NewFile") .. "Buffers" },
-      { "<leader>bl", "<cmd>BufferLinePick<cr>",                         desc = "Pick buffer" },
-      { "<leader>bc", "<cmd>BufferLineCloseOthers<cr>",                  desc = "Close all other buffers" },
+      {
+        "<leader>ba",
+        "<cmd>bufdo bd<cr>",
+        desc = getIcon("ui", "CloseAll", 1) .. "Close all buffer",
+      },
+      { "<leader>bl", "<cmd>BufferLinePick<cr>", desc = "Pick buffer" },
+      {
+        "<leader>bc",
+        "<cmd>BufferLineCloseOthers<cr>",
+        desc = getIcon("ui", "CloseAll", 1) .. "Close all other buffers",
+      },
       {
         "<leader>bd",
         "<cmd>bdelete<cr>",
-        desc = getIcon("ui", "DelBuff", 1) .. "Delete buffer",
+        desc = getIcon("ui", "DelBuff", 1) .. "Close buffer",
       },
       {
         "<leader>bT",
-        function() require("copilot.suggestion").toggle_auto_trigger() end,
+        "<cmd>Copilot disable<cr>",
         desc = getIcon("ui", "Copilot", 2) .. "Toggle Copilot",
       },
       {
-        "<leader>r",
+        "<leader>br",
         function()
-          local input = vim.fn.input "New name"
+          local input = vim.fn.input(getIcon("ui", "RenameFile", 1) .. "Rename file..")
           if #input > 0 then vim.api.nvim_command("RenameFile " .. input) end
         end,
-        desc = "Rename buffer",
+        desc = getIcon("ui", "RenameFile", 1) .. "Rename buffer",
       },
       { "<leader>bs", "<cmd>SaveAs<cr>", desc = getIcon("ui", "SaveAs", 2) .. "Save as..." },
       { "<leader>f", name = " find" },

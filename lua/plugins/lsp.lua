@@ -137,9 +137,9 @@ return {
       { desc = "Quickfix list" }
     )
     ----====mason setting ====----------
-    require("mason").setup {}
-    require("mason-lspconfig").setup(require("plugins.config.lsp_config").servers)
-    require("mason-lspconfig").setup_handlers(require("plugins.config.lsp_config").config)
+    -- require("mason").setup {}
+    -- require("mason-lspconfig").setup(require("plugins.config.lsp_config").servers)
+    -- require("mason-lspconfig").setup_handlers(require("plugins.config.lsp_config").config)
 
     local cmp_action = require("lsp-zero").cmp_action()
     local cmp = require "cmp"
@@ -168,12 +168,6 @@ return {
         },
       }),
     })
-    ----====DressingInput setting ====----------
-    -- cmp.setup.filetype("DressingInput", {
-    --   sources = cmp.config.sources({
-    --     { name = "omni" },
-    --   }),
-    -- })
 
     ----====autopairs setting ====----------
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
@@ -207,12 +201,18 @@ return {
         ["<Tab>"] = cmp_action.luasnip_supertab(),
         ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
       },
+
       formatting = {
-        format = lspkind.cmp_format {
-          mode = "symbol_text",
-          max_width = 50,
-          ellipsis_char = "...",
-        },
+        fields = { "kind", "abbr", "menu" },
+        expandable_indicator = true,
+        format = function(entry, vim_item)
+          local kind = lspkind.cmp_format { mode = "symbol_text", maxwidth = 50 } (entry, vim_item)
+          local strings = vim.split(kind.kind, "%s", { trimempty = true })
+          kind.kind = " " .. (strings[1] or "") .. " "
+          kind.menu = "    (" .. (strings[2] or "") .. ")"
+
+          return kind
+        end,
       },
       window = {
         completion = cmp.config.window.bordered {

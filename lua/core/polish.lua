@@ -1,11 +1,3 @@
-vim.cmd [[
-highlight! link CmpNormal NormalFloat
-highlight! link CmpBorder FloatBorder
-highlight! link CmpCursorLine Visual
-highlight! link CmpDocNormal NormalFloat
-highlight! link CmpDocBorder FloatBorder
-]]
-
 -- Define custom diagnostic virtual text prefixes
 local get_icon = require("core.assets").getIcon
 local diagnostic_signs = {

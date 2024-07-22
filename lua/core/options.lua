@@ -51,6 +51,9 @@ vim.opt.clipboard = "unnamedplus"
 --spell checker
 vim.o.spelllang = "en"
 
+vim.o.splitright = true
+vim.o.splitbelow = true
+
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menu,menuone,noselect"
 
