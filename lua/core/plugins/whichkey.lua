@@ -134,7 +134,16 @@ return {
         "<cmd>lua _python_toggle()<cr>",
         desc = getIcon("ui", "Python", 2) .. "python terminal",
       },
-
+      {
+        "<leader>tg",
+        "<cmd>lua _gdu_toggle()<cr>",
+        desc = getIcon("ui", "Tools", 2) .. "GDU toggle",
+      },
+      {
+        "<leader>tb",
+        "<cmd>lua _btm_toggle()<cr>",
+        desc = getIcon("ui", "Tools", 2) .. "BTM toggle",
+      },
       { "<leader>g",  name = getIcon("ui", "Git", 1) .. "git" },
       { "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>",                    desc = "LazyGit" },
       { "<leader>x",  name = getIcon("diagnostics", "Warning") .. "Truble" },

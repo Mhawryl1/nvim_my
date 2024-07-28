@@ -44,9 +44,12 @@ return {
     automatic_installation = true,
   },
   ---- LSP configuration
-  config = {
+  handlers = {
+    omnisharp = function() require("lspconfig").omnisharp.setup {} end,
+    fsautocomplete = function() require("lspconfig").fsautocomplete.setup {} end,
     tsserver = function() require("lspconfig").tsserver.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
+    neocmake = function() require("lspconfig").neocmake.setup {} end,
     lua_ls = function()
       require("lspconfig").lua_ls.setup {
         settings = {
@@ -73,7 +76,6 @@ return {
         },
       }
     end,
-    neocmake = function() require("lspconfig").neocmake.setup {} end,
     clangd = function()
       require("lspconfig").clangd.setup {
         cmd = {

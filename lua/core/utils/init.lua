@@ -263,13 +263,13 @@ local function get_clients()
       elseif is_lsp_server(client) then
         local fts = client.config.filetypes or { vim.bo.filetype }
         local icons = getIcons()
-        table.insert(fts, vim.fn.expand "%:e")
         for _, ft in pairs(fts) do
           if icons[ft] then
             devicon = icons[ft]
             local icon = { icon = devicon.icon }
             icon.color = { fg = devicon.color }
             categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name, icon } })
+            break
           else
             categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name } })
           end
@@ -296,8 +296,12 @@ function M.lspSection()
   end
   for key, client in pairs(clients) do
     if key == "lsp_servers" and client[1] ~= nil then
-      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[2].color.fg or "", bg = bg_color })
-      table.insert(retTable, 1, string.format("%%#LspIcon#%s  %s", client[2].icon or "", client[1]))
+      vim.api.nvim_set_hl(0, "LspIcon", { fg = client[2] ~= nil and client[2].color.fg or "", bg = bg_color })
+      table.insert(
+        retTable,
+        1,
+        string.format("%%#LspIcon#%s  %s", client[2] ~= nil and client[2].icon or "", client[1])
+      )
     elseif key == "formatters" and client[1] ~= nil then
       table.insert(retTable, 2, string.format("%%#FormatStatus#%s", client[1]))
     elseif key == "linters" and client[1] ~= nil then

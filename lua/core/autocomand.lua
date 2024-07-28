@@ -1,10 +1,11 @@
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function()
     if vim.g.toggleFormating then
       vim.cmd "wshada!"
       vim.lsp.buf.format()
       vim.cmd "rshada!"
+      vim.defer_fn(function() vim.api.nvim_command "silent! edit " end, 100) -- reload buffer (fixes issue with display sing marks in statusline)
     end
   end,
 })

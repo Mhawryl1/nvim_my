@@ -22,6 +22,20 @@ map.nvim_set_keymap("v", ">", ">gv", opts)
 --Don't replace text when pasting in visual mode
 map.nvim_set_keymap("v", "p", '"_dP', opts)
 
+-- Type a replacment term and press . to replace the next occurence or n to skip to the next occurence
+vim.keymap.set(
+  "n",
+  "s*",
+  "<cmd>let @/='\\<'.expand('<cword>').'\\>'<CR>cgn",
+  vim.tbl_extend("force", opts, { desc = "Change word under the cursor and press . to repeat for next occurence" })
+)
+vim.keymap.set(
+  "x",
+  "s*",
+  '"sy<esc>:let @/=@s<CR>cgn',
+  vim.tbl_extend("force", opts, { desc = "Change selection and press . to repeat for next occurence" })
+)
+
 vim.keymap.set("n", "<M-j>", ":MoveLine(1)<CR>", opts)
 vim.keymap.set("n", "<M-k>", ":MoveLine(-1)<CR>", opts)
 vim.keymap.set("v", "<M-j>", ":MoveBlock(1)<CR>", opts)

@@ -40,7 +40,7 @@ return {
     local ufo = require "ufo"
     local get_icon = require("core.assets").getIcon
     require("statuscol").setup {
-      ft_ignore = { "neo-tree", "dashboard" },
+      ft_ignore = { "neo-tree", "dashboard", "toggleterm", "Outline" },
       relculright = true,
       foldfunc = "builtin",
       setopt = true,

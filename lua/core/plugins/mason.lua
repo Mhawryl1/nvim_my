@@ -20,7 +20,7 @@ return {
       },
     }
     mason_lspconfig.setup(require("plugins.config.lsp_config").servers)
-    mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").config)
+    mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").handlers)
     mason_tool_installer.setup(require("plugins.config.lsp_config").tools)
 
     mason_dap.setup {
@@ -29,6 +29,7 @@ return {
         "python",
         "cpptools",
       },
+      automatic_installation = true,
       handlers = {},
     }
   end,

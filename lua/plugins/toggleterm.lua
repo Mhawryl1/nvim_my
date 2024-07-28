@@ -7,12 +7,12 @@ return {
       shade_terminal = true,
       shade_terminals = true,
       shading_factor = "-10", -- the percentage by which to lighten dark terminal background, default: -30
-      shading_ratio = "-1",   -- the ratio of shading factor for light/dark terminal background, default: -3
+      shading_ratio = "-3",   -- the ratio of shading factor for light/dark terminal background, default: -3
       start_in_insert = true,
       shell = vim.o.shell,
       title_pos = "center",
     }
-
+    local getIcon = require("core.assets").getIcon
     local Terminal = require("toggleterm.terminal").Terminal
     ----===lazygit ===----
     local lazygit = Terminal:new {
@@ -73,7 +73,7 @@ return {
       hidden = true,
       direction = "float",
       close_on_exit = true,
-      display_name = "node",
+      display_name = getIcon("ui", "Node", 1) .. "Node",
       float_opts = {
         border = "curved",
       },
@@ -86,7 +86,7 @@ return {
       hidden = true,
       direction = "float",
       close_on_exit = true,
-      display_name = "python3",
+      display_name = getIcon("ui", "Python", 1) .. "python3",
       float_opts = {
         border = "curved",
       },

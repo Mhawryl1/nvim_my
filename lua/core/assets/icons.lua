@@ -45,6 +45,7 @@ return {
     DefaultFile = "󰈙",
     Terminal = "",
     Term = "",
+    Tools = "",
     Lsptools = "",
     Git = "",
     Htop = "",
