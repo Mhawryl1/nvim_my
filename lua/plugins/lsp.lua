@@ -132,7 +132,7 @@ return {
     end)
     vim.api.nvim_set_keymap(
       "n",
-      "leader>fq",
+      "<leader>fq",
       '<cmd>lua require("telescope.builtin").quicklist()<cr>',
       { desc = "Quickfix list" }
     )
@@ -168,7 +168,6 @@ return {
         },
       }),
     })
-
     ----====autopairs setting ====----------
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())

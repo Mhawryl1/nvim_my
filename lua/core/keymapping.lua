@@ -4,8 +4,8 @@ map.nvim_set_keymap("i", "jk", "<Esc>", opts)
 
 map.nvim_set_keymap("n", "<S-l>", "<cmd>bnext<cr>", opts)
 map.nvim_set_keymap("n", "<S-h>", "<cmd>bprev<cr>", opts)
-map.nvim_set_keymap("n", "<M-h>", "^", vim.tbl_extend("force", opts, { desc = "Goto begin line" }))
-map.nvim_set_keymap("n", "<M-l>", "g_", vim.tbl_extend("force", opts, { desc = "Goto end line" }))
+vim.keymap.set({ "n", "v" }, "<M-h>", "^", vim.tbl_extend("force", opts, { desc = "Goto begin line" }))
+vim.keymap.set({ "n", "v" }, "<M-l>", "g_", vim.tbl_extend("force", opts, { desc = "Goto end line" }))
 
 map.nvim_set_keymap("c", "<C-J>", '<cmd>lua require("cmp").select_next_item()<cr>', opts)
 map.nvim_set_keymap("c", "<C-K>", '<cmd>lua require("cmp").select_prev_item()<cr>', opts)

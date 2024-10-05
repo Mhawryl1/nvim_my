@@ -50,6 +50,7 @@ return {
     tsserver = function() require("lspconfig").tsserver.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     neocmake = function() require("lspconfig").neocmake.setup {} end,
+    cssls = function() require("lspconfig").cssls.setup {} end,
     lua_ls = function()
       require("lspconfig").lua_ls.setup {
         settings = {

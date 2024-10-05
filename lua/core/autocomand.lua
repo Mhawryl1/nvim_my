@@ -1,3 +1,4 @@
+local M = require "core.misc"
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function()
@@ -10,11 +11,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function() vim.highlight.on_yank() end,
+  group = highlight_group,
+  pattern = "*",
+})
+
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   group = vim.api.nvim_create_augroup("AutoOpenQuickfix", { clear = true }),
   pattern = { "[^l]*" },
   callback = function()
-    QfMakeConv()
+    M.QfMakeConv()
     local qflist = vim.fn.getqflist()
     if #qflist == 0 then return end
     vim.api.nvim_command "copen"
@@ -28,7 +36,6 @@ vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter" }, {
     require("lualine").setup(config)
   end,
 })
-
 vim.api.nvim_create_autocmd("ModeChanged", {
   callback = function()
     local hl_format = vim.api.nvim_get_hl(0, { name = "FormatStatus" })

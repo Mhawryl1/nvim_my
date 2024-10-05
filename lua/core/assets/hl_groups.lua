@@ -12,3 +12,6 @@ vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", b
 vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
 
 vim.api.nvim_set_hl(0, "MarkSignHL", { fg = "#C792EA", bg = "#3c3836" })
+
+-- Change Highlight group text color for which-key if grouvbox theme is enabled
+if vim.g.colors_name == "gruvbox" then vim.api.nvim_set_hl(0, "WhichKeyGroup", { fg = "#82AAFF", bg = "NONE" }) end

@@ -147,6 +147,7 @@ return {
       { "<leader>g",  name = getIcon("ui", "Git", 1) .. "git" },
       { "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>",                    desc = "LazyGit" },
       { "<leader>x",  name = getIcon("diagnostics", "Warning") .. "Truble" },
+      { "<leader>p",  name = getIcon("ui", "Package") .. "Package" },
     }
   end,
 }
