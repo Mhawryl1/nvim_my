@@ -108,7 +108,12 @@ return {
       { "<leader>t",  name = getIcon("ui", "Terminal", 1) .. "terminal" },
       {
         "<leader>th",
-        ":ToggleTerm size=10 direction=horizontal name=dock<cr>",
+        ":ToggleTerm size=10 direction=horizontal name=term<cr>",
+        desc = getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
+      },
+      {
+        "<leader>tv",
+        ":ToggleTerm size=60 direction=vertical name=term<cr>",
         desc = getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
       },
       {
@@ -123,6 +128,11 @@ return {
         "<leader>tt",
         "<cmd>lua _htop_toggle()<cr>",
         desc = getIcon("ui", "Htop", 2) .. "htop terminal",
+      },
+      {
+        "<leader>tc",
+        "<cmd>lua _btop_toggle()<cr>",
+        desc = getIcon("ui", "Htop", 2) .. "btop terminal",
       },
       {
         "<leader>tn",

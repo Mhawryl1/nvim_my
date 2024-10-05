@@ -67,6 +67,34 @@ return {
     }
     function _G._htop_toggle() htop:toggle() end
 
+    ----=== btop === -------
+    local btop = Terminal:new {
+      cmd = "btop",
+      hidden = true,
+      direction = "float",
+      close_on_exit = true,
+      display_name = "BTOP",
+      float_opts = {
+        border = "double",
+      },
+      on_open = function(term)
+        vim.cmd "startinsert!"
+        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
+        vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "<esc>")
+      end,
+      on_close = function(term)
+        vim.cmd "startinsert!"
+        vim.api.nvim_del_keymap("t", "j")
+        vim.api.nvim_del_keymap("t", "k")
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
+      end,
+    }
+    function _G._btop_toggle() btop:toggle() end
+
     -------=== node ===---------
     local node = Terminal:new {
       cmd = "node",
