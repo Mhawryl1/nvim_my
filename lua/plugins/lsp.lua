@@ -172,6 +172,15 @@ return {
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
+    local toggle_view = function()
+      local current = cmp.get_config().view.entries.name
+      if current == nil or current == "wildmenu" then
+        cmp.setup { view = { entries = { name = "custom", selection_order = "near_cursor" } } }
+      else
+        cmp.setup { view = { entries = { name = "wildmenu", separator = " | " } } }
+      end
+    end
+
     cmp.setup {
       completion = {
         completeopt = "menu,menuone,preview,noselect",
@@ -184,8 +193,8 @@ return {
         { name = "nvim_lsp" },
         { name = "copilot" },
         --{ name = "nvim_lsp_signature_help" },
-        { name = "luasnip", keyword_length = 2 },
-        { name = "buffer",  keyword_length = 3 },
+        { name = "luasnip", keyword_length = 2, max_item_count = 5 },
+        { name = "buffer",  keyword_length = 3, max_item_count = 4 },
         { name = "path" },
       },
       mapping = cmp.mapping.preset.insert {
@@ -194,7 +203,15 @@ return {
         ["<CR>"] = cmp.mapping.confirm { select = true },
         ["<C-p>"] = cmp.mapping.scroll_docs(-4),
         ["<C-n>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-Space>"] = cmp.mapping(function()
+          if not cmp.visible() then
+            cmp.complete()
+          else
+            cmp.abort()
+            toggle_view()
+            cmp.complete()
+          end
+        end),
         ["<C-f>"] = cmp_action.luasnip_jump_forward(),
         ["<C-b>"] = cmp_action.luasnip_jump_backward(),
         ["<Tab>"] = cmp_action.luasnip_supertab(),
@@ -221,6 +238,7 @@ return {
         documentation = cmp.config.window.bordered {
           border = "rounded", -- Use 'rounded' for rounded corners
           winhighlight = "Normal:CmpDocNormal,FloatBorder:CmpDocBorder",
+          pumheight = 5,
         },
       },
     }

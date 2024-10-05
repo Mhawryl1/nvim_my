@@ -10,7 +10,7 @@ return {
   ---- Language servers
   servers = {
     ensure_installed = {
-      "tsserver",
+      "ts_ls",
       "eslint",
       "rust_analyzer",
       "jdtls",
@@ -47,7 +47,7 @@ return {
   handlers = {
     omnisharp = function() require("lspconfig").omnisharp.setup {} end,
     fsautocomplete = function() require("lspconfig").fsautocomplete.setup {} end,
-    tsserver = function() require("lspconfig").tsserver.setup {} end,
+    ts_ls = function() require("lspconfig").ts_ls.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     neocmake = function() require("lspconfig").neocmake.setup {} end,
     cssls = function() require("lspconfig").cssls.setup {} end,

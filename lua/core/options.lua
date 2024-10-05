@@ -2,14 +2,14 @@
 vim.g.toggleFormating = true
 -- Set highlight on search
 vim.o.hlsearch = true
-
 -- Tab to spaces
 vim.o.expandtab = true
 vim.o.smarttab = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.smartindent = true
-
+--autocomplete window max height
+vim.o.pumheight = 15
 -- keep cursor n line above/below view
 vim.o.scrolloff = 5
 -- Make line numbers default
