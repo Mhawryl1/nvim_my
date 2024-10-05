@@ -9,7 +9,10 @@ return {
       shading_factor = "-10", -- the percentage by which to lighten dark terminal background, default: -30
       shading_ratio = "-3",   -- the ratio of shading factor for light/dark terminal background, default: -3
       start_in_insert = true,
-      shell = vim.o.shell,
+      shell = (function()
+        if vim.fn.has "win32" == 1 then return "pwsh.exe" end
+        return vim.o.shell
+      end)(),
       title_pos = "center",
     }
     local getIcon = require("core.assets").getIcon
