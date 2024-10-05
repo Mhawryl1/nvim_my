@@ -6,7 +6,11 @@ return {
     -- INFO: Uncomment to use treeitter as fold provider, otherwise nvim lsp is used
     provider_selector = function(bufnr, filetype, buftype) return { "treesitter", "indent" } end,
     open_fold_hl_timeout = 200,
-    close_fold_kinds_for_ft = { "imports", "comment" },
+    close_fold_kinds_for_ft = {
+      default = { "imports", "comment" },
+      json = { "array" },
+      c = { "comment", "region" },
+    },
     preview = {
       win_config = {
         border = { "", "─", "", "", "", "─", "", "" },
@@ -23,16 +27,16 @@ return {
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
     -- turn off foldcolumn for neotree to ovoid showing ugly numbers in neotree
-    vim.api.nvim_create_autocmd("BufWinEnter", {
-      pattern = "*",
-      callback = function()
-        if vim.bo.filetype == "neo-tree" then
-          vim.opt_local.foldcolumn = "0"
-          vim.opt_local.foldenable = false
-        end
-      end,
-      group = vim.api.nvim_create_augroup("NeoTreeSettings", { clear = true }),
-    })
+    -- vim.api.nvim_create_autocmd("BufWinEnter", {
+    --   pattern = "*",
+    --   callback = function()
+    --     if vim.bo.filetype == "neo-tree" then
+    --       vim.opt_local.foldcolumn = "0"
+    --       vim.opt_local.foldenable = false
+    --     end
+    --   end,
+    --   group = vim.api.nvim_create_augroup("NeoTreeSettings", { clear = true }),
+    -- })
   end,
   config = function(_, opts)
     local maps = require("core.utils").maps

@@ -147,7 +147,9 @@ return {
       { "<leader>g",  name = getIcon("ui", "Git", 1) .. "git" },
       { "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>",                    desc = "LazyGit" },
       { "<leader>x",  name = getIcon("diagnostics", "Warning") .. "Truble" },
-      { "<leader>p",  name = getIcon("ui", "Package") .. "Package" },
+      -- { "<leader>p",  name = getIcon("ui", "Package") .. "Package" },
+      -- { "<leader>pm", "<cmd>MasonUpdate<cr>",                              desc = "Update mason package" },
+      -- { "<leader>pl", "<cmd>Lazy update<cr>",                              desc = "Update Lazy package" },
     }
   end,
 }
