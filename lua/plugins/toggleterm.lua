@@ -44,7 +44,10 @@ return {
 
     ----=== htop === -------
     local htop = Terminal:new {
-      cmd = "htop",
+      cmd = (function()
+        if vim.fn.has "win32" == 1 then return "ntop" end
+        return "htop"
+      end)(),
       hidden = true,
       direction = "float",
       close_on_exit = true,
