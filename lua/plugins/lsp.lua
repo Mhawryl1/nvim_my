@@ -172,6 +172,15 @@ return {
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
+    local toggle_view = function()
+      local current = cmp.get_config().view.entries.name
+      if current == nil or current == "wildmenu" then
+        cmp.setup { view = { entries = { name = "custom", selection_order = "near_cursor" } } }
+      else
+        cmp.setup { view = { entries = { name = "wildmenu", separator = " | " } } }
+      end
+    end
+
     cmp.setup {
       completion = {
         completeopt = "menu,menuone,preview,noselect",
@@ -194,7 +203,15 @@ return {
         ["<CR>"] = cmp.mapping.confirm { select = true },
         ["<C-p>"] = cmp.mapping.scroll_docs(-4),
         ["<C-n>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-Space>"] = cmp.mapping(function()
+          if not cmp.visible() then
+            cmp.complete()
+          else
+            cmp.abort()
+            toggle_view()
+            cmp.complete()
+          end
+        end),
         ["<C-f>"] = cmp_action.luasnip_jump_forward(),
         ["<C-b>"] = cmp_action.luasnip_jump_backward(),
         ["<Tab>"] = cmp_action.luasnip_supertab(),
