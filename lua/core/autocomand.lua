@@ -2,12 +2,14 @@ local M = require "core.misc"
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function()
-    if vim.g.toggleFormating then
-      vim.cmd "wshada!"
-      vim.lsp.buf.format()
-      vim.cmd "rshada!"
-      vim.defer_fn(function() vim.api.nvim_command "silent! edit " end, 100) -- reload buffer (fixes issue with display sing marks in statusline)
-    end
+   -- if vim.g.toggleFormating then
+      --vim.cmd "wshada!"
+      --vim.lsp.buf.format()
+      --vim.cmd "LspZeroFormat"
+      --vim.cmd "rshada!"
+      --vim.defer_fn(function() vim.api.nvim_command "silent! edit " end, 100) -- reload buffer (fixes issue with display sing marks in statusline)
+    --end
+    require("lint").try_lint()
   end,
 })
 
@@ -28,6 +30,7 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     vim.api.nvim_command "copen"
   end,
 })
+
 vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufEnter" }, {
   callback = function()
     local config = require("lualine").get_config()

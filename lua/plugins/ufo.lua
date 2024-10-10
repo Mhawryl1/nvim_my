@@ -8,7 +8,7 @@ return {
     open_fold_hl_timeout = 200,
     close_fold_kinds_for_ft = {
       default = { "imports", "comment" },
-      json = { "array" },
+      --json = { "array" },
       c = { "comment", "region" },
     },
     preview = {

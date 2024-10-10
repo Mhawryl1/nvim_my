@@ -19,6 +19,7 @@ return {
       mode = "n",
       prefix = "<leader>",
     }
+
     local getIcon = require("core.assets").getIcon
     -----==== Key mapping ====--------
     wk.add {
@@ -62,7 +63,8 @@ return {
         "<cmd>bufdo bd<cr>",
         desc = getIcon("ui", "CloseAll", 1) .. "Close all buffer",
       },
-      { "<leader>bl", "<cmd>BufferLinePick<cr>", desc = "Pick buffer" },
+      { "<leader>bp", "<cmd>BufferLinePick<cr>",                 desc = "Pick buffer" },
+      { "<leader>bl", function() require("lint").try_lint() end, desc = getIcon("ui", "Linter", 1) .. "Linter buffer" },
       {
         "<leader>bc",
         "<cmd>BufferLineCloseOthers<cr>",

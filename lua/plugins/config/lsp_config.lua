@@ -1,11 +1,11 @@
 return {
   formatting = {
-    clang_format = {
-      args = {
-        "--style=file:~/VCode/C++/.clang-format",
-        "--fallback-style=Microsoft",
-      },
-    },
+    -- clang_format = {
+    --   args = {
+    --     "--style=file:~/VCode/C++/.clang-format",
+    --     "--fallback-style=Microsoft",
+    --   },
+    -- },
   },
   ---- Language servers
   servers = {

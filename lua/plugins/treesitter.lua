@@ -55,6 +55,7 @@ return {
         "vimdoc",
         "c",
         "cpp",
+        "regex",
       },
       incremental_selection = {
         enable = true,

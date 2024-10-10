@@ -31,6 +31,7 @@ return {
     Lightbulb = " ",
     List = " ",
     Lock = " ",
+    Linter = "",
     NewFile = " ",
     Note = " ",
     Package = " ",
