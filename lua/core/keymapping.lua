@@ -46,6 +46,7 @@ map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 
+--paste above and below current line
 map.nvim_set_keymap("n", "<M-p>", "<cmd>put!<cr>", opts)
 map.nvim_set_keymap("n", "<M-S-p>", "<cmd>put<cr>", opts)
 --window resize
@@ -96,7 +97,7 @@ vim.keymap.set({ "v" }, "<leader>gw", function()
   selection = '"' .. selection .. '"'
   local result = vim.fn.system("rg -F -U --vimgrep --no-heading --smart-case " .. selection)
   sendToQuickFix(result)
-end, { silent = true, desc = "Grep selection cursor" })
+end, { silent = true, desc = "Grep selected" })
 
 ---open close hover window
 vim.keymap.set({ "n", "s" }, "<S-k>", function()

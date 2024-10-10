@@ -212,8 +212,9 @@ local function containsFt(ft, ft_list)
   return false
 end
 
-local null_ls = require "null-ls"
 local function getNullLsClients(active_sources)
+  local null_ls_s, null_ls = pcall(require, "null-ls")
+  if null_ls_s == false then return end
   local sources = null_ls.get_sources()
   local ft = vim.bo.filetype
   for _, source in ipairs(sources) do
@@ -244,6 +245,12 @@ local function is_lsp_server(client)
   end
 
   return false
+end
+
+local function getFromatterFromConform()
+  local ok, conform = pcall(require, "conform")
+  if not ok then return nil end
+  return conform.list_formatters_for_buffer()[1]
 end
 
 -- get clients and categorize them
@@ -278,6 +285,9 @@ local function get_clients()
         categorized_clients = vim.tbl_extend("force", categorized_clients, { others = { client.name } })
       end
     end
+  end
+  if #categorized_clients.formatters == 0 and require "conform" then
+    categorized_clients.formatters = { getFromatterFromConform() }
   end
   return categorized_clients
 end
@@ -375,8 +385,8 @@ local function custom_input(opts, on_confirm)
     "i",
     "<Esc>",
     "<cmd>lua vim.api.nvim_win_close(0, true)<cr> <cmd>lua vim.api.nvim_buf_delete("
-    .. bufnr
-    .. ", {force = true })<CR>",
+      .. bufnr
+      .. ", {force = true })<CR>",
     { noremap = true, silent = true }
   )
 
