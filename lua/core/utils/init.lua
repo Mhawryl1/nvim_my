@@ -231,7 +231,7 @@ local function getNullLsClients(active_sources)
 end
 
 -- Function to determine if a client is an LSP server
-local function is_lsp_server(client)
+local function is_lang_lsp_prov(client)
   -- Explicitly exclude GitHub Copilot
   if client.name == "copilot" then return false end
 
@@ -239,11 +239,9 @@ local function is_lsp_server(client)
     "hoverProvider",
     "referencesProvider",
   }
-
   for _, capability in ipairs(lsp_capabilities) do
-    if client.server_capabilities[capability] then return true end
+    if client.server_capabilities[capability] == true then return true end
   end
-
   return false
 end
 
@@ -267,19 +265,23 @@ local function get_clients()
     for _, client in pairs(clients) do
       if client.name == "null-ls" then
         getNullLsClients(categorized_clients)
-      elseif is_lsp_server(client) then
-        local fts = client.config.filetypes or { vim.bo.filetype }
+      elseif is_lang_lsp_prov(client) then
+        local ft = vim.bo.filetype
         local icons = getIcons()
-        for _, ft in pairs(fts) do
-          if icons[ft] then
-            devicon = icons[ft]
-            local icon = { icon = devicon.icon }
-            icon.color = { fg = devicon.color }
-            categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name, icon } })
-            break
-          else
-            categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name } })
-          end
+
+        if ft == "javascript" then
+          ft = "js"
+        elseif ft == "typescript" then
+          ft = "ts"
+        end
+
+        if icons[ft] then
+          devicon = icons[ft]
+          local icon = { icon = devicon.icon }
+          icon.color = { fg = devicon.color }
+          categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name, icon } })
+        else
+          categorized_clients = vim.tbl_extend("force", categorized_clients, { lsp_servers = { client.name } })
         end
       else
         categorized_clients = vim.tbl_extend("force", categorized_clients, { others = { client.name } })

@@ -23,7 +23,7 @@ return {
       typescript = { "biome" },
       html = { "prettierd" },
       css = { "prettierd" },
-      cpp = { "clang_format" },
+      cpp = { "clang-format" },
     },
     -- Set default options
     default_format_opts = {
@@ -33,7 +33,7 @@ return {
     -- Set up format-on-save
     format_on_save = function(bufnr)
       -- Disable with a global or buffer-local variable
-      if vim.g.toggleFormating or vim.b[bufnr].disable_autoformat then return end
+      if not vim.g.toggleFormating or vim.b[bufnr].disable_autoformat then return end
       return { timeout_ms = 500, lsp_format = "fallback" }
     end,
     -- Customize formatters
@@ -42,8 +42,8 @@ return {
         prepend_args = { "-i", "2" },
       },
       clang_format = {
-        filetypes = { "cpp" },
-        args = { "--fallback-style=Microsoft", "--style=file:~/VCode/C++/.clang-format" },
+        filetypes = { "cpp", "c", "objc" },
+        args = { "--fallback-style=LLVM" },
       },
     },
   },

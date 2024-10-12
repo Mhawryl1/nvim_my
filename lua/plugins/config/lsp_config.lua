@@ -28,6 +28,7 @@ return {
       "biome",
       "neocmake",
       "emmet_ls",
+      "powershell_es",
     },
     automatic_installation = true,
   },
@@ -51,6 +52,8 @@ return {
     ts_ls = function() require("lspconfig").ts_ls.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     neocmake = function() require("lspconfig").neocmake.setup {} end,
+    html = function() require("lspconfig").html.setup {} end,
+    powershell_es = function() require("lspconfig").powershell_es.setup {} end,
     cssls = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
