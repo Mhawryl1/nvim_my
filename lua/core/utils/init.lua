@@ -144,6 +144,7 @@ local function closeCurr(bufnr)
   vim.cmd "bprev"
   vim.cmd("bdelete!" .. bufnr)
 end
+
 function M.close_buffer()
   local bufnr = vim.api.nvim_get_current_buf()
   local buf_windows = vim.call("win_findbuf", bufnr)
@@ -296,7 +297,7 @@ end
 
 function M.lspSection()
   local retTable = {}
-  local separator = ", "
+  local separator = " | "
   local clients = get_clients()
   local hl_group = M.getHLColor()
   local bg_color = string.format("#%06x", hl_group.bg)
@@ -438,5 +439,15 @@ end
 -- Add a command to call the save_as function
 vim.api.nvim_create_user_command("SaveAs", save_as, {})
 -- vim.api.nvim_create_user_command("SaveAs", save_as, {})
+
+--check if current project is a git repo
+function M.is_git_repo()
+  local err, stout = pcall(vim.fn.system, "git rev-parse --is-inside-work-tree")
+  if err then
+    if string.match(stout, "fatal") then return false end
+    return true
+  end
+  return false
+end
 
 return M

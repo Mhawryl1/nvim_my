@@ -15,6 +15,7 @@ return {
     local telescope = require "telescope"
     local actions = require "telescope.actions"
     local fb_actions = require("telescope").extensions.file_browser.actions
+    local is_git_repo = require("core.utils").is_git_repo
     --local transform_mod = require("telescope.actions.mt").transform_mod
 
     -- local trouble = require("trouble")
@@ -33,11 +34,11 @@ return {
             select = "<cr>",
             paste = "<c-p>",
             paste_behind = "<c-b>",
-            replay = "<c-q>",                            -- replay a macro
-            delete = "<c-d>",                            -- delete an entry
-            edit = "<c-e>",                              -- edit an entry
+            replay = "<c-q>", -- replay a macro
+            delete = "<c-d>", -- delete an entry
+            edit = "<c-e>", -- edit an entry
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next,     -- move to next result
+            ["<C-j>"] = actions.move_selection_next, -- move to next result
             custom = {},
           },
           n = {
@@ -50,7 +51,7 @@ return {
             delete = "d",
             edit = "e",
             ["k>"] = actions.move_selection_previous, -- move to prev result
-            ["j>"] = actions.move_selection_next,     -- move to next result
+            ["j>"] = actions.move_selection_next, -- move to next result
             custom = {},
           },
         },
@@ -68,7 +69,7 @@ return {
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next,     -- move to next result
+            ["<C-j>"] = actions.move_selection_next, -- move to next result
             ["<c-t>"] = open_with_trouble,
             --["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
           },
@@ -145,7 +146,7 @@ return {
       { desc = "Yank history" },
     }
     maps.n["<leader>gb"] =
-    { function() require("telescope").extensions.file_browser.file_browser() end, { desc = "File Browser" } }
+      { function() require("telescope").extensions.file_browser.file_browser() end, { desc = "File Browser" } }
     maps.n["<leader>ut"] = { function() builtin.colorscheme { enable_preview = true } end, { desc = "Find themse" } }
 
     maps.n["<leader>xd"] = { function() builtin.diagnostics() end, { desc = "Search diagnostics" } }
@@ -164,7 +165,7 @@ return {
     maps.n["<leader>f<CR>"] = { function() builtin.resume() end, { desc = "Resume previous search" } }
 
     maps.n["<leader>f/"] =
-    { function() builtin.current_buffer_fuzzy_find() end, { desc = "Find words in current buffer" } }
+      { function() builtin.current_buffer_fuzzy_find() end, { desc = "Find words in current buffer" } }
 
     maps.n["<leader>fa"] = {
       function() builtin.find_files { prompt_title = "Config Files", cwd = vim.fn.stdpath "config", follow = true } end,
@@ -173,19 +174,17 @@ return {
 
     maps.n["<leader>fb"] = { function() builtin.buffers() end, { desc = "Find buffer" } }
     maps.n["<leader>fc"] =
-    { function() builtin.grep_string() end, { desc = getIcon("ui", "Word", 1) .. "Find word under cursor" } }
+      { function() builtin.grep_string() end, { desc = getIcon("ui", "Word", 1) .. "Find word under cursor" } }
     maps.n["<leader>fC"] = { function() builtin.commands() end, { desc = "Find commands" } }
     maps.n["<leader>ff"] = {
       function() builtin.find_files { hidden = true, no_ignore = true } end,
       { desc = get_icon("ui", "FindFiles", 2) .. "Find Files" },
     }
     maps.n["<leader>fF"] =
-    { function() builtin.find_files { hidden = true, no_ignore = true } end, { desc = "Find all files" } }
+      { function() builtin.find_files { hidden = true, no_ignore = true } end, { desc = "Find all files" } }
     maps.n["<leader>fr"] = { function() builtin.registers() end, { desc = "Find registers" } }
     maps.n["<leader>fk"] =
-    { function() builtin.keymaps() end, { desc = get_icon("ui", "Keyboard", 1) .. "Find keymaps" } }
-    maps.n["<leader>fk"] =
-    { function() builtin.keymaps() end, { desc = get_icon("ui", "Keyboard", 1) .. "Find keymaps" } }
+      { function() builtin.keymaps() end, { desc = get_icon("ui", "Keyboard", 1) .. "Find keymaps" } }
     maps.n["<leader>fm"] = { function() builtin.man_pages() end, { desc = get_icon("ui", "Note", 1) .. "Find man" } }
     maps.n["<leader>fn"] = {
       function() require("telescope").extensions.notify.notify() end,
@@ -204,7 +203,13 @@ return {
       { desc = "Find words in all files" },
     }
     maps.n["<leader>gc"] = {
-      function() require("telescope.builtin").git_bcommits { use_file_path = true } end,
+      function()
+        if not is_git_repo() then
+          vim.notify(" Can't find git repo directory", vim.log.levels.INFO, { title = "Git rep status" })
+          return
+        end
+        require("telescope.builtin").git_bcommits { use_file_path = true }
+      end,
       { desc = "Git commits (current file)" },
     }
     telescope.load_extension "file_browser"

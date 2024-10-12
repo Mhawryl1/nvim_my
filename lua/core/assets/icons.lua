@@ -41,6 +41,7 @@ return {
     Search = " ",
     SignIn = " ",
     SaveAs = "",
+    SaveAll = " ",
     Table = " ",
     Telescope = " ",
     DefaultFile = "󰈙",
