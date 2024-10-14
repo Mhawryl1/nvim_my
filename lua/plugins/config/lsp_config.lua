@@ -41,6 +41,7 @@ return {
       "pylint",
       "eslint_d",
       "cmakelang",
+      "cmakelint",
     },
     automatic_installation = true,
   },
@@ -90,6 +91,7 @@ return {
       require("lspconfig").clangd.setup {
         cmd = {
           "clangd",
+          "--limit-results=1000",
           "--background-index",
           "--function-arg-placeholders",
           "--clang-tidy",

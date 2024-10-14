@@ -23,7 +23,8 @@ return {
       typescript = { "biome" },
       html = { "prettierd" },
       css = { "prettierd" },
-      cpp = { "clang_format" },
+      cpp = { "clang-format" },
+      cmake = { "cmake_format" },
     },
     -- Set default options
     default_format_opts = {

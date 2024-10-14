@@ -16,10 +16,10 @@ return {
         -- The following are already the default values, no need to provide them if these are already the settings you want.
         auto_save_enabled = true,
         cwd_change_handling = {
-          restore_upcoming_session = false,  -- Disabled by default, set to true to enable
-          pre_cwd_changed_hook = nil,        -- already the default, no need to specify like this, only here as an example
+          restore_upcoming_session = false, -- Disabled by default, set to true to enable
+          pre_cwd_changed_hook = nil, -- already the default, no need to specify like this, only here as an example
           post_cwd_changed_hook = function() -- example refreshing the lualine status line _after_ the cwd changes
-            require("lualine").refresh()     -- refresh lualine so the new session name is displayed in the status bar
+            require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
           end,
         },
         session_lens = {
