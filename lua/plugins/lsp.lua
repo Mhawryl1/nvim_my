@@ -13,9 +13,9 @@ return {
     },
     { "williamboman/mason-lspconfig.nvim" }, -- Optional
     -- Autocompletion
-    { "hrsh7th/nvim-cmp" },                  -- Required
-    { "hrsh7th/cmp-nvim-lsp" },              -- Required
-    { "L3MON4D3/LuaSnip" },                  -- Required
+    { "hrsh7th/nvim-cmp" }, -- Required
+    { "hrsh7th/cmp-nvim-lsp" }, -- Required
+    { "L3MON4D3/LuaSnip" }, -- Required
     { "rafamadriz/friendly-snippets" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
@@ -133,7 +133,7 @@ return {
     vim.api.nvim_set_keymap(
       "n",
       "<leader>fq",
-      '<cmd>lua require("telescope.builtin").quicklist()<cr>',
+      '<cmd>lua require("telescope.builtin").quickfix()<cr>',
       { desc = "Quickfix list" }
     )
     ----====mason setting ====----------
@@ -194,7 +194,7 @@ return {
         { name = "copilot" },
         --{ name = "nvim_lsp_signature_help" },
         { name = "luasnip", keyword_length = 2, max_item_count = 5 },
-        { name = "buffer",  keyword_length = 3, max_item_count = 4 },
+        { name = "buffer", keyword_length = 3, max_item_count = 4 },
         { name = "path" },
       },
       mapping = cmp.mapping.preset.insert {
@@ -222,7 +222,7 @@ return {
         fields = { "kind", "abbr", "menu" },
         expandable_indicator = true,
         format = function(entry, vim_item)
-          local kind = lspkind.cmp_format { mode = "symbol_text", maxwidth = 50 } (entry, vim_item)
+          local kind = lspkind.cmp_format { mode = "symbol_text", maxwidth = 50 }(entry, vim_item)
           local strings = vim.split(kind.kind, "%s", { trimempty = true })
           kind.kind = " " .. (strings[1] or "") .. " "
           kind.menu = "    (" .. (strings[2] or "") .. ")"

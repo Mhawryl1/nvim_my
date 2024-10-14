@@ -14,25 +14,33 @@ return {
     local get_icon = require("core.assets").getIcon
     require("nvim-dap-virtual-text").setup()
 
-    -- dap.adapters.gdb = {
-    --   type = "executable",
-    --   command = "/usr/bin/gdb",
-    --   args = { "-i", "dap" },
-    -- }
-    -- dap.configurations = {
-    --   cpp = {
-    --     {
-    --       name = "Launch",
-    --       type = "gdb",
-    --       request = "launch",
-    --       program = function()
-    --         return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-    --       end,
-    --       cwd = "${workspaceFolder}",
-    --       stopAtBeginningOfMainSubprogram = false,
-    --     },
-    --   },
-    -- }
+    dap.adapters.cppdbg = {
+      id = "cppdbg",
+      type = "executable",
+      command = vim.fn.stdpath "data" .. "/mason/bin/OpenDebugAD7", -- Path to the cppdbg executable from Mason
+    }
+
+    -- Configuration for MSVC Debugging
+    dap.configurations.cpp = {
+      {
+        name = "Launch file",
+        type = "cppdbg",
+        request = "launch",
+        program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
+        cwd = "${workspaceFolder}",
+        stopAtEntry = true,
+      },
+      {
+        name = "Attach to gdbserver :1234",
+        type = "cppdbg",
+        request = "launch",
+        MIMode = "gdb",
+        miDebuggerServerAddress = "localhost:1234",
+        miDebuggerPath = "/usr/bin/gdb",
+        cwd = "${workspaceFolder}",
+        program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
+      },
+    }
     dap.adapters["local-lua"] = {
       type = "executable",
       command = "node",
@@ -50,6 +58,39 @@ return {
           on_config(config)
         end
       end,
+    }
+    dap.adapters.chrome = {
+      type = "executable",
+      command = "node",
+      args = {
+        "C:\\Users\\DaroL\\AppData\\Local\\nvim-data\\mason\\packages\\chrome-debug-adapter\\out\\src\\chromeDebug.js╯",
+      },
+    }
+
+    dap.configurations.javascript = { -- change this to javascript if needed
+      {
+        type = "chrome",
+        request = "attach",
+        program = "${file}",
+        cwd = vim.fn.getcwd(),
+        sourceMaps = true,
+        protocol = "inspector",
+        port = 9222,
+        webRoot = "${workspaceFolder}",
+      },
+    }
+
+    dap.configurations.typescript = { -- change to typescript if needed
+      {
+        type = "chrome",
+        request = "attach",
+        program = "${file}",
+        cwd = vim.fn.getcwd(),
+        sourceMaps = true,
+        protocol = "inspector",
+        port = 9222,
+        webRoot = "${workspaceFolder}",
+      },
     }
     dap.configurations.lua = {
       {
@@ -95,6 +136,7 @@ return {
     local maps = require("core.utils").maps
 
     maps.n["<F5>"] = { function() require("dap").continue() end, { desc = "Debugger: Start" } }
+    maps.n["<S-F5>"] = { function() require("dap").terminate() end, { desc = "Terminate Session (S-F5)" } }
     maps.n["<F17>"] = { function() require("dap").terminate() end, { desc = "Debugger: Stop" } }
     maps.n["<F21>"] = {
       function()

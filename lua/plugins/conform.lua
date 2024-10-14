@@ -24,6 +24,7 @@ return {
       html = { "prettierd" },
       css = { "prettierd" },
       cpp = { "clang-format" },
+      cmake = { "cmake_format" },
     },
     -- Set default options
     default_format_opts = {
