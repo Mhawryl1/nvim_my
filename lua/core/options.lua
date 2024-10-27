@@ -38,7 +38,7 @@ vim.o.updatetime = 250
 vim.wo.signcolumn = "yes"
 
 -- Set color scheme
---vim.cmd [[colorscheme onedark]]
+--vim.cmd [[colorscheme catppuccin]]
 --vim.cmd.colorscheme "catppuccin"
 
 -- Set defauld grep program

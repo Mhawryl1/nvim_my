@@ -14,7 +14,11 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup {
   { import = "core.plugins" },
   { import = "plugins" },
-  { "catppuccin/nvim",      as = "catppuccin" },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+  },
   {
     "mg979/vim-visual-multi",
     branch = "master",
@@ -55,7 +59,7 @@ require("lazy").setup {
         operations = false,
       },
     },
-    config = function() vim.cmd [[colorscheme gruvbox]] end,
+    config = function() vim.cmd [[colorscheme catppuccin ]] end,
   },
   {
     "folke/zen-mode.nvim",

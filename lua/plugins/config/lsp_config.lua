@@ -88,18 +88,32 @@ return {
       }
     end,
     clangd = function()
-      require("lspconfig").clangd.setup {
-        cmd = {
-          "clangd",
-          "--limit-results=1000",
-          "--background-index",
-          "--function-arg-placeholders",
-          "--clang-tidy",
-          "--completion-style=detailed",
-          "--header-insertion=iwyu",
-          "--offset-encoding=utf-16",
-        },
-      }
+      if vim.fn.has "win32" == 0 then
+        require("lspconfig").clangd.setup {
+          cmd = {
+            "C:/Program Files/LLVM/bin/clangd.exe",
+            "--limit-results=1000",
+            "--background-index",
+            "--function-arg-placeholders",
+            "--clang-tidy",
+            "--completion-style=detailed",
+            "--header-insertion=iwyu",
+            "--offset-encoding=utf-16",
+          },
+        }
+      else
+        require("lspconfig").clangd.setup {
+          cmd = {
+            "clangd",
+            "--limit-results=1000",
+            "--background-index",
+            "--function-arg-placeholders",
+            "--clang-tidy",
+            "--completion-style=detailed",
+            "--header-insertion=iwyu",
+          },
+        }
+      end
     end,
   },
 }

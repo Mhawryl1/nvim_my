@@ -97,17 +97,20 @@ end
 
 function M.getHLColor()
   local mode = vim.api.nvim_get_mode().mode
+  local hl = nil
   if mode == "v" or mode == "V" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
   elseif mode == "c" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_command" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_command" })
   elseif mode == "i" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_insert" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_insert" })
   elseif mode == "R" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_replace" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_replace" })
   else
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
   end
+  if next(hl) == nil then return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" }) end
+  return hl
 end
 
 function M.currentDir()
