@@ -29,6 +29,7 @@ return {
       "neocmake",
       "emmet_ls",
       "powershell_es",
+      "pylsp",
     },
     automatic_installation = true,
   },
@@ -38,6 +39,7 @@ return {
       "prettierd",
       "stylua",
       "isort",
+      "black",
       "pylint",
       "eslint_d",
       "cmakelang",
@@ -55,6 +57,7 @@ return {
     neocmake = function() require("lspconfig").neocmake.setup {} end,
     html = function() require("lspconfig").html.setup {} end,
     powershell_es = function() require("lspconfig").powershell_es.setup {} end,
+    pylsp = function() require("lspconfig").pylsp.setup {} end,
     cssls = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -91,20 +94,20 @@ return {
       if vim.fn.has "win32" == 0 then
         require("lspconfig").clangd.setup {
           cmd = {
-            "C:/Program Files/LLVM/bin/clangd.exe",
+            "clangd",
             "--limit-results=1000",
             "--background-index",
             "--function-arg-placeholders",
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=iwyu",
-            "--offset-encoding=utf-16",
           },
         }
       else
         require("lspconfig").clangd.setup {
           cmd = {
-            "clangd",
+            "C:/Program Files/LLVM/bin/clangd.exe",
+            "--offset-encoding=utf-16",
             "--limit-results=1000",
             "--background-index",
             "--function-arg-placeholders",

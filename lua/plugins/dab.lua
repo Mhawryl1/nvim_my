@@ -69,6 +69,7 @@ return {
 
     dap.configurations.javascript = { -- change this to javascript if needed
       {
+        name = "javascript",
         type = "chrome",
         request = "attach",
         program = "${file}",
@@ -82,6 +83,7 @@ return {
 
     dap.configurations.typescript = { -- change to typescript if needed
       {
+        name = "typescript",
         type = "chrome",
         request = "attach",
         program = "${file}",
@@ -108,6 +110,8 @@ return {
     }
     vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000", bg = "#3c3836" })
     vim.api.nvim_set_hl(0, "DapBreakpointHit", { fg = "#00FF00", bg = "#3c3836" })
+    vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, bg = "#2e4d3d", fg = "#ffffff" })
+    vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#2e4d3d", ctermbg = "Green" })
     vim.fn.sign_define(
       "DapBreakpoint",
       { text = get_icon("lsp", "LSPLoading3", 0), texthl = "DapBreakpoint", linehl = "", numhl = "1" }
@@ -125,8 +129,8 @@ return {
     --   "DapBreakpointRejected",
     --   { text = "❌", texthl = "DapBreakpointRejected", linehl = "", numhl = "" }
     -- )
-    -- vim.fn.sign_define("DapLogPoint", { text = "🔍", texthl = "DapLogPoint", linehl = "", numhl = "" })
-    -- vim.fn.sign_define("DapStopped", { text = "➡️", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
+    vim.fn.sign_define("DapLogPoint", { text = "🔍", texthl = "DapLogPoint", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapStopped", { text = " ▶", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
     local dapui = require "dapui"
     dapui.setup()
     dap.listeners.before.attach.dapui_config = function() dapui.open() end
