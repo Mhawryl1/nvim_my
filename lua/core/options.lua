@@ -63,6 +63,8 @@ vim.o.conceallevel = 0
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
 
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

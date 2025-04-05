@@ -14,17 +14,23 @@ return {
     local get_icon = require("core.assets").getIcon
     require("nvim-dap-virtual-text").setup()
 
-    dap.adapters.cppdbg = {
-      id = "cppdbg",
-      type = "executable",
-      command = vim.fn.stdpath "data" .. "/mason/bin/OpenDebugAD7", -- Path to the cppdbg executable from Mason
+    ---C++ debuger adapters
+    -- dap.adapters.cppdbg = {
+    --   id = "cppdbg",
+    --   type = "executable",
+    --   command = vim.fn.stdpath "data" .. "/mason/bin/OpenDebugAD7", -- Path to the cppdbg executable from Mason
+    -- }
+    dap.adapters.codelldb = {
+      type = "server",
+      port = "${port}",
+      executable = "$MASON/packages/codelldb/extension/adapter/codelldb.exe",
+      args = { "--port", "${port}" },
     }
-
     -- Configuration for MSVC Debugging
     dap.configurations.cpp = {
       {
-        name = "Launch file",
-        type = "cppdbg",
+        name = "Launch",
+        type = "codelldb",
         request = "launch",
         program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
         cwd = "${workspaceFolder}",
@@ -108,7 +114,7 @@ return {
         args = {},
       },
     }
-    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#FF0000", bg = "#3c3836" })
+    vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#CA000F", bg = "" })
     vim.api.nvim_set_hl(0, "DapBreakpointHit", { fg = "#00FF00", bg = "#3c3836" })
     vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, bg = "#2e4d3d", fg = "#ffffff" })
     vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#2e4d3d", ctermbg = "Green" })
