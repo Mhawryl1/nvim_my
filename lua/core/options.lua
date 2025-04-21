@@ -42,9 +42,8 @@ vim.wo.signcolumn = "yes"
 --vim.cmd.colorscheme "catppuccin"
 
 -- Set defauld grep program
-vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
-vim.o.grepformat = "%f:%l:%c:%m"
-
+vim.o.grepprg = "rg --vimgrep --smart-case"
+vim.opt.grepformat = { "%f:%l:%c:%m" }
 --vim.cmd()
 vim.opt.clipboard = "unnamedplus"
 

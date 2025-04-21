@@ -303,6 +303,7 @@ function M.lspSection()
   local separator = " | "
   local clients = get_clients()
   local hl_group = M.getHLColor()
+  if hl_group.bg == nil then return "" end
   local bg_color = string.format("#%06x", hl_group.bg)
   vim.api.nvim_set_hl(0, "CustomLine", { fg = hl_group.fg, bg = bg_color })
   if vim.g.toggleFormating then

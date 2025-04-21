@@ -4,6 +4,7 @@ return {
     "dokwork/lualine-ex",
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
+    "SmiteshP/nvim-navic",
   },
   config = function()
     local lualine = require "lualine"

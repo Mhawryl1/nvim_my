@@ -1,3 +1,4 @@
+if true then return {} end
 return {
   "zbirenbaum/copilot-cmp",
   event = { "InsertEnter", "LspAttach" },

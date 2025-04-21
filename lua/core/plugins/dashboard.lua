@@ -39,7 +39,7 @@ return {
           {
             desc = "󱧀 Sessions",
             group = "DiagnosticHint",
-            action = "Telescope session-lens search_session",
+            action = "SessionSearch",
             key = "s",
           },
           {

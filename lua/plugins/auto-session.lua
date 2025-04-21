@@ -4,7 +4,6 @@ return {
     lazy = false,
     dependencies = {
       "nvim-telescope/telescope.nvim",
-      "rmagatti/session-lens",
     },
     config = function()
       local maps = require("core.utils").maps
@@ -18,7 +17,7 @@ return {
           -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
           load_on_setup = true,
           theme_conf = { border = true },
-          previewer = true,
+          previewer = false,
           buftypes_to_ignore = {}, -- list of buffer types that should not be deleted from current session when a new one is loaded
         },
       }
@@ -46,10 +45,6 @@ return {
       maps.n["<leader>SF"] = {
         "<cmd>Autosession delete<cr>",
         { noremap = true, desc = "Search autosession" },
-      }
-      maps.n["<leader>Sc"] = {
-        "<cmd>:lua require('session-lens').search_session()<cr>",
-        { noremap = true, desc = "Switch session" },
       }
     end,
   },

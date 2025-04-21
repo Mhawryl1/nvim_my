@@ -49,8 +49,8 @@ return {
   },
   ---- LSP configuration
   handlers = {
-
-    omnisharp = function() require("lspconfig").omnisharp.setup {} end,
+    csharp_ls = function() require("lspconfig").csharp_ls.setup {} end,
+    --omnisharp = function() require("lspconfig").omnisharp.setup {} end,
     fsautocomplete = function() require("lspconfig").fsautocomplete.setup {} end,
     ts_ls = function() require("lspconfig").ts_ls.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
@@ -58,7 +58,6 @@ return {
     html = function() require("lspconfig").html.setup {} end,
     powershell_es = function() require("lspconfig").powershell_es.setup {} end,
     pylsp = function() require("lspconfig").pylsp.setup {} end,
-
     cssls = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -67,7 +66,6 @@ return {
     emmet_ls = function() require("lspconfig").emmet_ls.setup { filetypes = { "html", "typescript" } } end,
     lua_ls = function()
       require("lspconfig").lua_ls.setup {
-
         settings = {
           Lua = {
             runtime = {
