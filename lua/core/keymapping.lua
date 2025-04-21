@@ -54,7 +54,7 @@ map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
-map.nvim_set_keymap("n", "<C-w>f", "<C-w>|", opts)
+map.nvim_set_keymap("n", "<C-w>f", ":vsplit<CR>", opts)
 map.nvim_set_keymap("n", "<C-w>t", "<C-w>_", opts)
 
 ---ynaki without newline character
