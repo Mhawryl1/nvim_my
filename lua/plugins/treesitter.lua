@@ -9,19 +9,13 @@ return {
   config = function()
     -- import nvim-treesitter plugin
     local treesitter = require "nvim-treesitter.configs"
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-    parser_config.fsharp = {
-      install_info = {
-        url = "https://github.com/ionide/tree-sitter-fsharp",
-        branch = "main",
-        files = { "src/scanner.c", "src/parser.c" },
-      },
-      requires_generate_from_grammar = false,
-      filetype = "fsharp",
-    }
+
     -- configure treesitter
-    treesitter.setup { -- enable syntax highlighting
+    -- enable syntax highlighting
+    treesitter.setup {
+      sync_install = false,
       auto_install = true,
+      modules = {},
       ignore_install = {},
       highlight = {
         enable = true,
@@ -60,12 +54,16 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<C-space>",
+          init_selection = "<C-Space>",
           node_incremental = "<C-space>",
           scope_incremental = false,
           node_decremental = "<bs>",
         },
       },
     }
+    -- forde treesitter to use curl or tar instead of git to download parsers
+    require("nvim-treesitter.install").prefer_git = false
+
+    require("nvim-treesitter.install").compilers = { "gcc", "clangd" }
   end,
 }

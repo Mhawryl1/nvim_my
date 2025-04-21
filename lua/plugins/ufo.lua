@@ -23,7 +23,7 @@ return {
   init = function()
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = "1" -- '0' is not bad
-    vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+    vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
     -- turn off foldcolumn for neotree to ovoid showing ugly numbers in neotree
@@ -77,7 +77,7 @@ return {
         --   click = "v:lua.ScSa",
         -- },
         {
-          sign = { name = { "DapBreakpoint" }, maxwidth = 1, auto = false, "  " },
+          sign = { name = { "DapBreakpoint", "DapStopped" }, maxwidth = 1, auto = false, "  " },
           click = "v:lua.dap.toggle_breakpoint",
         },
       },

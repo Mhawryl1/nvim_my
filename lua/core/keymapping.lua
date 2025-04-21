@@ -22,6 +22,13 @@ map.nvim_set_keymap("v", ">", ">gv", opts)
 --Don't replace text when pasting in visual mode
 map.nvim_set_keymap("v", "p", '"_dP', opts)
 
+-- jump to the mark and set the cursor on the midle of the screen
+vim.keymap.set("n", "'", function()
+  local mark = vim.fn.getcharstr()
+  vim.cmd("normal! '" .. mark)
+  vim.cmd "normal! zz"
+end, opts, { expr = true, silent = true, desc = "Jump to mark and center the screen" })
+
 -- Type a replacment term and press . to replace the next occurence or n to skip to the next occurence
 vim.keymap.set(
   "n",

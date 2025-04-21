@@ -97,17 +97,20 @@ end
 
 function M.getHLColor()
   local mode = vim.api.nvim_get_mode().mode
+  local hl = nil
   if mode == "v" or mode == "V" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_visual" })
   elseif mode == "c" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_command" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_command" })
   elseif mode == "i" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_insert" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_insert" })
   elseif mode == "R" then
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_replace" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_replace" })
   else
-    return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
+    hl = vim.api.nvim_get_hl(0, { name = "lualine_c_normal" })
   end
+  if next(hl) == nil then return vim.api.nvim_get_hl(0, { name = "lualine_c_normal" }) end
+  return hl
 end
 
 function M.currentDir()
@@ -300,6 +303,7 @@ function M.lspSection()
   local separator = " | "
   local clients = get_clients()
   local hl_group = M.getHLColor()
+  if hl_group.bg == nil then return "" end
   local bg_color = string.format("#%06x", hl_group.bg)
   vim.api.nvim_set_hl(0, "CustomLine", { fg = hl_group.fg, bg = bg_color })
   if vim.g.toggleFormating then

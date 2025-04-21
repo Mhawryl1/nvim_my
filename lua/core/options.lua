@@ -38,13 +38,12 @@ vim.o.updatetime = 250
 vim.wo.signcolumn = "yes"
 
 -- Set color scheme
---vim.cmd [[colorscheme onedark]]
+--vim.cmd [[colorscheme catppuccin]]
 --vim.cmd.colorscheme "catppuccin"
 
 -- Set defauld grep program
-vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
-vim.o.grepformat = "%f:%l:%c:%m"
-
+vim.o.grepprg = "rg --vimgrep --smart-case"
+vim.opt.grepformat = { "%f:%l:%c:%m" }
 --vim.cmd()
 vim.opt.clipboard = "unnamedplus"
 
@@ -62,6 +61,8 @@ vim.o.conceallevel = 0
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
+
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = " "
