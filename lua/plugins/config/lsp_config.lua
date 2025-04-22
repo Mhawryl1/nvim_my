@@ -95,6 +95,7 @@ return {
         require("lspconfig").clangd.setup {
           cmd = {
             "clangd",
+            "--offset-encoding=utf-16",
             "--limit-results=1000",
             "--background-index",
             "--function-arg-placeholders",

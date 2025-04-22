@@ -9,7 +9,8 @@ return {
       { "williamboman/mason.nvim", opts = {} },
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-
+      "mfussenegger/nvim-dap",
+      "jay-babu/mason-nvim-dap.nvim",
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
 
@@ -246,10 +247,16 @@ return {
       vim.list_extend(ensure_installed, {
         "stylua", -- Used to format Lua code
       })
+      local mason_tool_installer = require "mason-tool-installer"
+      local mason_lspconfig = require "mason-lspconfig"
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
-      local mason_lspconfig = require "mason-lspconfig"
-      local mason_tool_installer = require "mason-tool-installer"
+      vim.list_extend(ensure_installed, require("plugins.config.lsp_config").tools)
+
+      vim.list_extend(ensure_installed, require("plugins.config.lsp_config").servers)
+
+      mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").handlers)
+
       require("mason-lspconfig").setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
