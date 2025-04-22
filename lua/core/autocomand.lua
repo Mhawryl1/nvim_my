@@ -13,6 +13,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+--recognize filetype for MSVC include header files (this files don't have extension)
+if vim.loop.os_uname().sysname == "Windows_NT" then
+  vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    callback = function()
+      local path = vim.fn.expand "%:p"
+      if path:match [[C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14%.43%.34808\include]] then
+        vim.bo.filetype = "cpp"
+      end
+    end,
+  })
+end
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank() end,
