@@ -17,6 +17,15 @@ return {
       ["<C-p>"] = { "scroll_documentation_up", "fallback" },
       ["<C-n>"] = { "scroll_documentation_down", "fallback" },
     },
+    cmdline = {
+      keymap = {
+        ["<C-l>"] = { "accept", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "fallback" },
+      },
+
+      completion = { ghost_text = { enabled = true } },
+    },
     appearance = {
       -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       use_nvim_cmp_as_default = true,

@@ -24,6 +24,7 @@ return {
     DelBuff = "󰧧",
     Fire = " ",
     FindFiles = "󰮗",
+    Files = "",
     Gear = " ",
     History = " ",
     Home = "",

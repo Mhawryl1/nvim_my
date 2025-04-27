@@ -13,7 +13,7 @@ return {
     local dap = require "dap"
     local get_icon = require("core.assets").getIcon
     require("nvim-dap-virtual-text").setup()
-
+    local mason_path = vim.fn.stdpath "data" .. "\\mason\\packages\\codelldb\\extension\\"
     ---C++ debuger adapters
     -- dap.adapters.cppdbg = {
     --   id = "cppdbg",
@@ -22,8 +22,9 @@ return {
     -- }
     dap.adapters.codelldb = {
       type = "server",
+      host = "127.0.0.1",
       port = "${port}",
-      executable = "$MASON/packages/codelldb/extension/adapter/codelldb.exe",
+      executable = mason_path .. "adapter\\codelldb.exe",
       args = { "--port", "${port}" },
     }
     -- Configuration for MSVC Debugging

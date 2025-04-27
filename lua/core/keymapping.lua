@@ -27,7 +27,7 @@ vim.keymap.set("n", "'", function()
   local mark = vim.fn.getcharstr()
   vim.cmd("normal! '" .. mark)
   vim.cmd "normal! zz"
-end, opts, { expr = true, silent = true, desc = "Jump to mark and center the screen" })
+end, { expr = true, silent = true, desc = "Jump to mark and center the screen" })
 
 -- Type a replacment term and press . to replace the next occurence or n to skip to the next occurence
 vim.keymap.set(
@@ -47,10 +47,11 @@ vim.keymap.set("n", "<M-j>", ":MoveLine(1)<CR>", opts)
 vim.keymap.set("n", "<M-k>", ":MoveLine(-1)<CR>", opts)
 vim.keymap.set("v", "<M-j>", ":MoveBlock(1)<CR>", opts)
 vim.keymap.set("v", "<M-k>", ":MoveBlock(-1)<CR>", opts)
-
+---== terminal keymapping ==---
 map.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], opts)
-map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
-map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+map.nvim_set_keymap("t", "<C-j>", "<Down>", { noremap = true })
+--map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
+map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 
 --paste above and below current line
@@ -63,6 +64,11 @@ map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
 map.nvim_set_keymap("n", "<C-w>f", ":vsplit<CR>", opts)
 map.nvim_set_keymap("n", "<C-w>t", "<C-w>_", opts)
+--move beetwen windows
+map.nvim_set_keymap("n", "<C-h>", "<C-w>h", opts)
+map.nvim_set_keymap("n", "<C-j>", "<C-w>j", opts)
+map.nvim_set_keymap("n", "<C-k>", "<C-w>k", opts)
+map.nvim_set_keymap("n", "<C-l>", "<C-w>l", opts)
 
 ---ynaki without newline character
 map.nvim_set_keymap("n", "<M-c>", "^yg_", vim.tbl_extend("force", opts, { desc = "Yank without newline" }))
@@ -123,18 +129,18 @@ vim.keymap.set({ "n", "s" }, "<S-k>", function()
 end, { remap = false, silent = true, desc = "Lsp hover" })
 
 -----====lsp keymapping====-----
-vim.keymap.set({ "i", "s" }, "<C-j>", function()
-  if not require("noice.lsp").scroll(4) then return "<c-j>" end
-end, { silent = true, expr = true })
+-- vim.keymap.set({ "i", "s" }, "<C-j>", function()
+--   if not require("noice.lsp").scroll(4) then return "<c-j>" end
+-- end, { silent = true, expr = true })
+--
+-- vim.keymap.set({ "i", "s" }, "<C-k>", function()
+--   if not require("noice.lsp").scroll(-4) then return "<c-k>" end
+-- end, { silent = true, expr = true })
 
-vim.keymap.set({ "i", "s" }, "<C-k>", function()
-  if not require("noice.lsp").scroll(-4) then return "<c-k>" end
-end, { silent = true, expr = true })
-
-vim.keymap.set({ "n" }, "<C-j>", function()
-  if not require("noice.lsp").scroll(4) then return "<cmd>TmuxNavigateDown<cr>" end
-end, { silent = true, expr = true })
-
-vim.keymap.set({ "n" }, "<C-k>", function()
-  if not require("noice.lsp").scroll(-4) then return "<cmd>TmuxNavigateUp<cr>" end
-end, { silent = true, expr = true })
+-- vim.keymap.set({ "n" }, "<C-j>", function()
+--   if not require("noice.lsp").scroll(4) then return "<cmd>TmuxNavigateDown<cr>" end
+-- end, { silent = true, expr = true })
+--
+-- vim.keymap.set({ "n" }, "<C-k>", function()
+--   if not require("noice.lsp").scroll(-4) then return "<cmd>TmuxNavigateUp<cr>" end
+-- end, { silent = true, expr = true })

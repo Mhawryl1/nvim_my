@@ -47,11 +47,11 @@ return {
     },
     automatic_installation = true,
   },
+
   ---- LSP configuration
   handlers = {
-    csharp_ls = function() require("lspconfig").csharp_ls.setup {} end,
-    --omnisharp = function() require("lspconfig").omnisharp.setup {} end,
-    fsautocomplete = function() require("lspconfig").fsautocomplete.setup {} end,
+    --csharp_ls = function() require("lspconfig").csharp_ls.setup {} end,
+
     ts_ls = function() require("lspconfig").ts_ls.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     neocmake = function() require("lspconfig").neocmake.setup {} end,

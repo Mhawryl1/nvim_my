@@ -8,7 +8,11 @@ return {
     "folke/todo-comments.nvim",
     "debugloop/telescope-undo.nvim",
     "nvim-telescope/telescope-file-browser.nvim",
-    "AckslD/nvim-neoclip.lua",
+    {
+      "AckslD/nvim-neoclip.lua",
+      dependencies = { "kkharji/sqlite.lua", module = "sqlite" },
+    },
+    "ahmedkhalf/project.nvim",
   },
 
   config = function()
@@ -27,7 +31,24 @@ return {
     --   end,
     -- })
     --
+
+    require("telescope").load_extension "neoclip"
     require("neoclip").setup {
+      history = 1000,
+      enable_persistent_history = true,
+      length_limit = 1048576,
+      continuous_sync = false,
+      db_path = vim.fn.stdpath "data" .. "/databases/neoclip.sqlite3",
+      filter = nil,
+      preview = true,
+      prompt = nil,
+      default_register = '"',
+      default_register_macros = "q",
+      enable_macro_history = true,
+      content_spec_column = false,
+      disable_keycodes_parsing = false,
+      dedent_picker_display = false,
+      initial_mode = "insert",
       keys = {
         telescope = {
           i = {
@@ -43,9 +64,9 @@ return {
           },
           n = {
             select = "<cr>",
-            paste = "p",
+            --paste = "p",
             --- It is possible to map to more than one key.
-            -- paste = { 'p', '<c-p>' },
+            paste = { "p", "<c-p>" },
             paste_behind = "P",
             replay = "q",
             delete = "d",
@@ -127,6 +148,7 @@ return {
         -- },
       },
     }
+    require("telescope").load_extension "projects"
     require("telescope").load_extension "undo"
     local getIcon = require("core.assets").getIcon
     vim.keymap.set(
@@ -141,6 +163,10 @@ return {
     local builtin = require "telescope.builtin"
     local get_icon = require("core.assets").getIcon
 
+    maps.n["<leader>fp"] = {
+      function() require("telescope").extensions.projects.projects {} end,
+      { desc = getIcon("ui", "Project", 1) .. "Find projects" },
+    }
     maps.n["<leader>y"] = {
       "<cmd>lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({}))<CR>",
       { desc = "Yank history" },

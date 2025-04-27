@@ -133,6 +133,11 @@ return {
         desc = getIcon("ui", "Htop", 2) .. "htop terminal",
       },
       {
+        "<leader>te",
+        "<cmd>Yazi<cr>",
+        desc = getIcon("ui", "FolderClosed", 2) .. "yazi file exaplorer",
+      },
+      {
         "<leader>tc",
         "<cmd>lua _btop_toggle()<cr>",
         desc = getIcon("ui", "Htop", 2) .. "btop terminal",
