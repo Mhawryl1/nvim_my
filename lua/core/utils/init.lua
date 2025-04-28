@@ -1,4 +1,6 @@
 local M = {}
+
+local getIcon = require("core.assets").getIcon
 function M.get_buf_option(opt)
   local bufnr = vim.api.nvim_get_current_buf()
   local buf_option = vim.api.nwim_get_option_value(opt, { buf = bufnr })
@@ -238,15 +240,18 @@ end
 local function is_lang_lsp_prov(client)
   -- Explicitly exclude GitHub Copilot
   if client.name == "copilot" then return false end
-
-  local lsp_capabilities = {
-    "hoverProvider",
-    "referencesProvider",
-  }
-  for _, capability in ipairs(lsp_capabilities) do
-    if client.server_capabilities[capability] == true then return true end
+  if client._log_prefix:find "^LSP" then
+    return true
+  else
+    local lsp_capabilities = {
+      "hoverProvider",
+      "referencesProvider",
+    }
+    for _, capability in ipairs(lsp_capabilities) do
+      if client.server_capabilities[capability] == true then return true end
+    end
+    return false
   end
-  return false
 end
 
 local function getFromatterFromConform()
@@ -278,7 +283,6 @@ local function get_clients()
         elseif ft == "typescript" then
           ft = "ts"
         end
-
         if icons[ft] then
           devicon = icons[ft]
           local icon = { icon = devicon.icon }
@@ -351,6 +355,26 @@ function M.rename_file(opts)
   end
   vim.api.nvim_command(":bdelete " .. curr_file_name)
   vim.fn.system("rm " .. curr_file_name)
+end
+
+function M.delete_file(opts)
+  local curr_file_name = nil
+  if opts.args == "" then
+    curr_file_name = vim.fn.expand "%:p"
+  else
+    curr_file_name = vim.fn.expand(opts.args)
+  end
+
+  local confirm = vim.fn.confirm("Delete this " .. curr_file_name .. " file?", "&Yes\n&No", 1, "Question")
+  if confirm == 1 then
+    local _, _ = pcall(vim.api.nvim_command, ":bdelete " .. curr_file_name)
+    local result = vim.fn.system("rm " .. curr_file_name)
+    if vim.v.shell_error ~= 0 then
+      vim.notify(result, vim.log.levels.WARN, { title = "Delete file" })
+      return
+    end
+    vim.notify("File " .. curr_file_name .. " successfully deleted.", vim.log.levels.INFO, { title = "Delete file" })
+  end
 end
 
 local function custom_input(opts, on_confirm)

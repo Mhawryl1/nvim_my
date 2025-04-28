@@ -13,6 +13,7 @@ return {
       "ts_ls",
       "eslint",
       "rust_analyzer",
+      "omnisharp",
       "jdtls",
       "lua_ls",
       "jsonls",
@@ -50,8 +51,6 @@ return {
 
   ---- LSP configuration
   handlers = {
-    --csharp_ls = function() require("lspconfig").csharp_ls.setup {} end,
-
     ts_ls = function() require("lspconfig").ts_ls.setup {} end,
     jsonls = function() require("lspconfig").jsonls.setup {} end,
     neocmake = function() require("lspconfig").neocmake.setup {} end,

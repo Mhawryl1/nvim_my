@@ -31,7 +31,7 @@ return {
     --   end,
     -- })
     --
-
+    require("telescope").load_extension "noice"
     require("telescope").load_extension "neoclip"
     require("neoclip").setup {
       history = 1000,

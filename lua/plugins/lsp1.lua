@@ -161,6 +161,7 @@ return {
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local baseCapabilites = vim.lsp.protocol.make_client_capabilities()
       local capabilities = require("blink.cmp").get_lsp_capabilities(baseCapabilites)
+      local pid = vim.fn.getpid()
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -174,7 +175,11 @@ return {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        csharp_ls = { capabilities = capabilities },
+        --csharp_ls = { capabilities = capabilities },
+        omnisharp = {
+          capabilities = capabilities,
+          cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(pid) },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --

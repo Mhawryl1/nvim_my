@@ -88,6 +88,16 @@ return {
         end,
         desc = getIcon("ui", "RenameFile", 1) .. "Rename buffer",
       },
+      {
+        "<leader>bd",
+        function()
+          local input = vim.fn.input(getIcon("ui", "DeleteFile", 1) .. "Delete File..", vim.fn.expand "%:t", "file")
+          if #input == 0 then return end
+          if input == vim.fn.expand "%:t" then input = vim.fn.expand "%:p" end
+          vim.api.nvim_command("DeleteFile " .. vim.fn.expand(input))
+        end,
+        desc = getIcon("ui", "DeleteFile", 1) .. "Delete File",
+      },
       { "<leader>bs", "<cmd>SaveAs<cr>", desc = getIcon("ui", "SaveAs", 2) .. "Save as..." },
       { "<leader>bS", "<cmd>wall<cr>", desc = getIcon("ui", "SaveAll", 2) .. "Save all..." },
       { "<leader>f", name = " find" },
@@ -135,7 +145,7 @@ return {
       {
         "<leader>te",
         "<cmd>Yazi<cr>",
-        desc = getIcon("ui", "FolderClosed", 2) .. "yazi file exaplorer",
+        desc = getIcon("ui", "Files", 2) .. "yazi file exaplorer",
       },
       {
         "<leader>tc",
