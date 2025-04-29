@@ -13,21 +13,15 @@ return {
     local dap = require "dap"
     local get_icon = require("core.assets").getIcon
     require("nvim-dap-virtual-text").setup()
-    local mason_path = vim.fn.stdpath "data" .. "\\mason\\packages\\codelldb\\extension\\"
-    ---C++ debuger adapters
-    -- dap.adapters.cppdbg = {
-    --   id = "cppdbg",
-    --   type = "executable",
-    --   command = vim.fn.stdpath "data" .. "/mason/bin/OpenDebugAD7", -- Path to the cppdbg executable from Mason
-    -- }
+    local mason_path = vim.fn.stdpath "data" .. "/mason/"
+    local mason_ext_path = vim.fn.stdpath "data" .. "/mason/packages/codelldb/extension/"
+
     dap.adapters.codelldb = {
       type = "server",
       host = "127.0.0.1",
       port = "${port}",
-      executable = mason_path .. "adapter\\codelldb.exe",
-      args = { "--port", "${port}" },
+      executable = { command = vim.fn.expand(mason_ext_path .. "adapter/codelldb"), args = { "--port", "${port}" } },
     }
-    -- Configuration for MSVC Debugging
     dap.configurations.cpp = {
       {
         name = "Launch",
@@ -48,6 +42,7 @@ return {
         program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
       },
     }
+
     dap.adapters["local-lua"] = {
       type = "executable",
       command = "node",
@@ -70,7 +65,7 @@ return {
       type = "executable",
       command = "node",
       args = {
-        "C:\\Users\\DaroL\\AppData\\Local\\nvim-data\\mason\\packages\\chrome-debug-adapter\\out\\src\\chromeDebug.js╯",
+        mason_path .. "/packages/chrome-debug-adapter/out/src/chromeDebug.js╯",
       },
     }
 
@@ -115,17 +110,35 @@ return {
         args = {},
       },
     }
+    dap.adapters.netcoredbg = {
+      type = "executable",
+      command = mason_path .. "/packages/netcoredbg/netcoredbg/netcoredbg",
+      args = { "--interpreter=vscode" },
+      detach = false,
+    }
+    dap.configurations.cs = {
+      {
+        type = "netcoredbg",
+        name = "launch - netcoredbg",
+        request = "launch",
+        program = function()
+          -- return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/src/", "file")
+          return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net8.0/", "file")
+        end,
+        console = "internalConsole",
+      },
+    }
     vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#CA000F", bg = "" })
     vim.api.nvim_set_hl(0, "DapBreakpointHit", { fg = "#00FF00", bg = "#3c3836" })
     vim.api.nvim_set_hl(0, "DapStopped", { ctermbg = 0, bg = "#2e4d3d", fg = "#ffffff" })
     vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#2e4d3d", ctermbg = "Green" })
     vim.fn.sign_define(
       "DapBreakpoint",
-      { text = get_icon("lsp", "LSPLoading3", 0), texthl = "DapBreakpoint", linehl = "", numhl = "1" }
+      { text = get_icon("lsp", "LSPLoading2", 0) .. " ", texthl = "DapBreakpoint", linehl = "", numhl = "1" }
     )
     vim.fn.sign_define(
       "DapBreakpointHit",
-      { text = get_icon("lsp", "LSPLoading3", 0), texthl = "blue", linehl = "", numhl = "1" }
+      { text = get_icon("lsp", "LSPLoading2", 0) .. " ", texthl = "blue", linehl = "", numhl = "1" }
     )
 
     vim.fn.sign_define(

@@ -22,27 +22,27 @@ return {
         },
       }
       -- Set mapping for searching a session. ⚠️ This will only work if Telescope.nvim is installed
-      maps.n["<leader>Sf"] = {
+      maps.n["<leader>sf"] = {
         require("auto-session.session-lens").search_session,
         { noremap = true, desc = "Load session" },
       }
-      maps.n["<leader>Ss"] = {
+      maps.n["<leader>ss"] = {
         "<cmd>SessionSave<cr>",
         { noremap = true, desc = "Save session" },
       }
-      maps.n["<leader>Sd"] = {
+      maps.n["<leader>sd"] = {
         "<cmd>SessionDelete<cr>",
         { noremap = true, desc = "Delete session" },
       }
-      maps.n["<leader>Sr"] = {
+      maps.n["<leader>sr"] = {
         "<cmd>SessionRestore<cr>",
         { noremap = true, desc = "Restore session" },
       }
-      maps.n["<leader>SD"] = {
+      maps.n["<leader>sD"] = {
         "<cmd>Autosession delete<cr>",
         { noremap = true, desc = "Delete autosession" },
       }
-      maps.n["<leader>SF"] = {
+      maps.n["<leader>sF"] = {
         "<cmd>Autosession delete<cr>",
         { noremap = true, desc = "Search autosession" },
       }
