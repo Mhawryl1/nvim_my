@@ -146,6 +146,7 @@ return {
         --     preview_height = 0.8,
         --   },
         -- },
+        fzf = {},
       },
     }
     require("telescope").load_extension "projects"
@@ -240,5 +241,6 @@ return {
     }
     telescope.load_extension "file_browser"
     telescope.load_extension "fzf"
+    require("core.utils.multigrep").setup()
   end,
 }

@@ -357,6 +357,26 @@ function M.rename_file(opts)
   vim.fn.system("rm " .. curr_file_name)
 end
 
+function M.new_file()
+  local input = vim.fn.input(getIcon("ui", "NewFile", 1) .. "New file..", "", "dir")
+  local buf_dir = vim.fn.expand "%:p:h"
+  local project_dir = vim.fn.getcwd()
+  if #input > 0 then
+    vim.api.nvim_command("chdir " .. buf_dir)
+    local success, file = pcall(io.open, input, "wx")
+    if success == false then
+      vim.notify("Cannot create file. Error:  " .. input, vim.log.levels.WARN, { title = "New file" })
+    end
+    if file ~= nil then
+      vim.api.nvim_command("edit " .. input)
+      vim.notify("File created: " .. input, vim.log.levels.INFO, { title = "New file" })
+    else
+      vim.notify("Creating a file failed! " .. input .. " file exist?", vim.log.levels.WARN, { title = "New file" })
+    end
+  end
+  vim.api.nvim_command("chdir " .. project_dir)
+end
+
 function M.delete_file(opts)
   local curr_file_name = nil
   if opts.args == "" then

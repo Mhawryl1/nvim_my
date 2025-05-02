@@ -57,6 +57,8 @@ return {
       { "<leader>Q", "<Cmd>confirm qall<CR>", desc = "Quit Nvim" },
       { "<leader>l", name = getIcon("ui", "Lsptools", 1) .. "Lsp Tools" },
       { "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "LSP Show Diagnostics" },
+      { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "LSP Code [A]ction" },
+
       { "<leader>b", name = getIcon("ui", "NewFile") .. "Buffers" },
       {
         "<leader>ba",
@@ -100,6 +102,7 @@ return {
       },
       { "<leader>bs", "<cmd>SaveAs<cr>", desc = getIcon("ui", "SaveAs", 2) .. "Save as..." },
       { "<leader>bS", "<cmd>wall<cr>", desc = getIcon("ui", "SaveAll", 2) .. "Save all..." },
+      { "<leader>bn", "<cmd>NewFile<cr>", desc = getIcon("ui", "NewFile", 2) .. "NewFile..." }, --TODO
       { "<leader>f", name = " find" },
       { "<leader>fz", "<Cmd>Telescope zoxide list<CR>", desc = getIcon("ui", "FolderOpen", 2) .. "Find directories" },
       { "<leader>u", name = " UI" },

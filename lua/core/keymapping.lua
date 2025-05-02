@@ -14,7 +14,6 @@ map.nvim_set_keymap("n", "<C-d>", "<C-d>zz", opts)
 map.nvim_set_keymap("n", "<C-u>", "<C-u>zz", opts)
 
 map.nvim_set_keymap("n", "tt", ":tabnew %<cr>", opts)
-map.nvim_set_keymap("n", "<C-k>", "<C-w>k", opts)
 
 --Stay in indent mode
 map.nvim_set_keymap("v", "<", "<gv", opts)
@@ -51,7 +50,7 @@ vim.keymap.set("v", "<M-k>", ":MoveBlock(-1)<CR>", opts)
 map.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-j>", "<Down>", { noremap = true })
 --map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
-map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n>]], opts)
+map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 
 --paste above and below current line
@@ -62,15 +61,23 @@ map.nvim_set_keymap("n", "<C-w>+", "<C-w>5+", opts)
 map.nvim_set_keymap("n", "<C-w>-", "<C-w>5-", opts)
 map.nvim_set_keymap("n", "<C-w>>", "<C-w>5>", opts)
 map.nvim_set_keymap("n", "<C-w><", "<C-w>5<", opts)
-map.nvim_set_keymap("n", "<C-w>f", ":vsplit<CR>", opts)
-map.nvim_set_keymap("n", "<C-w>t", "<C-w>_", opts)
---move beetwen windows
+map.nvim_set_keymap("n", "<C-w>|", ":vsplit<CR>", vim.tbl_extend("force", opts, { desc = "Vertical split" }))
+map.nvim_set_keymap("n", "<C-w>s", ":split<CR>", vim.tbl_extend("force", opts, { desc = "Horizontal split" }))
+map.nvim_set_keymap("n", "<C-w>t", "<C-w>_", vim.tbl_extend("force", opts, { desc = "Maximaze window" }))
+map.nvim_set_keymap("n", "<C-w>b", "<C-w>=<C-w>10+", vim.tbl_extend("force", opts, { desc = "Resize to 1/3 " }))
+--move between windows
 map.nvim_set_keymap("n", "<C-h>", "<C-w>h", opts)
-map.nvim_set_keymap("n", "<C-j>", "<C-w>j", opts)
-map.nvim_set_keymap("n", "<C-k>", "<C-w>k", opts)
 map.nvim_set_keymap("n", "<C-l>", "<C-w>l", opts)
 
----ynaki without newline character
+vim.keymap.set({ "n", "s" }, "<C-j>", function()
+  if not require("noice.lsp").scroll(4) then return "<C-w>j" end
+end, { silent = true, expr = true })
+
+vim.keymap.set({ "n", "s" }, "<C-k>", function()
+  if not require("noice.lsp").scroll(-4) then return "<C-w>k" end
+end, { silent = true, expr = true })
+
+--ynaki without newline character
 map.nvim_set_keymap("n", "<M-c>", "^yg_", vim.tbl_extend("force", opts, { desc = "Yank without newline" }))
 map.nvim_set_keymap(
   "n",
@@ -78,6 +85,7 @@ map.nvim_set_keymap(
   "yg_",
   vim.tbl_extend("force", opts, { desc = "Yank from cur pos to end of the line without newline" })
 )
+map.nvim_set_keymap("n", "ä", "<cmd>Oil<cr>", vim.tbl_extend("force", opts, { desc = "[Oil] Open parent directory" }))
 ------------====Grepper keymapping====------------
 local function sendToQuickFix(result)
   local lines = vim.split(result, "\n")
@@ -127,15 +135,6 @@ vim.keymap.set({ "n", "s" }, "<S-k>", function()
   end
   require("noice.lsp").hover()
 end, { remap = false, silent = true, desc = "Lsp hover" })
-
------====lsp keymapping====-----
--- vim.keymap.set({ "i", "s" }, "<C-j>", function()
---   if not require("noice.lsp").scroll(4) then return "<c-j>" end
--- end, { silent = true, expr = true })
---
--- vim.keymap.set({ "i", "s" }, "<C-k>", function()
---   if not require("noice.lsp").scroll(-4) then return "<c-k>" end
--- end, { silent = true, expr = true })
 
 -- vim.keymap.set({ "n" }, "<C-j>", function()
 --   if not require("noice.lsp").scroll(4) then return "<cmd>TmuxNavigateDown<cr>" end
