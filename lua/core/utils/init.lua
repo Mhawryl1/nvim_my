@@ -239,7 +239,7 @@ end
 -- Function to determine if a client is an LSP server
 local function is_lang_lsp_prov(client)
   -- Explicitly exclude GitHub Copilot
-  if client.name == "copilot" then return false end
+  if string.find(string.lower(client.name), "copilot") then return false end
   if client._log_prefix:find "^LSP" then
     return true
   else
@@ -331,6 +331,7 @@ function M.lspSection()
     elseif key == "linters" and client[1] ~= nil then
       table.insert(retTable, 3, string.format("%%#CustomLine#%s", client[1]))
     elseif key == "others" and client[1] ~= nil then
+      if client[1] == "GitHub Copilot" then client[1] = "copilot" end
       table.insert(retTable, 4, string.format("%%#CustomLine#%s", client[1]))
     end
   end
