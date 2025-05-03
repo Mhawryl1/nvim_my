@@ -172,7 +172,7 @@ return {
       "<cmd>lua require('telescope').extensions.neoclip.default(require('telescope.themes').get_dropdown({}))<CR>",
       { desc = "Yank history" },
     }
-    maps.n["<leader>gb"] =
+    maps.n["gb"] =
       { function() require("telescope").extensions.file_browser.file_browser() end, { desc = "File Browser" } }
     maps.n["<leader>ut"] = { function() builtin.colorscheme { enable_preview = true } end, { desc = "Find themse" } }
 
@@ -204,6 +204,10 @@ return {
       { function() builtin.grep_string() end, { desc = getIcon("ui", "Word", 1) .. "Find word under cursor" } }
     maps.n["<leader>fC"] = { function() builtin.commands() end, { desc = "Find commands" } }
     maps.n["<leader>ff"] = {
+      function() builtin.find_files { hidden = true, no_ignore = true } end,
+      { desc = get_icon("ui", "FindFiles", 2) .. "Find Files" },
+    }
+    maps.n["ö"] = {
       function() builtin.find_files { hidden = true, no_ignore = true } end,
       { desc = get_icon("ui", "FindFiles", 2) .. "Find Files" },
     }
@@ -241,6 +245,6 @@ return {
     }
     telescope.load_extension "file_browser"
     telescope.load_extension "fzf"
-    require("core.utils.multigrep").setup()
+    require("plugins.config.multigrep").setup()
   end,
 }

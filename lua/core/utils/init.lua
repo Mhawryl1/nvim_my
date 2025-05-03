@@ -282,7 +282,10 @@ local function get_clients()
           ft = "js"
         elseif ft == "typescript" then
           ft = "ts"
+        elseif ft == "python" then
+          ft = "py"
         end
+
         if icons[ft] then
           devicon = icons[ft]
           local icon = { icon = devicon.icon }
@@ -342,19 +345,11 @@ end
 function M.rename_file(opts)
   local new_name = opts.args
   local curr_file_name = vim.fn.expand "%:t"
+  local curr_file_path = vim.fn.expand "%:p:h"
   if curr_file_name == new_name then return end
-  local status, _ = pcall(vim.api.nvim_command, ":saveas " .. new_name)
-  if not status then
-    local confirm = vim.fn.confirm("File already exists. Overwrite?", "&Yes\n&No", 1, "Question")
-    if confirm == 1 then
-      vim.api.nvim_command(":saveas! " .. new_name)
-      vim.api.nvim_command(":bdelete " .. curr_file_name)
-      vim.fn.system("rm " .. curr_file_name)
-      return
-    end
-  end
+  local _, _ = pcall(vim.api.nvim_command, ":saveas " .. curr_file_path .. "/" .. new_name)
   vim.api.nvim_command(":bdelete " .. curr_file_name)
-  vim.fn.system("rm " .. curr_file_name)
+  vim.fn.system("rm " .. curr_file_path .. "/" .. curr_file_name)
 end
 
 function M.new_file()

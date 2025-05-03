@@ -13,13 +13,15 @@ map.nvim_set_keymap("n", "<Esc>", "<cmd>nohls<cr>", opts)
 map.nvim_set_keymap("n", "<C-d>", "<C-d>zz", opts)
 map.nvim_set_keymap("n", "<C-u>", "<C-u>zz", opts)
 
-map.nvim_set_keymap("n", "tt", ":tabnew %<cr>", opts)
-
 --Stay in indent mode
 map.nvim_set_keymap("v", "<", "<gv", opts)
 map.nvim_set_keymap("v", ">", ">gv", opts)
 --Don't replace text when pasting in visual mode
 map.nvim_set_keymap("v", "p", '"_dP', opts)
+
+---===qucifix ===---
+map.nvim_set_keymap("n", "<C-M-j>", "<cmd>cnext<CR>", vim.tbl_extend("force", opts, { desc = "Next quickfix" }))
+map.nvim_set_keymap("n", "<C-M-k>", "<cmd>cprev<CR>", vim.tbl_extend("force", opts, { desc = "Prev quickfix" }))
 
 -- jump to the mark and set the cursor on the midle of the screen
 vim.keymap.set("n", "'", function()
@@ -85,7 +87,8 @@ map.nvim_set_keymap(
   "yg_",
   vim.tbl_extend("force", opts, { desc = "Yank from cur pos to end of the line without newline" })
 )
-map.nvim_set_keymap("n", "ä", "<cmd>Oil<cr>", vim.tbl_extend("force", opts, { desc = "[Oil] Open parent directory" }))
+
+map.nvim_set_keymap("n", "-", "<cmd>Oil<cr>", vim.tbl_extend("force", opts, { desc = "[Oil] Open parent directory" }))
 ------------====Grepper keymapping====------------
 local function sendToQuickFix(result)
   local lines = vim.split(result, "\n")

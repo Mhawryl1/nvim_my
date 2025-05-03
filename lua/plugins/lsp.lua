@@ -179,7 +179,22 @@ return {
         neocmake = { capabilities = capabilities },
         html = { capabilities = capabilities },
         powershell_es = { capabilities = capabilities },
-        pylsp = { capabilities = capabilities },
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                pyflakes = { enabled = false },
+                pycodestyle = { enabled = false },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                mccabe = { enabled = false },
+                pylsp_mypy = { enabled = false },
+                pylsp_black = { enabled = false },
+                pylsp_isort = { enabled = false },
+              },
+            },
+          },
+        },
         cssls = { capabilities = capabilities },
         omnisharp = {
           capabilities = capabilities,
@@ -273,6 +288,7 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
+            if server_name == "ruff" then return end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
