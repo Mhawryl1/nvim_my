@@ -3,3 +3,4 @@ session.vim
 test2.lua
 virtTextTest.lua
 lazy-lock.json
+.luarc.json

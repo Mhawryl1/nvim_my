@@ -13,6 +13,14 @@ map.nvim_set_keymap("n", "<Esc>", "<cmd>nohls<cr>", opts)
 map.nvim_set_keymap("n", "<C-d>", "<C-d>zz", opts)
 map.nvim_set_keymap("n", "<C-u>", "<C-u>zz", opts)
 
+---=== tunrn off dianostic ===----
+vim.keymap.set(
+  "n",
+  "<leader>xt",
+  function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end,
+  vim.tbl_extend("force", opts, { desc = "Toggle doagnostic warrings" })
+)
+
 --Stay in indent mode
 map.nvim_set_keymap("v", "<", "<gv", opts)
 map.nvim_set_keymap("v", ">", ">gv", opts)

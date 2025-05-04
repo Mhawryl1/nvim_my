@@ -479,8 +479,6 @@ local function save_as()
     end
   end)
 end
-
--- Add a command to call the save_as function
 vim.api.nvim_create_user_command("SaveAs", save_as, {})
 -- vim.api.nvim_create_user_command("SaveAs", save_as, {})
 
