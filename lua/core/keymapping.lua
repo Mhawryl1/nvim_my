@@ -59,7 +59,7 @@ vim.keymap.set("v", "<M-k>", ":MoveBlock(-1)<CR>", opts)
 ---== terminal keymapping ==---
 map.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-j>", "<Down>", { noremap = true })
---map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
+map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], opts)
 map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 

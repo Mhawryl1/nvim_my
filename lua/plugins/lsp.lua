@@ -178,7 +178,14 @@ return {
         },
         neocmake = { capabilities = capabilities },
         html = { capabilities = capabilities },
-        powershell_es = { capabilities = capabilities },
+        powershell_es = {
+          capabilities = capabilities,
+          filetypes = { "ps1", "psm1", "pwsh" },
+          settings = { powershell = { codeFormatting = { Preset = "OTBS" } } },
+          init_options = {
+            enableProfileLoading = false,
+          },
+        },
         pylsp = {
           settings = {
             pylsp = {
@@ -287,6 +294,7 @@ return {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
+
           function(server_name)
             if server_name == "ruff" then return end
             local server = servers[server_name] or {}
@@ -298,6 +306,7 @@ return {
           end,
         },
       }
+
       -- mason_lspconfig.setup(require("plugins.config.lsp_config").servers)
       -- mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").handlers)
       -- mason_tool_installer.setup(require("plugins.config.lsp_config").tools)
