@@ -14,7 +14,7 @@ return {
     -- enable syntax highlighting
     treesitter.setup {
       sync_install = false,
-      auto_install = true,
+      auto_install = false,
       modules = {},
       ignore_install = {},
       highlight = {
@@ -42,7 +42,6 @@ return {
         "graphql",
         "bash",
         "lua",
-        "vim",
         "dockerfile",
         "gitignore",
         "query",

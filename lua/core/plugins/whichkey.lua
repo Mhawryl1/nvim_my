@@ -59,7 +59,7 @@ return {
       { "<leader>ld", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "LSP Show Diagnostics" },
       { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "LSP Code [A]ction" },
 
-      { "<leader>b", name = getIcon("ui", "NewFile") .. "Buffers" },
+      { "<leader>b", name = getIcon("ui", "NewFile") .. "Buffers" }, -- define group of key shorcut
       {
         "<leader>ba",
         "<cmd>bufdo bd<cr>",
@@ -101,7 +101,9 @@ return {
         desc = getIcon("ui", "DeleteFile", 1) .. "Delete File",
       },
       { "<leader>bs", "<cmd>SaveAs<cr>", desc = getIcon("ui", "SaveAs", 2) .. "Save as..." },
-      { "<leader>bS", "<cmd>wall<cr>", desc = getIcon("ui", "SaveAll", 2) .. "Save all..." },
+      { "<leader>bS", "<cmd>wall<cr>", desc = getIcon("ui", "SaveAll", 2) .. "Write all..." },
+      { "<leader>bW", "<cmd>SudaWrite<cr>", desc = getIcon("ui", "Sudo", 2) .. "Sudo write..." },
+      { "<leader>bR", "<cmd>SudaRead<cr>", desc = getIcon("ui", "Sudo", 2) .. "Sudo read..." },
       { "<leader>bn", "<cmd>NewFile<cr>", desc = getIcon("ui", "NewFile", 2) .. "NewFile..." }, --TODO
       { "<leader>f", name = " find" },
       { "<leader>fz", "<Cmd>Telescope zoxide list<CR>", desc = getIcon("ui", "FolderOpen", 2) .. "Find directories" },

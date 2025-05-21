@@ -16,15 +16,15 @@ return {
       end
 
       require("telescope.pickers")
-          .new({}, {
-            prompt_title = "Harpoon",
-            finder = require("telescope.finders").new_table {
-              results = file_paths,
-            },
-            previewer = conf.file_previewer {},
-            sorter = conf.generic_sorter {},
-          })
-          :find()
+        .new({}, {
+          prompt_title = "Harpoon",
+          finder = require("telescope.finders").new_table {
+            results = file_paths,
+          },
+          previewer = conf.file_previewer {},
+          sorter = conf.generic_sorter {},
+        })
+        :find()
     end
     vim.keymap.set("n", "<leader>hu", function() toggle_telescope(harpoon:list()) end, { desc = "Open harpoon window" })
 
@@ -79,7 +79,7 @@ return {
     for i = 1, 5 do
       vim.api.nvim_set_keymap(
         "n",
-        "^" .. i,
+        "°" .. i,
         "<cmd>lua require('harpoon'):list():select(" .. i .. ")<cr>",
         { noremap = true, silent = true, desc = "select " .. i .. " buffer from list" }
       )

@@ -1,5 +1,9 @@
 return {
   "nvimdev/dashboard-nvim",
+  enabled = function()
+    -- Disable if Kitty Scrollback mode is active
+    return vim.env.KITTY_SCROLLBACK_NVIM ~= "true"
+  end,
   event = "VimEnter",
   config = function()
     require("dashboard").setup {

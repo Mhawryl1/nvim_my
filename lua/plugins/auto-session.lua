@@ -5,6 +5,10 @@ return {
     dependencies = {
       "nvim-telescope/telescope.nvim",
     },
+    enabled = function()
+      -- Disable if Kitty Scrollback mode is active
+      return vim.env.KITTY_SCROLLBACK_NVIM ~= "true"
+    end,
     config = function()
       local maps = require("core.utils").maps
       require("auto-session").setup {

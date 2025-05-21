@@ -29,6 +29,7 @@ vim.o.breakindent = true
 vim.o.undofile = true
 
 vim.opt.termguicolors = true
+vim.opt.autochdir = true
 -- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true

@@ -60,3 +60,19 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     vim.api.nvim_set_hl(0, "FormatStatus", { fg = hl_format.fg, bg = hl_group.bg })
   end,
 })
+
+------make command config -----
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "javascript",
+  callback = function()
+    vim.opt_local.makeprg = "node %"
+    vim.opt_local.errorformat = "%f: line %l, col %c, %m"
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cpp",
+  callback = function()
+    vim.opt_local.makeprg = "g++ % -o %< && ./%<"
+    vim.opt_local.errorformat = "%f:%l:%c: %m"
+  end,
+})

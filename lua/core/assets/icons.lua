@@ -10,6 +10,7 @@ return {
     Bug = " ",
     Calendar = " ",
     Check = " ",
+    Sudo = "",
     ChevronRight = ">",
     Circle = " ",
     Close = " ",

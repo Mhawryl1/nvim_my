@@ -14,6 +14,13 @@ return {
         return vim.o.shell
       end)(),
       title_pos = "center",
+
+      on_open = function(term)
+        vim.cmd "startinsert!"
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+      end,
+
+      on_close = function(term) vim.api.nvim_del_keymap("t", "jk") end,
     }
     local getIcon = require("core.assets").getIcon
     local Terminal = require("toggleterm.terminal").Terminal
@@ -60,7 +67,7 @@ return {
         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
-        --vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "jk")
         vim.api.nvim_del_keymap("t", "<esc>")
       end,
       on_close = function(term)
@@ -88,7 +95,7 @@ return {
         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
-        --vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "jk")
         vim.api.nvim_del_keymap("t", "<esc>")
       end,
       on_close = function(term)
@@ -127,7 +134,7 @@ return {
     }
     function _G._python_toggle() python:toggle() end
 
-    -----------=== gdu ===---------
+    -----------=== GDU ===---------
     local gdu = Terminal:new {
       cmd = "gdu",
       hidden = true,
@@ -142,14 +149,14 @@ return {
         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
-        --vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "jk")
         vim.api.nvim_del_keymap("t", "<esc>")
       end,
       on_close = function(term)
         vim.cmd "startinsert!"
         vim.api.nvim_del_keymap("t", "j")
         vim.api.nvim_del_keymap("t", "k")
-        --vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        -- vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }
@@ -170,7 +177,7 @@ return {
         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "j", "<Down>", { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "k", "<Up>", { noremap = true, silent = true })
-        --vim.api.nvim_del_keymap("t", "jk")
+        vim.api.nvim_del_keymap("t", "jk")
         vim.api.nvim_del_keymap("t", "<esc>")
       end,
       on_close = function(term)
