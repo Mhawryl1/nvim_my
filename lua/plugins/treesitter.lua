@@ -61,8 +61,6 @@ return {
       },
     }
     -- forde treesitter to use curl or tar instead of git to download parsers
-    require("nvim-treesitter.install").prefer_git = false
-
-    require("nvim-treesitter.install").compilers = { "gcc", "clangd" }
+    require("nvim-treesitter.install").prefer_git = true
   end,
 }

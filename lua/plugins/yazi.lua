@@ -33,6 +33,20 @@ return {
     keymaps = {
       show_help = "<f1>",
     },
+    hooks = {
+      yazi_opened = function(preselected_path, yazi_buffer_id, config)
+        -- you can optionally modify the config for this specific yazi
+        -- invocation if you want to customize the behaviour
+        vim.api.nvim_del_keymap("t", "jk")
+      end,
+
+      -- when yazi was successfully closed
+      yazi_closed_successfully = function(chosen_file, config, state)
+        -- you can optionally modify the config for this specific yazi
+        -- invocation if you want to customize the behaviour
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+      end,
+    },
   },
   -- 👇 if you use `open_for_directories=true`, this is recommended
   init = function()

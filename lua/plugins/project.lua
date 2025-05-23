@@ -6,7 +6,10 @@ return {
       callback = function()
         local project_nvim = require "project_nvim.project"
         local dir = project_nvim.get_project_root()
-        if dir == nil then vim.cmd("cd " .. vim.fn.expand "%:p:h") end
+        if dir == nil then
+          local path = vim.fn.expand "%:p:h"
+          local _, result = pcall(vim.cmd, "cd " .. path)
+        end
       end,
     })
   end,

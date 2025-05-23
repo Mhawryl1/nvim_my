@@ -42,7 +42,7 @@ return {
       end,
       on_close = function(term)
         vim.cmd "startinsert!"
-        --vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }
@@ -74,7 +74,7 @@ return {
         vim.cmd "startinsert!"
         vim.api.nvim_del_keymap("t", "j")
         vim.api.nvim_del_keymap("t", "k")
-        --vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }
@@ -102,7 +102,7 @@ return {
         vim.cmd "startinsert!"
         vim.api.nvim_del_keymap("t", "j")
         vim.api.nvim_del_keymap("t", "k")
-        --vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }
@@ -156,7 +156,7 @@ return {
         vim.cmd "startinsert!"
         vim.api.nvim_del_keymap("t", "j")
         vim.api.nvim_del_keymap("t", "k")
-        -- vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }
@@ -184,7 +184,7 @@ return {
         vim.cmd "startinsert!"
         vim.api.nvim_del_keymap("t", "j")
         vim.api.nvim_del_keymap("t", "k")
-        --vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
         vim.api.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
       end,
     }

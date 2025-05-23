@@ -149,6 +149,7 @@ return {
         fzf = {},
       },
     }
+
     require("telescope").load_extension "projects"
     require("telescope").load_extension "undo"
     local getIcon = require("core.assets").getIcon
@@ -246,6 +247,7 @@ return {
     telescope.load_extension "file_browser"
     telescope.load_extension "fzf"
     telescope.load_extension "projects"
+
     require("plugins.config.multigrep").setup()
   end,
 }
