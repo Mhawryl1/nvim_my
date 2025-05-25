@@ -13,8 +13,8 @@ return {
       "jay-babu/mason-nvim-dap.nvim",
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
-
       "saghen/blink.cmp",
+      "SmiteshP/nvim-navic",
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -29,7 +29,6 @@ return {
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
-
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
@@ -176,7 +175,7 @@ return {
         jsonls = {
           capabilities = capabilities,
         },
-        neocmake = { capabilities = capabilities },
+        neocmake = { capabilities = capabilities, cmd = { "cmake-language-server" }, filetypes = { "cmake" } },
         html = { capabilities = capabilities },
         powershell_es = {
           capabilities = capabilities,
@@ -231,6 +230,7 @@ return {
         -- ts_ls = {},
         --
         lua_ls = {
+          on_attach = on_attach,
           -- cmd = { ... },
           -- filetypes = { ... },
           capabilities = capabilities,
@@ -294,22 +294,16 @@ return {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
-
           function(server_name)
             if server_name == "ruff" then return end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
-
             server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
             require("lspconfig")[server_name].setup(server)
           end,
         },
       }
-
-      -- mason_lspconfig.setup(require("plugins.config.lsp_config").servers)
-      -- mason_lspconfig.setup_handlers(require("plugins.config.lsp_config").handlers)
-      -- mason_tool_installer.setup(require("plugins.config.lsp_config").tools)
     end,
   },
 }

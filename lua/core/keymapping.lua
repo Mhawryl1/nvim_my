@@ -53,16 +53,17 @@ vim.keymap.set(
   vim.tbl_extend("force", opts, { desc = "Change selection and press . to repeat for next occurence" })
 )
 
-vim.keymap.set("n", "<M-j>", ":MoveLine(1)<CR>", opts)
-vim.keymap.set("n", "<M-k>", ":MoveLine(-1)<CR>", opts)
-vim.keymap.set("v", "<M-j>", ":MoveBlock(1)<CR>", opts)
-vim.keymap.set("v", "<M-k>", ":MoveBlock(-1)<CR>", opts)
+vim.keymap.set("n", "<M-j>", ":MoveLine(1)<CR>", vim.tbl_extend("force", opts, { desc = "Move current line down" }))
+vim.keymap.set("n", "<M-k>", ":MoveLine(-1)<CR>", vim.tbl_extend("force", opts, { desc = "Move current line up" }))
+vim.keymap.set("v", "<M-j>", ":MoveBlock(1)<CR>", vim.tbl_extend("force", opts, { desc = "Move selection down" }))
+vim.keymap.set("v", "<M-k>", ":MoveBlock(-1)<CR>", vim.tbl_extend("force", opts, { desc = "Move selection up" }))
 ---== terminal keymapping ==---
 map.nvim_set_keymap("t", "<esc>", [[<C-\><C-n>]], opts)
-vim.api.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
+map.nvim_set_keymap("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
 map.nvim_set_keymap("t", "<C-j>", "<Down>", { noremap = true })
 map.nvim_set_keymap("t", "<C-k>", "<Up>", { noremap = true })
 map.nvim_set_keymap("t", "<C-w>", [[<C-\><C-n><C-w>]], { noremap = true, silent = true })
+map.nvim_set_keymap("t", "<a-cr>", "<cmd>ToggleTerm<cr>", { noremap = true, silent = true, desc = "Toggle terminal" })
 ---=== write buffer ===----
 map.nvim_set_keymap("n", "<C-s>", "<cmd>w<cr>", opts)
 --paste above and below current line
@@ -99,6 +100,12 @@ map.nvim_set_keymap(
 )
 
 map.nvim_set_keymap("n", "-", "<cmd>Oil<cr>", vim.tbl_extend("force", opts, { desc = "[Oil] Open parent directory" }))
+map.nvim_set_keymap(
+  "n",
+  "<A-e>",
+  "<cmd>Oil<cr>",
+  vim.tbl_extend("force", opts, { desc = "[Oil] Open parent directory" })
+)
 ------------====Grepper keymapping====------------
 local function sendToQuickFix(result)
   local lines = vim.split(result, "\n")

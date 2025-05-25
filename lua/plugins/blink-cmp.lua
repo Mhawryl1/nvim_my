@@ -35,7 +35,7 @@ return {
       enabled = true,
       trigger = {
         -- Show the signature help automatically
-        enabled = true,
+        enabled = false,
         -- Show the signature help window after typing any of alphanumerics, `-` or `_`
         show_on_keyword = false,
         blocked_trigger_characters = {},
@@ -103,7 +103,6 @@ return {
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
       default = { "lsp", "path", "snippets", "buffer", "copilot" },
-
       providers = {
         copilot = {
           name = "copilot",

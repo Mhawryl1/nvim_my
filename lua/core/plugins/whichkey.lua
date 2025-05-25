@@ -135,6 +135,11 @@ return {
         desc = getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
       },
       {
+        "<a-cr>",
+        ":ToggleTerm size=60 direction=vertical name=term<cr>",
+        desc = getIcon("ui", "Term", 2) .. "toggle horizontal terminal",
+      },
+      {
         "<leader>tf",
         function()
           vim.api.nvim_command ":ToggleTerm size=10 direction=float name=float<cr>"
