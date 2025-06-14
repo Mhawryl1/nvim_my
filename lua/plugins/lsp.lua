@@ -201,6 +201,7 @@ return {
             },
           },
         },
+        bashls = { capabilities = capabilities },
         cssls = { capabilities = capabilities },
         omnisharp = {
           capabilities = capabilities,
@@ -218,6 +219,8 @@ return {
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=iwyu",
+            "--cross-file-rename=true",
+            "--hidden-features",
           },
         },
         -- rust_analyzer = {},
@@ -280,8 +283,6 @@ return {
       vim.list_extend(ensure_installed, {
         "stylua", -- Used to format Lua code
       })
-      local mason_tool_installer = require "mason-tool-installer"
-      local mason_lspconfig = require "mason-lspconfig"
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
       -- vim.list_extend(ensure_installed, require("plugins.config.lsp_config").tools)

@@ -16,6 +16,9 @@ vim.o.scrolloff = 10
 vim.wo.number = true
 vim.o.relativenumber = true
 
+vim.o.autoindent = true
+vim.o.smartindent = true
+
 vim.o.numberwidth = 6
 ----
 vim.o.wrap = false

@@ -1,6 +1,6 @@
 return {
   "folke/noice.nvim",
-  event = "VeryLazy",
+  --  event = "VeryLazy",
   opts = {
     -- add any options here
   },
@@ -110,6 +110,8 @@ return {
           ["vim.lsp.util.stylize_markdown"] = true,
           -- override cmp documentation with Noice (needs the other options to work)
           -- ["cmp.entry.get_documentation"] = true,
+          ["vim.ui.input"] = true,
+          ["vim.ui.select"] = true,
         },
         hover = {
           enabled = true,

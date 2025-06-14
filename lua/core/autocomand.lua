@@ -69,10 +69,14 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.errorformat = "%f: line %l, col %c, %m"
   end,
 })
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "cpp",
-  callback = function()
-    vim.opt_local.makeprg = "g++ % -o %< && ./%<"
-    vim.opt_local.errorformat = "%f:%l:%c: %m"
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "cpp",
+--   callback = function()
+--     vim.opt_local.makeprg = "g++ % -o %< && ./%<"
+--     vim.opt_local.errorformat = "%f:%l:%c: %m"
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "cpp",
+--   callback = function() vim.api.nvim_setkeymap("n", "<C-r>", "<cmd>CMakeRun<cr>", { noremap = true, silent = true }) end,
+-- })

@@ -16,6 +16,12 @@ return {
       desc = getIcon("ui", "Files") .. " Open yazi at the current file",
     },
     {
+      "<C-y>",
+      mode = { "n", "v" },
+      "<cmd>Yazi<cr>",
+      desc = getIcon("ui", "Files") .. " Open yazi at the current file",
+    },
+    {
       -- Open in the current working directory
       "<leader>td",
       "<cmd>Yazi cwd<cr>",

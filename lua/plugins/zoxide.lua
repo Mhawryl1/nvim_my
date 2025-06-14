@@ -1,4 +1,3 @@
---if true then return {} end
 return {
   "jvgrootveld/telescope-zoxide",
   dependencies = {

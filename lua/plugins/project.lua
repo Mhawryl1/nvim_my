@@ -1,18 +1,19 @@
 return {
   "ahmedkhalf/project.nvim",
-  init = function()
-    vim.api.nvim_create_autocmd("BufEnter", {
-      group = vim.api.nvim_create_augroup("ProjectNvim", { clear = true }),
-      callback = function()
-        local project_nvim = require "project_nvim.project"
-        local dir = project_nvim.get_project_root()
-        if dir == nil then
-          local path = vim.fn.expand "%:p:h"
-          local _, result = pcall(vim.cmd, "cd " .. path)
-        end
-      end,
-    })
-  end,
+  -- init = function()
+  --   vim.api.nvim_create_autocmd("BufEnter", {
+  --     group = vim.api.nvim_create_augroup("ProjectNvim", { clear = true }),
+  --     callback = function()
+  --       local project_nvim = require "project_nvim.project"
+  --       local dir = project_nvim.get_project_root()
+  --       if dir == nil then
+  --         local path = vim.fn.expand "%:p:h"
+  --         vim.notify("Project dir " .. path)
+  --         local _, result = pcall(vim.cmd, "cd " .. path)
+  --       end
+  --     end,
+  --   })
+  -- end,
   config = function()
     require("project_nvim").setup {
       -- Manual mode doesn't automatically change your root directory, so you have

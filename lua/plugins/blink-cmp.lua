@@ -10,7 +10,7 @@ return {
   opts = {
     keymap = {
       preset = "default",
-      ["<C-l>"] = { "accept", "fallback" },
+      ["<C-e>"] = { "accept", "fallback" },
       ["<C-j>"] = { "select_next", "fallback" },
       ["<C-k>"] = { "select_prev", "fallback" },
       ["<CR>"] = { "accept", "fallback" },
@@ -19,7 +19,7 @@ return {
     },
     cmdline = {
       keymap = {
-        ["<C-l>"] = { "accept", "fallback" },
+        ["<C-e>"] = { "accept", "fallback" },
         ["<C-j>"] = { "select_next", "fallback" },
         ["<C-k>"] = { "select_prev", "fallback" },
       },
@@ -35,7 +35,7 @@ return {
       enabled = true,
       trigger = {
         -- Show the signature help automatically
-        enabled = false,
+        enabled = true,
         -- Show the signature help window after typing any of alphanumerics, `-` or `_`
         show_on_keyword = false,
         blocked_trigger_characters = {},
@@ -69,6 +69,7 @@ return {
         border = "rounded",
         draw = {
           columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+          treesitter = { "lsp" },
         },
       },
       ghost_text = {

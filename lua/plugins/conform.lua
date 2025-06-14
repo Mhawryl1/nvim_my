@@ -31,6 +31,7 @@ return {
       css = { "prettierd" },
       cpp = { "clang-format" },
       cmake = { "cmake_format" },
+      sh = { "beautysh" },
     },
     -- Set default options
     default_format_opts = {

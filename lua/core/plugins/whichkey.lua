@@ -84,10 +84,7 @@ return {
       },
       {
         "<leader>br",
-        function()
-          local input = vim.fn.input(getIcon("ui", "RenameFile", 1) .. "Rename file..")
-          if #input > 0 then vim.api.nvim_command("RenameFile " .. input) end
-        end,
+        "<cmd>RenameFile<cr>",
         desc = getIcon("ui", "RenameFile", 1) .. "Rename buffer",
       },
       {
@@ -106,7 +103,16 @@ return {
       { "<leader>bR", "<cmd>SudaRead<cr>", desc = getIcon("ui", "Sudo", 2) .. "Sudo read..." },
       { "<leader>bn", "<cmd>NewFile<cr>", desc = getIcon("ui", "NewFile", 2) .. "NewFile..." }, --TODO
       { "<leader>f", name = " find" },
-      { "<leader>fz", "<Cmd>Telescope zoxide list<CR>", desc = getIcon("ui", "FolderOpen", 2) .. "Find directories" },
+      {
+        "<leader>fz",
+        "<Cmd>Telescope zoxide list<CR>",
+        desc = getIcon("ui", "FolderOpen", 2) .. "FInd dir with zoxide",
+      },
+      {
+        "<leader>fd",
+        "<Cmd>Telescope search_dir_picker<CR>",
+        desc = getIcon("ui", "FolderOpen", 2) .. "Find directories",
+      },
       { "<leader>u", name = " UI" },
       { "<leader>us", ":set spell!<cr>", desc = "toggle spell checker" },
       {

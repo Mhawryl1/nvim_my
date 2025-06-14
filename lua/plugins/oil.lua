@@ -10,8 +10,9 @@ return {
   lazy = false,
   config = function()
     require("oil").setup {
+      default_file_explorer = true,
+      delete_to_trash = true,
       keymaps = {
-
         ["<BS>"] = { "actions.parent", mode = "n" },
       },
     }

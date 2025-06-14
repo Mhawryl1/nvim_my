@@ -343,34 +343,43 @@ function M.lspSection()
   return string.sub(ret_str, 1, #ret_str - 2)
 end
 
-function M.rename_file(opts)
-  local new_name = opts.args
+function M.rename_file()
   local curr_file_name = vim.fn.expand "%:t"
-  local curr_file_path = vim.fn.expand "%:p:h"
-  if curr_file_name == new_name then return end
-  local _, _ = pcall(vim.api.nvim_command, ":saveas " .. curr_file_path .. "/" .. new_name)
-  vim.api.nvim_command(":bdelete " .. curr_file_name)
-  vim.fn.system("rm " .. curr_file_path .. "/" .. curr_file_name)
+  local input = vim.fn.input { default = curr_file_name, prompt = getIcon("ui", "RenameFile", 1) .. "Rename file.." }
+  if #input > 0 then
+    local new_name = input
+    local curr_file_path = vim.fn.expand "%:p:h"
+    if curr_file_name == new_name then return end
+    local _, _ = pcall(vim.api.nvim_command, ":saveas " .. curr_file_path .. "/" .. new_name)
+    vim.api.nvim_command(":bdelete " .. curr_file_name)
+    vim.fn.system("rm " .. curr_file_path .. "/" .. curr_file_name)
+  end
+end
+
+local function extract_dir_from_path(path)
+  local dir = vim.fn.fnamemodify(path, ":p:h")
+  if dir == "." then dir = vim.fn.getcwd() end
+  return dir
 end
 
 function M.new_file()
-  local input = vim.fn.input(getIcon("ui", "NewFile", 1) .. "New file..", "", "dir")
   local buf_dir = vim.fn.expand "%:p:h"
   local project_dir = vim.fn.getcwd()
-  if #input > 0 then
-    vim.api.nvim_command("chdir " .. buf_dir)
-    local success, file = pcall(io.open, input, "wx")
-    if success == false then
-      vim.notify("Cannot create file. Error:  " .. input, vim.log.levels.WARN, { title = "New file" })
+  vim.api.nvim_command("cd " .. buf_dir)
+  --local input = vim.fn.input { prompt = getIcon("ui", "NewFile", 1) .. "New file ", completion = "dir_in_path" }
+  vim.ui.input({ prompt = getIcon("ui", "NewFile", 1) .. "New File", completion = "dir_in_path" }, function(input)
+    if input ~= nil and #input > 0 then
+      local ok, err = pcall(vim.api.nvim_command, "edit " .. buf_dir .. "/" .. input)
+      if not ok then
+        vim.notify("Cannot create file " .. input .. ". Error:  " .. err, vim.log.levels.WARN, { title = "New file" })
+      else
+        vim.api.nvim_command "w++p"
+        vim.notify("File created: " .. input, vim.log.levels.INFO, { title = "New file" })
+      end
     end
-    if file ~= nil then
-      vim.api.nvim_command("edit " .. input)
-      vim.notify("File created: " .. input, vim.log.levels.INFO, { title = "New file" })
-    else
-      vim.notify("Creating a file failed! " .. input .. " file exist?", vim.log.levels.WARN, { title = "New file" })
-    end
-  end
-  vim.api.nvim_command("chdir " .. project_dir)
+  end)
+
+  vim.api.nvim_command("cd " .. project_dir)
 end
 
 function M.delete_file(opts)
@@ -389,7 +398,7 @@ function M.delete_file(opts)
       vim.notify(result, vim.log.levels.WARN, { title = "Delete file" })
       return
     end
-    vim.notify("File " .. curr_file_name .. " successfully deleted.", vim.log.levels.INFO, { title = "Delete file" })
+    vim.notify("File " .. curr_file_name .. " deleted!!", vim.log.levels.INFO, { title = "Delete file" })
   end
 end
 

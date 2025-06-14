@@ -20,7 +20,8 @@ return {
       type = "server",
       host = "127.0.0.1",
       port = "${port}",
-      executable = { command = vim.fn.expand(mason_ext_path .. "adapter/codelldb"), args = { "--port", "${port}" } },
+      executable = { command = "/usr/bin/lldb-dap", args = { "--port", "${port}" } },
+      --executable = { command = vim.fn.expand(mason_ext_path .. "adapter/codelldb"), args = { "--port", "${port}" } },
     }
     dap.configurations.cpp = {
       {
@@ -196,6 +197,9 @@ return {
     maps.n["<Leader>dr"] = { function() require("dap").restart_frame() end, { desc = "Restart (C-F5)" } }
     maps.n["<Leader>dR"] = { function() require("dap").repl.toggle() end, { desc = "Toggle REPL" } }
     maps.n["<Leader>ds"] = { function() require("dap").run_to_cursor() end, { desc = "Run To Cursor" } }
+    maps.n["<leader>dw"] = { function() require("dapui").elements.watches.add() end, { desc = "Watch", silent = true } }
+    maps.n["<leader>df"] = { function() require("dapui").float_element() end, { desc = "Float window", silent = true } }
     vim.keymap.set("n", "<leader>ud", function() require("dapui").toggle() end, { desc = "Toggle DAP UI" })
+    vim.keymap.set("n", "<leader>dh", function() require("dapui").eval() end, { desc = "Dap hover" })
   end,
 }

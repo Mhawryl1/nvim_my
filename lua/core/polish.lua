@@ -38,12 +38,13 @@ vim.diagnostic.config {
     style = "minimal",
   },
 }
+
 vim.api.nvim_create_user_command("NewFile", function(args) require("core.utils").new_file(args) end, {
   nargs = "?",
   desc = { "Create new file" },
 })
-vim.api.nvim_create_user_command("RenameFile", function(args) require("core.utils").rename_file(args) end, {
-  nargs = 1,
+vim.api.nvim_create_user_command("RenameFile", function() require("core.utils").rename_file() end, {
+  nargs = 0,
   desc = { "Rename the current file to <new-name>" },
 })
 
