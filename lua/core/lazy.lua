@@ -66,10 +66,6 @@ require("lazy").setup {
     opts = {},
   },
   {
-    "tpope/vim-surround",
-    event = "BufEnter",
-  },
-  {
     "hedyhli/outline.nvim",
     lazy = true,
     cmd = { "Outline", "OutlineOpen" },

@@ -43,7 +43,7 @@ return {
           {
             desc = "󱧀 Sessions",
             group = "DiagnosticHint",
-            action = "SessionSearch",
+            action = "AutoSession search",
             key = "s",
           },
           {

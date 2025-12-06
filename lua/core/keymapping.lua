@@ -34,10 +34,12 @@ map.nvim_set_keymap("n", "<C-M-k>", "<cmd>cprev<CR>", vim.tbl_extend("force", op
 
 -- jump to the mark and set the cursor on the midle of the screen
 vim.keymap.set("n", "'", function()
-  local mark = vim.fn.getcharstr()
-  vim.cmd("normal! '" .. mark)
-  vim.cmd "normal! zz"
-end, { expr = true, silent = true, desc = "Jump to mark and center the screen" })
+  local ch = vim.fn.getchar()
+  if not ch or ch == 0 then return end
+  if type(ch) == "number" then ch = vim.fn.nr2char(ch) end
+  local seq = "'" .. ch .. "zz"
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(seq, true, false, true), "n", false)
+end, { expr = false, silent = true, desc = "Jump to mark and center the screen" })
 
 -- Type a replacment term and press . to replace the next occurence or n to skip to the next occurence
 vim.keymap.set(

@@ -39,6 +39,10 @@ vim.diagnostic.config {
   },
 }
 
+vim.api.nvim_create_user_command("NoiceToggleMsg", function() require("core.utils").toggle_noice_messages() end, {
+  desc = { "Toggle UI Noice messages" },
+})
+
 vim.api.nvim_create_user_command("NewFile", function(args) require("core.utils").new_file(args) end, {
   nargs = "?",
   desc = { "Create new file" },

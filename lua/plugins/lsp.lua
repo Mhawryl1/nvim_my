@@ -10,6 +10,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "mfussenegger/nvim-dap",
+      "p00f/clangd_extensions.nvim",
       "jay-babu/mason-nvim-dap.nvim",
       -- Useful status updates for LSP.
       { "j-hui/fidget.nvim", opts = {} },
@@ -53,6 +54,8 @@ return {
           --  For example, in C this would take you to the header.
           map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
+          map("grf", "<cmd>ClangdSwitchSourceHeader<cr>", "Jump to [F]ile (Source/Header)")
+          --
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
           map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")

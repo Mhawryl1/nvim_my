@@ -20,8 +20,8 @@ return {
       type = "server",
       host = "127.0.0.1",
       port = "${port}",
-      executable = { command = "/usr/bin/lldb-dap", args = { "--port", "${port}" } },
-      --executable = { command = vim.fn.expand(mason_ext_path .. "adapter/codelldb"), args = { "--port", "${port}" } },
+      --executable = { command = "/usr/bin/lldb-dap", args = { "--port", "${port}" } },
+      executable = { command = vim.fn.expand(mason_ext_path .. "adapter/codelldb"), args = { "--port", "${port}" } },
     }
     dap.configurations.cpp = {
       {
@@ -30,17 +30,26 @@ return {
         request = "launch",
         program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
         cwd = "${workspaceFolder}",
-        stopAtEntry = true,
+        stopOnEntry = true,
       },
       {
         name = "Attach to gdbserver :1234",
-        type = "cppdbg",
-        request = "launch",
-        MIMode = "gdb",
-        miDebuggerServerAddress = "localhost:1234",
-        miDebuggerPath = "/usr/bin/gdb",
+        type = "codelldb",
+        request = "attach",
+        pid = require("dap.utils").pick_process,
         cwd = "${workspaceFolder}",
+      },
+      {
+        name = "Launch with args",
+        type = "codelldb",
+        request = "launch",
         program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        args = function()
+          local input = vim.fn.input "Program arguments: "
+          return vim.fn.split(input, " ", true)
+        end,
       },
     }
 
@@ -62,39 +71,30 @@ return {
         end
       end,
     }
+    dap.adapters.firefox = {
+      type = "executable",
+      command = "node",
+      args = {
+        mason_path .. "/packages/firefox-debug-adapter/dist/adapter.bundle.js",
+      },
+    }
+
     dap.adapters.chrome = {
       type = "executable",
       command = "node",
       args = {
-        mason_path .. "/packages/chrome-debug-adapter/out/src/chromeDebug.js╯",
+        mason_path .. "/packages/chrome-debug-adapter/out/src/chromeDebug.js",
       },
     }
-
-    dap.configurations.javascript = { -- change this to javascript if needed
+    dap.configurations.javascript = {
       {
-        name = "javascript",
-        type = "chrome",
-        request = "attach",
-        program = "${file}",
-        cwd = vim.fn.getcwd(),
-        sourceMaps = true,
-        protocol = "inspector",
-        port = 9222,
+        name = "Debug with Firefox - Attach",
+        type = "firefox",
+        request = "launch",
+        reAttach = true,
+        url = "http://localhost:3000",
         webRoot = "${workspaceFolder}",
-      },
-    }
-
-    dap.configurations.typescript = { -- change to typescript if needed
-      {
-        name = "typescript",
-        type = "chrome",
-        request = "attach",
-        program = "${file}",
-        cwd = vim.fn.getcwd(),
-        sourceMaps = true,
-        protocol = "inspector",
-        port = 9222,
-        webRoot = "${workspaceFolder}",
+        firefoxExecutable = "/usr/bin/firefox",
       },
     }
     dap.configurations.lua = {

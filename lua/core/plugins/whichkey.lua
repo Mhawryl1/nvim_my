@@ -3,7 +3,7 @@ return {
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
-    vim.o.timeoutlen = 300
+    vim.o.timeoutlen = 500
   end,
   config = function()
     local wk = require "which-key"
@@ -35,7 +35,7 @@ return {
         desc = getIcon("ui", "Home", 1) .. "Home",
       },
       { "<leader>h", name = "harpoon" },
-      { "<leader>S", name = "Session" },
+      { "<leader>s", name = "Session" },
       { "<leader>c", function() require("core.utils").close_buffer() end, desc = "Close buffer" },
       {
         "<leader>q",

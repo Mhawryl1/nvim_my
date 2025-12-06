@@ -369,6 +369,12 @@ function M.new_file()
   --local input = vim.fn.input { prompt = getIcon("ui", "NewFile", 1) .. "New file ", completion = "dir_in_path" }
   vim.ui.input({ prompt = getIcon("ui", "NewFile", 1) .. "New File", completion = "dir_in_path" }, function(input)
     if input ~= nil and #input > 0 then
+      local file_exists = vim.fn.filereadable(buf_dir .. "/" .. input)
+      if file_exists == 1 then
+        vim.notify("File " .. input .. " already exists!", vim.log.levels.WARN, { title = "New file" })
+        local _, _ = pcall(vim.api.nvim_command, "edit " .. buf_dir .. "/" .. input)
+        return
+      end
       local ok, err = pcall(vim.api.nvim_command, "edit " .. buf_dir .. "/" .. input)
       if not ok then
         vim.notify("Cannot create file " .. input .. ". Error:  " .. err, vim.log.levels.WARN, { title = "New file" })
@@ -389,10 +395,10 @@ function M.delete_file(opts)
   else
     curr_file_name = vim.fn.expand(opts.args)
   end
-
   local confirm = vim.fn.confirm("Delete this " .. curr_file_name .. " file?", "&Yes\n&No", 1, "Question")
   if confirm == 1 then
-    local _, _ = pcall(vim.api.nvim_command, ":bdelete " .. curr_file_name)
+    local curr_bufnr = vim.fn.bufnr()
+    local _, _ = pcall(vim.api.nvim_command, ":bdelete " .. curr_bufnr)
     local result = vim.fn.system("rm " .. curr_file_name)
     if vim.v.shell_error ~= 0 then
       vim.notify(result, vim.log.levels.WARN, { title = "Delete file" })
@@ -500,6 +506,29 @@ function M.is_git_repo()
     return true
   end
   return false
+end
+
+function M.toggle_noice_messages()
+  local noice = require "noice"
+  if vim.g.noice_enabled == true then
+    noice.setup {
+      routes = {
+        {
+          filter = { event = "notify", kind = "info" },
+          opts = { skip = true },
+        },
+      },
+    }
+    vim.notify("Noice info messages OFF", vim.log.levels.INFO)
+    vim.g.noice_enabled = false
+  else
+    -- enable info messages again (clear routes)
+    noice.setup {
+      routes = {},
+    }
+    vim.notify("Noice info messages ON", vim.log.levels.INFO)
+    vim.g.noice_enabled = true
+  end
 end
 
 return M
