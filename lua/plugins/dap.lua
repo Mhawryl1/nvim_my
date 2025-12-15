@@ -15,7 +15,6 @@ return {
     require("nvim-dap-virtual-text").setup()
     local mason_path = vim.fn.stdpath "data" .. "/mason/"
     local mason_ext_path = vim.fn.stdpath "data" .. "/mason/packages/codelldb/extension/"
-
     dap.adapters.codelldb = {
       type = "server",
       host = "127.0.0.1",
@@ -30,7 +29,7 @@ return {
         request = "launch",
         program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
         cwd = "${workspaceFolder}",
-        stopOnEntry = true,
+        stopOnEntry = false,
       },
       {
         name = "Attach to gdbserver :1234",
@@ -153,7 +152,25 @@ return {
     vim.fn.sign_define("DapLogPoint", { text = "🔍", texthl = "DapLogPoint", linehl = "", numhl = "" })
     vim.fn.sign_define("DapStopped", { text = " ▶", texthl = "DapStopped", linehl = "DapStoppedLine", numhl = "" })
     local dapui = require "dapui"
-    dapui.setup()
+    dapui.setup {
+      layouts = {
+        {
+          elements = {
+            { id = "scopes", size = 0.33 },
+            { id = "stacks", size = 0.33 },
+            { id = "breakpoints", size = 0.17 },
+            { id = "watches", size = 0.17 },
+          },
+          size = 40,
+          position = "left",
+        },
+        {
+          elements = { "repl", "console" },
+          size = 10,
+          position = "bottom",
+        },
+      },
+    }
     dap.listeners.before.attach.dapui_config = function() dapui.open() end
     dap.listeners.before.launch.dapui_config = function() dapui.open() end
     dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end

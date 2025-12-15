@@ -30,7 +30,7 @@ return {
   end,
   keys = {
     { "<space>Fa", ":Telescope pathogen live_grep<CR>", silent = true },
-    { "<C-p>", ":Telescope pathogen<CR>", silent = true },
+    { "<C-P>", ":Telescope pathogen<CR>", silent = true },
     { "<C-f>", ":Telescope pathogen find_files<CR>", silent = true },
     { "<space>Fg", ":Telescope pathogen grep_string<CR>", silent = true },
   },

@@ -14,6 +14,16 @@ return {
         { desc = "[Bufferline] Go to " .. n .. "th buffer" },
       }
     end
+
+    maps.n["gl"] = {
+      "<cmd>BufferLineMoveNext<cr>",
+      { noremap = true, desc = "[Bufferline] Move buffer to the right" },
+    }
+    maps.n["gh"] = {
+      "<cmd>BufferLineMovePrev<cr>",
+      { noremap = true, desc = "[Bufferline] Move buffer to the right" },
+    }
+
     bufferline.setup {
       highlights = {
         buffer_selected = {

@@ -30,7 +30,7 @@ require("lazy").setup {
       ]]
       vim.keymap.set(
         "n",
-        "<m-N>",
+        "<C-n>",
         "<cmd>call vm#commands#find_under(0, v:count1)<cr>",
         { noremap = false, desc = "[Visual-multi] find under cursor" }
       )

@@ -178,7 +178,11 @@ return {
         jsonls = {
           capabilities = capabilities,
         },
-        neocmake = { capabilities = capabilities, cmd = { "cmake-language-server" }, filetypes = { "cmake" } },
+        neocmake = {
+          capabilities = capabilities,
+          cmd = { "cmake-language-server" },
+          filetypes = { "cmake" },
+        },
         html = { capabilities = capabilities },
         powershell_es = {
           capabilities = capabilities,
@@ -237,7 +241,8 @@ return {
         --
         lua_ls = {
           on_attach = on_attach,
-          -- cmd = { ... },
+
+          cmd = { "/usr/bin/lua-language-server" }, --force nvim tu use lua_ls instttled from pacman
           -- filetypes = { ... },
           capabilities = capabilities,
           settings = {

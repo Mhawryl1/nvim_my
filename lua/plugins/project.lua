@@ -27,7 +27,22 @@ return {
 
       -- All the patterns used to detect root dir, when **"pattern"** is in
       -- detection_methods
-      patterns = { ".vscode", "hyprland.conf", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+      patterns = {
+        ".vscode",
+        "hyprland.conf",
+        ".git",
+        "_darcs",
+        ".hg",
+        ".bzr",
+        ".svn",
+        "Makefile",
+        "package.json",
+        "eww.yuck",
+        "vcpkg.json",
+        "CMakeLists.txt",
+        "compile_commands.json",
+        "main.cpp",
+      },
 
       -- Table of lsp clients to ignore by name
       -- eg: { "efm", ... }

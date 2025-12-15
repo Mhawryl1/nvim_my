@@ -65,6 +65,7 @@ return {
     Format = "󰝓",
     Keyboard = "󰌓",
     Undo = "󱀼",
+    Update = " ",
     Word = "",
     Zen = "",
   },

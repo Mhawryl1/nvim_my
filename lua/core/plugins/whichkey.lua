@@ -148,7 +148,7 @@ return {
       {
         "<leader>tf",
         function()
-          vim.api.nvim_command ":ToggleTerm size=10 direction=float name=float<cr>"
+          vim.api.nvim_command ":ToggleTerm size=10 direction=float name=float zsh"
           vim.api.nvim_command ":doautocmd User LspAttach"
         end,
         desc = getIcon("ui", "Term", 2) .. "toggle float terminal",
@@ -191,9 +191,11 @@ return {
       { "<leader>g", name = getIcon("ui", "Git", 1) .. "git" },
       { "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>", desc = "LazyGit" },
       { "<leader>x", name = getIcon("diagnostics", "Warning") .. "Truble" },
-      -- { "<leader>p",  name = getIcon("ui", "Package") .. "Package" },
-      -- { "<leader>pm", "<cmd>MasonUpdate<cr>",                              desc = "Update mason package" },
-      -- { "<leader>pl", "<cmd>Lazy update<cr>",                              desc = "Update Lazy package" },
+      { "<leader>p", name = getIcon("ui", "Package") .. "Package" },
+      { "<leader>pm", "<cmd>Mason<cr>", desc = "Open Mason" },
+      { "<leader>pl", "<cmd>Lazy<cr>", desc = "Open Lazy" },
+      { "<leader>pu", "<cmd>MasonUpdate<cr>", desc = getIcon("ui", "Update", 2) .. "Update mason package" },
+      { "<leader>pp", "<cmd>Lazy update<cr>", desc = getIcon("ui", "Update", 2) .. "Update Lazy package" },
     }
   end,
 }
